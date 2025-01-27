@@ -1,0 +1,180 @@
+
+API Documentation for Order Service
+
+1. Add Product to Cart
+- POST /cart/add
+- Description: Adds a product to the cart for a user.
+- Request Body:
+{
+  "ProductName": "Laptop",
+  "Quantity": 1,
+  "Price": 1200.00,
+  "UserId": "1"
+}
+- Response (Success Example):
+{
+  "Id": 1,
+  "ProductName": "Laptop",
+  "Quantity": 1,
+  "Price": 1200.00,
+  "UserId": "user1"
+}
+
+2. Update Product Quantity in Cart
+- PUT /cart/update
+- Description: Updates the quantity of a product in the cart.
+- Request Body:
+{
+  "Id": 1,
+  "Quantity": 2
+}
+- Response (Success Example):
+{
+  "Id": 1,
+  "ProductName": "Laptop",
+  "Quantity": 2,
+  "Price": 1200.00,
+  "UserId": "user1"
+}
+
+3. Remove Product from Cart
+- DELETE /cart/remove/:id
+- Description: Removes a product from the cart by its Id.
+- Request Example:
+{
+  "Id": 1
+}
+
+4. View Cart
+- GET /cart/view
+- Description: Fetches the contents of the user's cart.
+- Response Example:
+{
+  "CartItems": [
+    {
+      "Id": 1,
+      "ProductName": "Laptop",
+      "Quantity": 1,
+      "Price": 1200.00,
+      "UserId": "user1"
+    }
+  ]
+}
+
+5. Create Order
+- POST /order/create
+- Description: Creates a new order from the cart for a user.
+- Request Body:
+{
+  "userId": "user1"
+}
+- Response (Success Example):
+{
+  "Id": 1,
+  "UserId": "user1",
+  "CreatedDate": "2025-01-27T00:00:00",
+  "TotalAmount": 1500.00,
+  "Status": "Pending",
+  "CartItems": [
+    {
+      "ProductName": "Laptop",
+      "Quantity": 2,
+      "Price": 1200.00,
+      "UserId": "user1"
+    },
+    {
+      "ProductName": "Headphones",
+      "Quantity": 2,
+      "Price": 150.00,
+      "UserId": "user1"
+    }
+  ]
+}
+
+6. Track or Initiate Payment
+- POST /order/payment
+- Description: Initiates or tracks the payment for an order.
+- Request Body:
+{
+  "OrderId": 1,
+  "Amount": 1500.00,
+  "IsPaid": true
+}
+
+7. Get All Orders
+- GET /orders
+- Description: Fetches all orders for a user.
+- Response Example:
+{
+  "Orders": [
+    {
+      "Id": 1,
+      "UserId": "user1",
+      "CreatedDate": "2025-01-27T00:00:00",
+      "TotalAmount": 1500.00,
+      "Status": "Pending"
+    }
+  ]
+}
+
+8. Get Order by Id
+- GET /orders/:id
+- Description: Retrieves details of a specific order by Id.
+- Response Example:
+{
+  "Id": 1,
+  "UserId": "user1",
+  "CreatedDate": "2025-01-27T00:00:00",
+  "TotalAmount": 1500.00,
+  "Status": "Pending",
+  "CartItems": [
+    {
+      "ProductName": "Laptop",
+      "Quantity": 2,
+      "Price": 1200.00,
+      "UserId": "user1"
+    },
+    {
+      "ProductName": "Headphones",
+      "Quantity": 2,
+      "Price": 150.00,
+      "UserId": "user1"
+    }
+  ]
+}
+
+9. Update Order Status
+- PATCH /orders/:id/status
+- Description: Updates the status of an order (e.g., shipped, delivered).
+- Request Body:
+{
+  "Status": "Shipped"
+}
+- Response Example:
+{
+  "Id": 1,
+  "Status": "Shipped"
+}
+
+10. Get Order History
+- GET /orders/history
+- Description: Fetches the order history for a user.
+- Response Example:
+{
+  "Orders": [
+    {
+      "Id": 1,
+      "UserId": "user1",
+      "CreatedDate": "2025-01-27T00:00:00",
+      "TotalAmount": 1500.00,
+      "Status": "Shipped"
+    }
+  ]
+}
+
+End Points:
+- GET /cart/view: View the user's cart.
+- GET /orders: Get all orders of a user.
+- GET /orders/:id: Get details of a specific order by Id.
+- PATCH /orders/:id/status: Update the status of an order (e.g., shipped, delivered).
+- GET /orders/history: Get order history for a user.
