@@ -17,7 +17,7 @@ API Documentation for Order Service
   "ProductName": "Laptop",
   "Quantity": 1,
   "Price": 1200.00,
-  "UserId": "user1"
+  "UserId": 1
 }
 
 2. Update Product Quantity in Cart
@@ -34,7 +34,7 @@ API Documentation for Order Service
   "ProductName": "Laptop",
   "Quantity": 2,
   "Price": 1200.00,
-  "UserId": "user1"
+  "UserId": "1"
 }
 
 3. Remove Product from Cart
@@ -56,7 +56,7 @@ API Documentation for Order Service
       "ProductName": "Laptop",
       "Quantity": 1,
       "Price": 1200.00,
-      "UserId": "user1"
+      "UserId": "1"
     }
   ]
 }
@@ -66,12 +66,12 @@ API Documentation for Order Service
 - Description: Creates a new order from the cart for a user.
 - Request Body:
 {
-  "userId": "user1"
+  "userId": "1"
 }
 - Response (Success Example):
 {
   "Id": 1,
-  "UserId": "user1",
+  "UserId": "1",
   "CreatedDate": "2025-01-27T00:00:00",
   "TotalAmount": 1500.00,
   "Status": "Pending",
@@ -80,13 +80,13 @@ API Documentation for Order Service
       "ProductName": "Laptop",
       "Quantity": 2,
       "Price": 1200.00,
-      "UserId": "user1"
+      "UserId": "1"
     },
     {
       "ProductName": "Headphones",
       "Quantity": 2,
       "Price": 150.00,
-      "UserId": "user1"
+      "UserId": "1"
     }
   ]
 }
@@ -109,7 +109,7 @@ API Documentation for Order Service
   "Orders": [
     {
       "Id": 1,
-      "UserId": "user1",
+      "UserId": "1",
       "CreatedDate": "2025-01-27T00:00:00",
       "TotalAmount": 1500.00,
       "Status": "Pending"
