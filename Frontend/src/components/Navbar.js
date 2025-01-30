@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { FaSearch, FaShoppingCart, FaUserCircle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux"; // To access Redux store
+import { useDispatch, useSelector } from "react-redux"; // To access Redux store
 import axios from "axios";
+import logo from "../images/logo.jpg"
+import { setUser } from "../redux/userSlice";
 
-const Navbar = ({ user, handleAuth }) => {
+const Navbar = () => {
+  const user = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const handleAuth = () => {
+    dispatch(setUser(user ? null : { name: "John Doe", email: "john@example.com" }));
+    navigate("/login" );
+  };
 
   // Access the cart items from Redux store
   const cartItems = useSelector((state) => state.cart.items);
@@ -69,16 +77,17 @@ const Navbar = ({ user, handleAuth }) => {
     if (searchTerm.trim()) {
       navigate(`/search?query=${searchTerm}`);
     }
+    
   };
 
   return (
-    <nav className="bg-white shadow-md p-3 flex items-center justify-between px-6">
+    <nav  className="bg-white fixed w-full shadow-md p-3 flex items-center justify-between px-6">
       {/* Logo */}
       <h1
         className="text-2xl font-bold text-blue-600 cursor-pointer"
         onClick={() => navigate("/")}
       >
-        QuickTradeHub
+        <img src={logo} alt="logo" className="w-20 h-12 rounded-full shadow-lg mix-blend-multiply mask mask-circle" />
       </h1>
 
       {/* Search Bar */}

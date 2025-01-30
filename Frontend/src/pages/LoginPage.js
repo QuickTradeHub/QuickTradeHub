@@ -1,30 +1,18 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { setUser } from '../redux/userSlice'; // Assuming you have userSlice for storing user info
-import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
-
-    // Normally, you would check the credentials with an API call here
-    const user = { email, name: 'John Doe', role: 'user' };
-
-    // Dispatch action to save user to Redux store
-    dispatch(setUser(user));
-
-    // Redirect to Profile page or Home page
-    navigate('/profile');
+    console.log('Login Attempt:', { email, password });
+    // Handle login logic here (e.g., API call)
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gradient-to-r from-blue-500 via-teal-500 to-green-500">
-      <div className="bg-white p-8 rounded-xl shadow-lg w-96">
+    <div className="min-h-screen flex justify-center items-center bg-white">
+      <div className="bg-slate-50 p-8 rounded-xl shadow-lg w-96">
         <h2 className="text-2xl font-semibold mb-6 text-center text-blue-600">Login</h2>
         <form onSubmit={handleLogin}>
           <div className="mb-4">

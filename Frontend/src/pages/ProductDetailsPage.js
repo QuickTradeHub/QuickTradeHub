@@ -3,8 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, removeFromCart, setCartItems } from "../redux/cartSlice";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import { FaStar, FaShoppingCart, FaDollarSign, FaCheck } from "react-icons/fa";
 
 const ProductDetailsPage = () => {
@@ -77,7 +75,6 @@ const ProductDetailsPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
       <div className="container mx-auto p-6">
         <div className="bg-white shadow-xl rounded-lg overflow-hidden">
           <div className="flex flex-col md:flex-row p-6">
@@ -121,7 +118,6 @@ const ProductDetailsPage = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };
