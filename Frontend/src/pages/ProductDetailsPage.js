@@ -1,29 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, removeFromCart, setCartItems } from "../redux/cartSlice"; // Import setCartItems action
+import { addToCart, removeFromCart, setCartItems } from "../redux/cartSlice";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { FaStar, FaShoppingCart, FaDollarSign, FaCheck } from "react-icons/fa";
 
 const ProductDetailsPage = () => {
   const { productId } = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
 
-  // Access cart items from Redux
   const cartItems = useSelector((state) => state.cart.items);
 
   useEffect(() => {
-    // Load cart from localStorage when component mounts
     const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
-    dispatch(setCartItems(storedCart)); // Update Redux store with persisted cart data
+    dispatch(setCartItems(storedCart));
   }, [dispatch]);
 
   useEffect(() => {
-    // Save cart to localStorage whenever it changes
     localStorage.setItem("cart", JSON.stringify(cartItems));
   }, [cartItems]);
 
@@ -68,6 +66,12 @@ const ProductDetailsPage = () => {
     dispatch(removeFromCart(product.id));
   };
 
+  const handleBuyNow = () => {
+    localStorage.setItem("selectedProduct", JSON.stringify(product)); // Store in localStorage
+    navigate("/buy-now", { state: { product } });
+  };
+  
+
   if (loading) return <div className="text-center p-4">Loading...</div>;
   if (!product) return <div className="text-center p-4">Product not found</div>;
 
@@ -100,10 +104,14 @@ const ProductDetailsPage = () => {
                     }`}
                   >
                     <FaShoppingCart />
-                    <span>{isProductInCart ? "Remove from Cart" : "Add to Cart"}</span>
+                    <span>{isProductInCart ? "Added to Cart" : "Add to Cart"}</span>
                     {isProductInCart && <FaCheck className="text-white ml-2" />}
                   </button>
-                  <button className="bg-green-600 text-white py-3 px-8 rounded-lg shadow-md hover:bg-green-700 transition duration-300 flex items-center space-x-2">
+                  
+                  <button
+                    onClick={handleBuyNow}
+                    className="bg-green-600 text-white py-3 px-8 rounded-lg shadow-md hover:bg-green-700 transition duration-300 flex items-center space-x-2"
+                  >
                     <FaDollarSign />
                     <span>Buy Now</span>
                   </button>

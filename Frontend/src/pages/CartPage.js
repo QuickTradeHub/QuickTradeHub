@@ -2,9 +2,12 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeFromCart, clearCart } from '../redux/cartSlice';
 import { FaTrashAlt } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'lucide-react';
 
 const CartPage = () => {
   const dispatch = useDispatch();
+  const history = useNavigate();
   const cart = useSelector((state) => state.cart.items); // Accessing cart items from Redux
 
   const handleRemoveFromCart = (product) => {
@@ -16,6 +19,10 @@ const CartPage = () => {
   };
 
   const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+  const handleProceedToCheckout = () => {
+    history('/checkout'); // Redirecting to checkout page
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 py-12">
@@ -80,10 +87,15 @@ const CartPage = () => {
 
             {/* Action Buttons */}
             <div className="mt-8 flex justify-between">
-              <button className="bg-yellow-500 text-white py-2 px-6 rounded-lg hover:bg-yellow-600 transition duration-300 transform hover:scale-105">
+              
+              <button onClick={()=>history("/")} className="bg-yellow-500 text-white py-2 px-6 rounded-lg hover:bg-yellow-600 transition duration-300 transform hover:scale-105">
                 Continue Shopping
               </button>
-              <button className="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition duration-300 transform hover:scale-105">
+             
+              <button
+                onClick={handleProceedToCheckout}
+                className="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition duration-300 transform hover:scale-105"
+              >
                 Proceed to Checkout
               </button>
             </div>

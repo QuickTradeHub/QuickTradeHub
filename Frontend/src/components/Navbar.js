@@ -82,7 +82,7 @@ const Navbar = ({ user, handleAuth }) => {
       </h1>
 
       {/* Search Bar */}
-      <div className="hidden sm:flex items-center bg-gray-100 rounded-full px-3 py-1 w-1/2">
+      <div className="flex items-center bg-gray-100 rounded-full px-3 py-1 w-full sm:w-1/2">
         <FaSearch className="text-gray-500" />
         <input
           type="text"
@@ -128,7 +128,7 @@ const Navbar = ({ user, handleAuth }) => {
 
             {/* Cart item count */}
             <span className="absolute -top-1 -right-2 bg-red-500 text-white text-xs px-2 rounded-full">
-              {cartItems.length} {/* Dynamic cart count */}
+              {cartItems?.length} {/* Dynamic cart count */}
             </span>
           </button>
         </Link>
