@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿// Models/OrderDbContext.cs
+using Microsoft.EntityFrameworkCore;
 
 namespace OrderServiceProject.Models
 {
@@ -8,24 +8,27 @@ namespace OrderServiceProject.Models
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Payment> Payments { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
 
-        private readonly IConfiguration _configuration;
+        public OrderDbContext(DbContextOptions<OrderDbContext> options) : base(options) { }
 
-        // Constructor for injecting the IConfiguration into the DbContext
-        public OrderDbContext(DbContextOptions<OrderDbContext> options, IConfiguration configuration)
-            : base(options)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            _configuration = configuration;
-        }
+            modelBuilder.Entity<Order>()
+                .OwnsOne(o => o.ShippingAddress);
 
-        // Use OnConfiguring to configure the database connection
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                var connectionString = _configuration.GetConnectionString("DefaultConnection");
-                optionsBuilder.UseSqlServer(connectionString);
-            }
+            modelBuilder.Entity<Order>()
+                .OwnsOne(o => o.BillingAddress);
+
+            modelBuilder.Entity<Order>()
+                .HasMany(o => o.OrderItems)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            //modelBuilder.Entity<Payment>()
+            //    .HasOne(p => p.Order)
+            //    .WithMany()
+            //    .HasForeignKey(p => p.OrderId);
         }
     }
 }

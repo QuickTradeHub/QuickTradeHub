@@ -1,149 +1,220 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿// Controllers/OrderController.cs
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OrderServiceProject.Models;
 
 namespace OrderServiceProject.Controllers
 {
-   
-
     [ApiController]
     [Route("")]
-    public class OrderController : ControllerBase
+    public class OrdersController : ControllerBase
     {
         private readonly OrderDbContext _context;
+        private readonly ILogger<OrdersController> _logger;
 
-        public OrderController(OrderDbContext context)
+        public OrdersController(OrderDbContext context, ILogger<OrdersController> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
-        // POST /cart/add: Add a product to the cart
-        [HttpPost("cart/add")]
-        public async Task<IActionResult> AddToCart([FromBody] CartItem cartItem)
+        // Cart Endpoints
+        [HttpPost("cart/items")]
+        public async Task<IActionResult> AddToCart([FromBody] CartItem item)
         {
-            _context.CartItems.Add(cartItem);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            _context.CartItems.Add(item);
             await _context.SaveChangesAsync();
-            return Ok(cartItem);
+            return CreatedAtAction(nameof(GetCartItems), new { id = item.Id }, item);
         }
 
-        // PUT /cart/update: Update the quantity of a product in the cart
-        [HttpPut("cart/update")]
-        public async Task<IActionResult> UpdateCart([FromBody] CartItem cartItem)
+        [HttpGet("cart/items/{userId}")]
+        public async Task<IActionResult> GetCartItems(string userId)
         {
-            var existingItem = await _context.CartItems.FindAsync(cartItem.Id);
-            if (existingItem == null)
-            {
-                return NotFound();
-            }
+            var items = await _context.CartItems
+                .Where(c => c.UserId == userId)
+                .ToListAsync();
 
-            existingItem.Quantity = cartItem.Quantity;
-            await _context.SaveChangesAsync();
-            return Ok(existingItem);
+            return Ok(items);
         }
 
-        // DELETE /cart/remove/{id}: Remove a product from the cart
-        [HttpDelete("cart/remove/{id}")]
-        public async Task<IActionResult> RemoveFromCart(int id)
+        [HttpPut("cart/items/{id}")]
+        public async Task<IActionResult> UpdateCartItem(int id, [FromBody] CartItem item)
         {
-            var cartItem = await _context.CartItems.FindAsync(id);
-            if (cartItem == null)
-            {
-                return NotFound();
-            }
+            if (id != item.Id) return BadRequest();
 
-            _context.CartItems.Remove(cartItem);
+            var existingItem = await _context.CartItems.FindAsync(id);
+            if (existingItem == null) return NotFound();
+
+            existingItem.Quantity = item.Quantity;
+            existingItem.UpdatedDate = DateTime.UtcNow;
+
             await _context.SaveChangesAsync();
             return NoContent();
         }
 
-        // GET /cart/view: View the user's cart
-        [HttpGet("cart/view")]
-        public async Task<IActionResult> ViewCart([FromQuery] string userId)
+        [HttpDelete("cart/items/{id}")]
+        public async Task<IActionResult> RemoveCartItem(int id)
         {
-            var cartItems = await _context.CartItems.Where(x => x.UserId == userId).ToListAsync();
-            return Ok(cartItems);
+            var item = await _context.CartItems.FindAsync(id);
+            if (item == null) return NotFound();
+
+            _context.CartItems.Remove(item);
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
 
-        // POST /order/create: Create a new order from the cart
-        [HttpPost("order/create")]
-        public async Task<IActionResult> CreateOrder([FromQuery] string userId)
+        // Order Endpoints
+        [HttpPost]
+        public async Task<IActionResult> CreateOrder([FromBody] OrderCreateDto orderDto)
         {
-            var cartItems = await _context.CartItems.Where(x => x.UserId == userId).ToListAsync();
-            if (!cartItems.Any())
-            {
-                return BadRequest("No items in cart");
-            }
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var cartItems = await _context.CartItems
+                .Where(c => c.UserId == orderDto.UserId)
+                .ToListAsync();
+
+            if (!cartItems.Any()) return BadRequest("Cart is empty");
 
             var order = new Order
             {
-                UserId = userId,
-                CreatedDate = DateTime.Now,
-                CartItems = cartItems,
-                TotalAmount = cartItems.Sum(x => x.Price * x.Quantity),
-                Status = "Created"
+                UserId = orderDto.UserId,
+                ShippingAddress = orderDto.ShippingAddress,
+                BillingAddress = orderDto.BillingAddress,
+                OrderItems = cartItems.Select(c => new OrderItem
+                {
+                    ProductId = c.ProductId,
+                    ProductName = c.ProductName,
+                    Quantity = c.Quantity,
+                    UnitPrice = c.Price
+                }).ToList(),
+                TotalAmount = cartItems.Sum(c => c.Price * c.Quantity)
             };
 
             _context.Orders.Add(order);
-            await _context.SaveChangesAsync();
 
-            // Optionally, remove items from the cart after order creation
+            // Clear cart
             _context.CartItems.RemoveRange(cartItems);
+
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetOrderById), new { id = order.Id }, order);
+            return CreatedAtAction(nameof(GetOrder), new { id = order.Id }, order);
         }
 
-        // GET /orders: Get all orders of a user
-        [HttpGet("orders")]
-        public async Task<IActionResult> GetOrders([FromQuery] string userId)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOrder(int id)
         {
-            var orders = await _context.Orders.Where(x => x.UserId == userId).ToListAsync();
-            return Ok(orders);
+            var order = await _context.Orders
+                .Include(o => o.OrderItems)
+                .FirstOrDefaultAsync(o => o.Id == id);
+
+            return order == null ? NotFound() : Ok(order);
         }
 
-        // GET /orders/{id}: Get details of a specific order by ID
-        [HttpGet("orders/{id}")]
-        public async Task<IActionResult> GetOrderById(int id)
+        [HttpGet("user/{userId}")]
+        public async Task<IActionResult> GetUserOrders(string userId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
-            var order = await _context.Orders.Include(o => o.CartItems).FirstOrDefaultAsync(o => o.Id == id);
-            if (order == null)
+            var query = _context.Orders
+                .Where(o => o.UserId == userId)
+                .OrderByDescending(o => o.CreatedDate);
+
+            var totalCount = await query.CountAsync();
+            var orders = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return Ok(new PagedResult<Order>
             {
-                return NotFound();
-            }
-            return Ok(order);
+                Data = orders,
+                Page = page,
+                PageSize = pageSize,
+                TotalCount = totalCount
+            });
         }
 
-        // PATCH /orders/{id}/status: Update the status of an order
-        [HttpPatch("orders/{id}/status")]
-        public async Task<IActionResult> UpdateOrderStatus(int id, [FromBody] string status)
+        [HttpPatch("{id}/status")]
+        public async Task<IActionResult> UpdateOrderStatus(int id, [FromBody] OrderStatusUpdateDto statusDto)
         {
             var order = await _context.Orders.FindAsync(id);
-            if (order == null)
-            {
-                return NotFound();
-            }
+            if (order == null) return NotFound();
 
-            order.Status = status;
+            order.Status = statusDto.NewStatus;
+            order.UpdatedDate = DateTime.UtcNow;
+
             await _context.SaveChangesAsync();
             return Ok(order);
         }
 
-        // POST /order/payment: Track or initiate a payment for an order
-        [HttpPost("order/payment")]
-        public async Task<IActionResult> TrackPayment([FromBody] Payment payment)
+        // Payment Endpoints
+        [HttpPost("{orderId}/payments")]
+        public async Task<IActionResult> CreatePayment(int orderId, [FromBody] PaymentCreateDto paymentDto)
         {
+            var order = await _context.Orders.FindAsync(orderId);
+            if (order == null) return NotFound("Order not found");
+
+            var payment = new Payment
+            {
+                OrderId = orderId,
+                Amount = paymentDto.Amount,
+                Currency = paymentDto.Currency,
+                PaymentMethod = paymentDto.PaymentMethod,
+                Status = PaymentStatus.Pending
+            };
+
             _context.Payments.Add(payment);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(Payment), new { id = payment.Id }, payment);
+        }
+
+        [HttpPost("payments/{paymentId}/confirm")]
+        public async Task<IActionResult> ConfirmPayment(int paymentId)
+        {
+            var payment = await _context.Payments.FindAsync(paymentId);
+            if (payment == null) return NotFound();
+
+            payment.Status = PaymentStatus.Completed;
+            payment.PaymentDate = DateTime.UtcNow;
+
+            var order = await _context.Orders.FindAsync(payment.OrderId);
+            if (order != null)
+            {
+                order.PaymentStatus = PaymentStatus.Completed;
+                order.UpdatedDate = DateTime.UtcNow;
+            }
+
             await _context.SaveChangesAsync();
             return Ok(payment);
         }
 
-        // GET /orders/history: Get order history for a user
-        [HttpGet("orders/history")]
-        public async Task<IActionResult> GetOrderHistory([FromQuery] string userId)
+        // Additional DTO classes
+        public class OrderCreateDto
         {
-            var orders = await _context.Orders.Where(x => x.UserId == userId).OrderByDescending(o => o.CreatedDate).ToListAsync();
-            return Ok(orders);
+            public string UserId { get; set; }
+            public Address ShippingAddress { get; set; }
+            public Address BillingAddress { get; set; }
+        }
+
+        public class OrderStatusUpdateDto
+        {
+            public OrderStatus NewStatus { get; set; }
+        }
+
+        public class PaymentCreateDto
+        {
+            public decimal Amount { get; set; }
+            public string Currency { get; set; } = "USD";
+            public string PaymentMethod { get; set; }
+        }
+
+        public class PagedResult<T>
+        {
+            public List<T> Data { get; set; }
+            public int Page { get; set; }
+            public int PageSize { get; set; }
+            public int TotalCount { get; set; }
         }
     }
-
 }
