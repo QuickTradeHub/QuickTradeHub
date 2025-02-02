@@ -1,0 +1,139 @@
+
+1️⃣ Add a New Category
+Endpoint: POST /categories
+ 
+     
+Body (JSON):
+{
+    "name": "Electronics"
+}
+Expected Response:
+    201 Created
+    Returns the created category object.
+
+2️⃣ Get All Categories
+Endpoint: GET /categories
+Expected Response:
+    200 OK
+    Returns an array of categories.
+
+3️⃣ Add a New Product
+Endpoint: POST /products
+ 
+     
+Body (JSON):
+{
+    "name": "Laptop",
+    "description": "Gaming laptop",
+    "price": 1500,
+    "category": "CATEGORY_ID",
+    "stock": 20,
+    "sellerId": "SELLER_123"
+}
+Replace CATEGORY_ID with an actual Category ID from the database.
+Expected Response:
+    201 Created
+    Returns the created product object.
+
+4️⃣ Get All Product Categories
+Endpoint: GET /products/categories
+Expected Response:
+    200 OK
+    Returns an array of distinct category IDs.
+
+5️⃣ Get Product Details by ID
+Endpoint: GET /products/:id
+Replace :id with a Product ID.
+Expected Response:
+    200 OK
+    Returns the product details with category and reviews.
+
+6️⃣ Update Product Details
+Endpoint: PUT /products/:id
+Replace :id with a Product ID.
+ 
+     
+Body (JSON):
+{
+    "price": 1400,
+    "stock": 15
+}
+Expected Response:
+    200 OK
+    Returns the updated product.
+
+7️⃣ Delete a Product by ID
+Endpoint: DELETE /products/:id
+Replace :id with a Product ID.
+Expected Response:
+    200 OK
+    Returns { "message": "Product deleted successfully" }.
+
+8️⃣ Add a Review for a Product
+Endpoint: POST /products/:id/review
+Replace :id with a Product ID.
+ 
+     
+Body (JSON):
+{
+    "userId": "USER_001",
+    "rating": 5,
+    "comment": "Amazing product!"
+}
+Expected Response:
+    201 Created
+    Returns the review object.
+
+9️⃣ Get All Reviews for a Product
+Endpoint: GET /products/:id/reviews
+Replace :id with a Product ID.
+Expected Response:
+    200 OK
+    Returns an array of reviews.
+
+🔟 Update a Specific Review
+Endpoint: PUT /products/:productId/reviews/:reviewId
+Replace :productId with a Product ID and :reviewId with a Review ID.
+ 
+     
+Body (JSON):
+{
+    "rating": 4,
+    "comment": "Good product but expensive"
+}
+Expected Response:
+    200 OK
+    Returns the updated product with modified review.
+
+1️⃣1️⃣ Delete a Specific Review
+Endpoint: DELETE /products/:productId/reviews/:reviewId
+Replace :productId and :reviewId with actual IDs.
+Expected Response:
+    200 OK
+    Returns { "message": "Review deleted successfully" }.
+
+1️⃣2️⃣ Get All Products Added by a Seller
+Endpoint: GET /products/seller/:id
+Replace :id with a Seller ID.
+Expected Response:
+    200 OK
+    Returns an array of products from the seller.
+
+1️⃣3️⃣ Get All Products with Pagination
+Endpoint: GET /products?page=1&limit=5
+Expected Response:
+    200 OK
+    Returns a paginated list of products.
+
+1️⃣4️⃣ Update Stock Quantity for a Product
+Endpoint: PATCH /products/:id/stock
+Replace :id with a Product ID.
+ 
+     
+Body (JSON):
+{
+    "stock": 30
+}
+Expected Response:
+    200 OK
+    Returns the updated product with new stock value.
