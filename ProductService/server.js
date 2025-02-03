@@ -1,218 +1,57 @@
 const express = require('express');
-const mongoose = require('mongoose');
+const connectDB = require('./config/db');
+const Eureka = require('eureka-js-client').Eureka;
+const categoryRoutes = require('./routes/categories');
+const productRoutes = require('./routes/products');
 
 const app = express();
 app.use(express.json());
 
-mongoose.connect('mongodb://127.0.0.1:27017/products', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-}).then(() => {
-    console.log('MongoDB connected successfully');
-}).catch((err) => {
-    console.error('MongoDB connection error: ', err);
+// Connect to MongoDB
+connectDB();
+
+// Use Routes
+app.use('/categories', categoryRoutes);
+app.use('/products', productRoutes);
+
+// Eureka Client Configuration
+const client = new Eureka({
+  eureka: {
+    host: '13.60.97.119', // Eureka server host
+    port: 8761,        // Eureka server port
+    servicePath: '/eureka/apps', // Eureka service API path
+  },
+  instance: {
+    app: 'product-service', // The name of your application
+    instanceId: 'product-service-instance-1', // Unique instance ID for your service
+    hostName: 'localhost', // Hostname where your service is running
+    ipAddr: '127.0.0.1', // IP address of the service
+    port: {
+      '$': 3000, // Port where your Express app is running
+      '@enabled': 'true', // Enable this port
+    },
+    vipAddress: 'product-service', // Virtual address of your service
+    secureVipAddress: 'product-service', // Optional secure virtual address
+    dataCenterInfo: {
+      '@class': 'com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo',
+      'name': 'MyOwn', // The name of your data center (can be 'MyOwn' for local)
+    },
+  },
 });
 
-const categorySchema = new mongoose.Schema({
-    name: { type: String, required: true, unique: true }
-});
-const Category = mongoose.model('Category', categorySchema);
-
-const productSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    description: String,
-    price: { type: Number, required: true, min: [0, 'Price cannot be negative'] },
-    category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
-    stock: { type: Number, required: true, min: [0, 'Stock cannot be negative'] },
-    sellerId: String,
-    reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }],
-});
-const Product = mongoose.model('Product', productSchema);
-
-const reviewSchema = new mongoose.Schema({
-    productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
-    userId: String,
-    rating: { type: Number, min: 1, max: 5 },
-    comment: String,
-    date: { type: Date, default: Date.now }
-});
-const Review = mongoose.model('Review', reviewSchema);
-
-// Add a new category
-app.post('/categories', async (req, res) => {
-    try {
-        const category = new Category(req.body);
-        await category.save();
-        res.status(201).send(category);
-    } catch (err) {
-        res.status(400).send({ error: 'Error while creating category', message: err.message });
-    }
+// Start Eureka client to register the service
+client.start(function() {
+  console.log('Product service registered with Eureka');
 });
 
-// Get all categories
-app.get('/categories', async (req, res) => {
-    try {
-        const categories = await Category.find();
-        res.send(categories);
-    } catch (err) {
-        res.status(500).send({ error: 'Error while fetching categories', message: err.message });
-    }
+// Graceful shutdown to deregister from Eureka
+process.on('SIGINT', async () => {
+  console.log('Shutting down, deregistering from Eureka');
+  client.stop();
+  console.log('MongoDB disconnected on app termination');
+  process.exit(0);
 });
 
-// Add a new product
-app.post('/products', async (req, res) => {
-    try {
-        const product = new Product(req.body);
-        await product.save();
-        res.status(201).send(product);
-    } catch (err) {
-        res.status(400).send({ error: 'Error while creating product', message: err.message });
-    }
-});
-
-// ✅ Get All Product Categories
-app.get('/products/categories', async (req, res) => {
-    try {
-        const categories = await Product.distinct('category');
-        res.send(categories);
-    } catch (err) {
-        res.status(500).send({ error: 'Error while fetching categories', message: err.message });
-    }
-});
-// Get details of product by ID
-app.get('/products/:id', async (req, res) => {
-    try {
-        const product = await Product.findById(req.params.id).populate('category').populate('reviews');
-        if (!product) return res.status(404).send('Product not found');
-        res.send(product);
-    } catch (err) {
-        res.status(500).send({ error: 'Error while fetching product', message: err.message });
-    }
-});
-
-// Update product details
-app.put('/products/:id', async (req, res) => {
-    try {
-        const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        if (!product) return res.status(404).send('Product not found');
-        res.send(product);
-    } catch (err) {
-        res.status(400).send({ error: 'Error while updating product', message: err.message });
-    }
-});
-
-// Delete a product by ID
-app.delete('/products/:id', async (req, res) => {
-    try {
-        const product = await Product.findByIdAndDelete(req.params.id);
-        if (!product) return res.status(404).send('Product not found');
-        res.send({ message: 'Product deleted successfully' });
-    } catch (err) {
-        res.status(500).send({ error: 'Error while deleting product', message: err.message });
-    }
-});
-
-// Add a review for a product
-app.post('/products/:id/review', async (req, res) => {
-    try {
-        const review = new Review({ ...req.body, productId: req.params.id });
-        await review.save();
-        await Product.findByIdAndUpdate(req.params.id, { $push: { reviews: review._id } });
-        res.send(review);
-    } catch (err) {
-        res.status(400).send({ error: 'Error while adding review', message: err.message });
-    }
-});
-
-// Get all reviews for a product
-app.get('/products/:id/reviews', async (req, res) => {
-    try {
-        const reviews = await Review.find({ productId: req.params.id });
-        res.send(reviews);
-    } catch (err) {
-        res.status(500).send({ error: 'Error while fetching reviews', message: err.message });
-    }
-});
-
-// ✅ Update a Specific Review
-app.put('/products/:productId/reviews/:reviewId', async (req, res) => {
-    try {
-        const product = await Product.findById(req.params.productId);
-        if (!product) return res.status(404).send('Product not found');
-
-        const review = product.reviews.id(req.params.reviewId);
-        if (!review) return res.status(404).send('Review not found');
-
-        Object.assign(review, req.body);
-        await product.save();
-        res.send(product);
-    } catch (err) {
-        res.status(400).send({ error: 'Error while updating review', message: err.message });
-    }
-});
-
-// ✅ Delete a Specific Review
-app.delete('/products/:productId/reviews/:reviewId', async (req, res) => {
-    try {
-        const product = await Product.findById(req.params.productId);
-        if (!product) return res.status(404).send('Product not found');
-
-        product.reviews = product.reviews.filter(r => r._id.toString() !== req.params.reviewId);
-        await product.save();
-        res.send({ message: 'Review deleted successfully' });
-    } catch (err) {
-        res.status(500).send({ error: 'Error while deleting review', message: err.message });
-    }
-});
-
-
-
-// Get all products added by a specific seller
-app.get('/products/seller/:id', async (req, res) => {
-    try {
-        const products = await Product.find({ sellerId: req.params.id });
-        res.send(products);
-    } catch (err) {
-        res.status(500).send({ error: 'Error while fetching products', message: err.message });
-    }
-});
-
-// ✅ Get All Products with Pagination
-app.get('/products', async (req, res) => {
-    try {
-        const { page = 1, limit = 10 } = req.query;
-        const products = await Product.find()
-            .limit(limit * 1)
-            .skip((page - 1) * limit);
-        res.send(products);
-    } catch (err) {
-        res.status(500).send({ error: 'Error while fetching products', message: err.message });
-    }
-});
-
-
-// Update stock quantity for a product
-app.patch('/products/:id/stock', async (req, res) => {
-    try {
-        const product = await Product.findById(req.params.id);
-        if (!product) return res.status(404).send('Product not found');
-        product.stock = req.body.stock;
-        await product.save();
-        res.send(product);
-    } catch (err) {
-        res.status(400).send({ error: 'Error while updating stock', message: err.message });
-    }
-});
-
-// Graceful shutdown
-process.on('SIGINT', () => {
-    mongoose.connection.close(() => {
-        console.log('MongoDB disconnected on app termination');
-        process.exit(0);
-    });
-});
-
-const PORT = 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+// Start Express server
+const PORT = 30001;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

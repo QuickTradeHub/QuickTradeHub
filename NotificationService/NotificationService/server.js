@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const nodemailer = require('nodemailer');
-const { emailConfig } = require('./config');
+const notificationRoutes = require('./routes/notificationRoutes');
+const { Eureka } = require('eureka-js-client');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -9,77 +9,45 @@ const port = process.env.PORT || 3000;
 // Middleware
 app.use(bodyParser.json());
 
-// Nodemailer Setup (for email notifications)
-const transporter = nodemailer.createTransport(emailConfig);
+// Routes
+app.use('/notifications', notificationRoutes);
 
-// Endpoint: Send Email Notification
-app.post('/notifications/send', (req, res) => {
-  const { recipient, subject, message } = req.body;
-
-  const mailOptions = {
-    from: emailConfig.auth.user,
-    to: recipient,
-    subject: subject || 'Notification',
-    text: message,
-  };
-
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      return res.status(500).send(error.toString());
+// Eureka client configuration
+const eurekaClient = new Eureka({
+  instance: {
+    app: 'notification-service',
+    instanceId: `notification-service:${port}`,
+    hostName: 'localhost',
+    ipAddr: '127.0.0.1',
+    statusPageUrl: `http://localhost:${port}`,
+    healthCheckUrl: `http://localhost:${port}/health`,
+    port: {
+      $: port,
+      '@enabled': true
+    },
+    vipAddress: 'notification-service',
+    dataCenterInfo: {
+      '@class': 'com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo',
+      name: 'MyOwn'
     }
-    return res.status(200).send('Email sent: ' + info.response);
-  });
+  },
+  eureka: {
+    host: '13.60.97.119',
+    port: 8761,
+    servicePath: '/eureka/apps/'
+  }
 });
 
-// Endpoint: Send Order Confirmation Email
-app.post('/notifications/order-confirmation', (req, res) => {
-  const { recipient, orderId } = req.body;
-  const message = `Your order ${orderId} has been successfully placed.`;
-
-  sendNotification(recipient, 'Order Confirmation', message, res);
+// Start the Eureka client
+eurekaClient.start((error) => {
+  if (error) {
+    console.error('Error registering with Eureka:', error);
+  } else {
+    console.log('Successfully registered with Eureka');
+  }
 });
 
-// Endpoint: Send Shipment Status Update Email
-app.post('/notifications/shipment-update', (req, res) => {
-  const { recipient, orderId, status } = req.body;
-  const message = `Your order ${orderId} has been shipped. Status: ${status}`;
-
-  sendNotification(recipient, 'Shipment Update', message, res);
-});
-
-// Endpoint: Send Payment Receipt Email
-app.post('/notifications/payment-receipt', (req, res) => {
-  const { recipient, orderId, amount } = req.body;
-  const message = `Payment for your order ${orderId} of amount $${amount} has been received successfully.`;
-
-  sendNotification(recipient, 'Payment Receipt', message, res);
-});
-
-// Endpoint: Send Promotional Email
-app.post('/notifications/promotions', (req, res) => {
-  const { recipient, promotionDetails } = req.body;
-  const message = `Special Promotion: ${promotionDetails}`;
-
-  sendNotification(recipient, 'Special Promotion', message, res);
-});
-
-// Helper function to send emails
-function sendNotification(recipient, subject, message, res) {
-  const mailOptions = {
-    from: emailConfig.auth.user,
-    to: recipient,
-    subject: subject,
-    text: message,
-  };
-
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      return res.status(500).send(error.toString());
-    }
-    return res.status(200).send('Email sent: ' + info.response);
-  });
-}
-
+// Start the server
 app.listen(port, () => {
   console.log(`Notification service running on port ${port}`);
 });

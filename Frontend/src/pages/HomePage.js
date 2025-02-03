@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useSelector, useDispatch } from "react-redux";
-import { setUser } from "../redux/userSlice";
 import { useNavigate } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 
@@ -10,8 +8,6 @@ const HomePage = () => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [loadingMore, setLoadingMore] = useState(false);
-  const user = useSelector((state) => state.user);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {

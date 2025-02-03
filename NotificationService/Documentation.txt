@@ -1,0 +1,162 @@
+
+API Documentation: QuickTradeHub Notifications Service
+
+Base URL: http://localhost:3000
+
+1. Send Email Notification
+Endpoint: POST /notifications/send
+Description: Send a generic email notification.
+Request Body:
+{
+  "recipient": "user@example.com",
+  "subject": "Test Email",
+  "message": "This is a test email from QuickTradeHub."
+}
+Response:
+{
+  "status": "success",
+  "message": "Email sent: <info.response>"
+}
+
+2. Order Confirmation Email
+Endpoint: POST /notifications/order-confirmation
+Description: Send order confirmation email after a customer places an order.
+Request Body:
+{
+  "recipient": "customer@example.com",
+  "orderId": "ORD12345"
+}
+Response:
+{
+  "status": "success",
+  "message": "Email sent: Order confirmation"
+}
+
+3. Shipment Status Update Email
+Endpoint: POST /notifications/shipment-update
+Description: Send email with shipment status update for an order.
+Request Body:
+{
+  "recipient": "customer@example.com",
+  "orderId": "ORD12345",
+  "status": "Shipped"
+}
+Response:
+{
+  "status": "success",
+  "message": "Email sent: Shipment status update"
+}
+
+4. Payment Receipt Email
+Endpoint: POST /notifications/payment-receipt
+Description: Send payment receipt email after a payment is made.
+Request Body:
+{
+  "recipient": "customer@example.com",
+  "orderId": "ORD12345",
+  "amount": "50.00"
+}
+Response:
+{
+  "status": "success",
+  "message": "Email sent: Payment receipt"
+}
+
+5. Promotional Email
+Endpoint: POST /notifications/promotions
+Description: Send promotional email for special offers or discounts.
+Request Body:
+{
+  "recipient": "user@example.com",
+  "promotionDetails": "Get 20% off your next purchase!"
+}
+Response:
+{
+  "status": "success",
+  "message": "Email sent: Special promotion"
+}
+
+6. Account Registration Email
+Endpoint: POST /notifications/account-registration
+Description: Send email for account registration confirmation.
+Request Body:
+{
+  "recipient": "newuser@example.com",
+  "username": "newuser"
+}
+Response:
+{
+  "status": "success",
+  "message": "Email sent: Account registration"
+}
+
+7. Password Reset Email
+Endpoint: POST /notifications/password-reset
+Description: Send email to reset the password.
+Request Body:
+{
+  "recipient": "user@example.com",
+  "resetLink": "http://quicktradehub.com/reset-password/abcd1234"
+}
+Response:
+{
+  "status": "success",
+  "message": "Email sent: Password reset"
+}
+
+8. User Activity Email
+Endpoint: POST /notifications/user-activity
+Description: Send email for a recent user activity, such as login or update.
+Request Body:
+{
+  "recipient": "user@example.com",
+  "activityDetails": "Logged in to the platform."
+}
+Response:
+{
+  "status": "success",
+  "message": "Email sent: User activity"
+}
+
+9. Support Ticket Confirmation Email
+Endpoint: POST /notifications/support-ticket
+Description: Send confirmation email after a support ticket is raised.
+Request Body:
+{
+  "recipient": "customer@example.com",
+  "ticketId": "TICKET12345",
+  "issueDescription": "Unable to process payment."
+}
+Response:
+{
+  "status": "success",
+  "message": "Email sent: Support ticket confirmation"
+}
+
+10. Newsletter Email
+Endpoint: POST /notifications/newsletter
+Description: Send email with the latest newsletter content.
+Request Body:
+{
+  "recipient": "subscriber@example.com",
+  "newsletterContent": "Here's the latest update on QuickTradeHub..."
+}
+Response:
+{
+  "status": "success",
+  "message": "Email sent: QuickTradeHub Newsletter"
+}
+
+11. Special Offer Email
+Endpoint: POST /notifications/special-offer
+Description: Send email with details about a special offer.
+Request Body:
+{
+  "recipient": "user@example.com",
+  "offerDetails": "Exclusive 50% off on your next purchase!"
+}
+Response:
+{
+  "status": "success",
+  "message": "Email sent: Special offer"
+}

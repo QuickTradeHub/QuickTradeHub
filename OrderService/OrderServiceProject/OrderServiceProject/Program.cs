@@ -1,24 +1,41 @@
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using OrderServiceProject.Models;
-
+using Steeltoe.Discovery.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Load the configuration from appsettings.json
+// Load configuration from appsettings.json
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
-// Register DbContext with SQL Server and configure it to use the connection string from appsettings.json
+// Register Eureka Discovery Client
+builder.Services.AddDiscoveryClient(builder.Configuration);
+
+// Register DbContext with SQL Server
 builder.Services.AddDbContext<OrderDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Add controllers to the services container
+// Add controllers
 builder.Services.AddControllers();
+
+// Configure CORS if needed
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline
+// Enable Eureka Discovery Client
+app.UseDiscoveryClient();
+
+// Configure Middleware
 app.UseRouting();
+app.UseCors("AllowAll");
 app.MapControllers();
 
 // Run the application

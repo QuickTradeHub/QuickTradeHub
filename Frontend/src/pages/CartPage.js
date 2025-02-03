@@ -56,7 +56,7 @@ const CartPage = () => {
                 </div>
                 <div className="flex flex-col items-end">
                   <p className="text-lg font-semibold text-gray-800">
-                    ${item.price * item.quantity}
+                  ₹{item.price* 80 * item.quantity}
                   </p>
                   <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
                   <button
@@ -72,7 +72,7 @@ const CartPage = () => {
             {/* Cart Total and Actions */}
             <div className="flex justify-between items-center mt-8">
               <div className="text-2xl font-semibold text-gray-900">
-                <p>Total: ${total}</p>
+                <p>Total: ₹{total*80}</p>
                 <p className="text-lg text-gray-600">({cart.length} items)</p>
               </div>
               <div>

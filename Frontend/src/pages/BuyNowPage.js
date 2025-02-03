@@ -85,13 +85,13 @@ const BuyNowPage = () => {
             />
             <div>
               <h3 className="text-lg font-medium">{product.title}</h3>
-              <p className="text-gray-600">Price: <span className="text-green-600 font-bold">${product.price}</span></p>
+              <p className="text-gray-600">Price: <span className="text-green-600 font-bold">₹{product.price*80}</span></p>
             </div>
           </div>
           <hr className="my-4 border-gray-300" />
           <div className="flex justify-between font-semibold text-lg">
             <span>Total:</span>
-            <span className="text-green-600">${product.price}</span>
+            <span className="text-green-600">₹{product.price*80}</span>
           </div>
         </div>
 

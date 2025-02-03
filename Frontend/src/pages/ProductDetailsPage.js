@@ -91,7 +91,7 @@ const ProductDetailsPage = () => {
               <p className="text-lg text-gray-700">{product.description}</p>
               <div className="flex items-center space-x-4 mt-4">
                 <div className="flex items-center space-x-2">
-                  <span className="text-3xl font-bold text-gray-900">${product.price}</span>
+                  <span className="text-3xl font-bold text-gray-900">₹{product.price*80}</span>
                 </div>
                 <div className="flex space-x-4">
                   <button

@@ -6,7 +6,7 @@ import { FaTrashAlt, FaPen } from 'react-icons/fa';
 
 const CheckoutPage = () => {
   const dispatch = useDispatch();
-  const history = useNavigate();
+  const navigate = useNavigate();
   const cart = useSelector((state) => state.cart.items);
   const [selectedAddress, setSelectedAddress] = useState('');
   const [orderPlaced, setOrderPlaced] = useState(false);
@@ -16,7 +16,6 @@ const CheckoutPage = () => {
     '789 Oak Avenue, City C',
   ]);
   const [newAddress, setNewAddress] = useState('');
-  const [isEditing, setIsEditing] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
 
   const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
@@ -35,7 +34,6 @@ const CheckoutPage = () => {
   };
 
   const handleEditAddress = (index) => {
-    setIsEditing(true);
     setNewAddress(addresses[index]);
     setEditIndex(index);
   };
@@ -46,7 +44,6 @@ const CheckoutPage = () => {
       updatedAddresses[editIndex] = newAddress;
       setAddresses(updatedAddresses);
       setNewAddress('');
-      setIsEditing(false);
       setEditIndex(null);
     }
   };
@@ -119,10 +116,10 @@ const CheckoutPage = () => {
               />
               <div>
                 <h3 className="text-lg font-medium">{item.name}</h3>
-                <p className="text-gray-600">Price: ${item.price}</p>
+                <p className="text-gray-600">Price: ₹{item.price*80}</p>
                 <p className="text-gray-600">Quantity: {item.quantity}</p>
                 <p className="text-gray-600">
-                  Subtotal: ${item.price * item.quantity}
+                  Subtotal: ₹{item.price* 80 * item.quantity}
                 </p>
               </div>
             </div>
@@ -130,7 +127,7 @@ const CheckoutPage = () => {
           <hr className="my-4 border-gray-300" />
           <div className="flex justify-between font-semibold text-lg">
             <span>Total:</span>
-            <span className="text-green-600">${total}</span>
+            <span className="text-green-600">₹{total*80}</span>
           </div>
         </div>
 
@@ -142,7 +139,7 @@ const CheckoutPage = () => {
         ) : (
           <div className="flex justify-between items-center mt-8">
             <button
-              onClick={() => history.push('/cart')}
+              onClick={() => navigate('/cart')}
               className="bg-yellow-500 text-white py-2 px-6 rounded-lg hover:bg-yellow-600 transition duration-300 transform hover:scale-105"
             >
               Back to Cart
