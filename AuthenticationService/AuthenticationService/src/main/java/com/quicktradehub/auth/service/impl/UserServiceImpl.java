@@ -4,7 +4,6 @@ import com.quicktradehub.auth.dto.UserDto;
 import com.quicktradehub.auth.dto.LoginRequest;
 import com.quicktradehub.auth.dto.AddressDto;
 import com.quicktradehub.auth.dto.ForgotPasswordDto;
-import com.quicktradehub.auth.dto.JwtResponse;
 import com.quicktradehub.auth.dto.PasswordResetRequest;
 import com.quicktradehub.auth.entity.Address;
 import com.quicktradehub.auth.entity.User;
@@ -15,10 +14,15 @@ import com.quicktradehub.auth.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -34,6 +38,8 @@ public class UserServiceImpl implements UserService {
 	private final BCryptPasswordEncoder passwordEncoder;
 	@Autowired
 	private final AddressRepository addressRepository;
+	@Autowired
+	private RestTemplate restTemplate;
 
 	@Override
 	public UserDto registerUser(UserDto userDto) {
@@ -53,44 +59,21 @@ public class UserServiceImpl implements UserService {
 		}
 
 		User savedUser = userRepository.save(user);
+		
+		sendEmail(user.getEmail(), user.getUserName(), "account-registration");
 
 		// Return saved user as DTO
 		return new UserDto(savedUser);
 	}
 
-	@Override
-	public JwtResponse login(LoginRequest loginRequest) {
-		// Find the user by email
-		Optional<User> userOptional = userRepository.findByEmail(loginRequest.getEmail());
-		if (!userOptional.isPresent()
-				|| !passwordEncoder.matches(loginRequest.getPassword(), userOptional.get().getPassword())) {
-			throw new RuntimeException("Invalid username or password");
-		}
 
-		// Generate JWT token
-		User user = userOptional.get();
-		String token = jwtUtil.generateToken(user);
-
-		// Return JWT response with token
-		return new JwtResponse(token);
-	}
 
 	@Override
 	public boolean validateToken(String token, String userName) {
 		return jwtUtil.validateToken(token, userName);
 	}
 
-	@Override
-	public void forgotPassword(String email) {
-		Optional<User> userOptional = userRepository.findByEmail(email);
-		if (!userOptional.isPresent()) {
-			throw new RuntimeException("User not found with email: " + email);
-		}
 
-		// Generate and send password reset link to user's email (implementation
-		// omitted)
-		// This could be an email with a password reset link
-	}
 
 	@Override
 	public boolean resetPassword(PasswordResetRequest request) {
@@ -163,6 +146,7 @@ public class UserServiceImpl implements UserService {
 //		if (!passwordEncoder.encode(loginRequest.getPassword()).equals(user.getPassword())) {
 //			throw new RuntimeException("Invalid credentials. Password does not match.");
 //		}
+		sendEmail(loginRequest.getEmail(), "New login detected to your account", "user-activity");
 
 		return user;
 	}
@@ -185,13 +169,32 @@ public class UserServiceImpl implements UserService {
 		String resetLink = "http://yourdomain.com/auth/reset-password?token=" + token;
 
 		// Send email with the reset link (using JavaMailSender)
-		sendResetEmail(user.getEmail(), resetLink);
+		sendEmail(user.getEmail(), resetLink,"password-reset");
 	}
 
 	// Helper method to send the reset password email
-	private void sendResetEmail(String to, String resetLink) {
+	public void sendEmail(String recipient, String messageBody,String endPoint) {
+        String notificationServiceUrl = "http://notification-service/notifications/"+endPoint;
 
-	}
+        // Creating request body
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put("recipient", recipient);
+        requestBody.put("messageBody", messageBody);
+
+        
+        HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(requestBody);
+
+        // Making REST API call
+        ResponseEntity<String> response = restTemplate.postForEntity(notificationServiceUrl, requestEntity, String.class);
+
+        // Handling response
+        if (response.getStatusCode().is2xxSuccessful()) {
+            System.out.println("Reset email request sent successfully.");
+        } else {
+            System.out.println("Failed to send reset email.");
+        }
+    }
+
 	 public void addAddressToUser(int userId, AddressDto addressDto) {
 	        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 	        Address address = new Address();

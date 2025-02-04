@@ -43,24 +43,24 @@ router.post('/promotions', (req, res) => {
 
 // Endpoint: Send Account Registration Email
 router.post('/account-registration', (req, res) => {
-  const { recipient, username } = req.body;
-  const message = `Welcome to QuickTradeHub, <br><br> Your account has been successfully created. Username: <strong>${username}</strong>.<br><br><a href="http://quicktradehub.com/login" class="btn">Login to your account</a>`;
+  const { recipient, messageBody } = req.body;
+  const message = `Welcome to QuickTradeHub, <br><br> Your account has been successfully created. Username: <strong>${messageBody}</strong>.<br><br><a href="http://quicktradehub.com/login" class="btn">Login to your account</a>`;
   const htmlContent = createHtmlEmail(message, 'Account Registration');
   sendNotification(recipient, 'Account Registration', htmlContent, res);
 });
 
 // Endpoint: Send Password Reset Email
 router.post('/password-reset', (req, res) => {
-  const { recipient, resetLink } = req.body;
-  const message = `Dear user, <br><br> We received a request to reset your password. If you requested a password reset, click the link below: <br><br><a href="${resetLink}" class="btn">Reset Password</a><br><br>If you did not request a password reset, please ignore this email.`;
+  const { recipient, messageBody } = req.body;
+  const message = `Dear user, <br><br> We received a request to reset your password. If you requested a password reset, click the link below: <br><br><a href="${messageBody}" class="btn">Reset Password</a><br><br>If you did not request a password reset, please ignore this email.`;
   const htmlContent = createHtmlEmail(message, 'Password Reset');
   sendNotification(recipient, 'Password Reset', htmlContent, res);
 });
 
 // Endpoint: Send Welcome Email for New User Activity
 router.post('/user-activity', (req, res) => {
-  const { recipient, activityDetails } = req.body;
-  const message = `Hello, <br><br> You've recently performed the following activity: <strong>${activityDetails}</strong><br><br><a href="http://quicktradehub.com/activity" class="btn">View Your Activity</a>`;
+  const { recipient, messageBody } = req.body;
+  const message = `Hello, <br><br> You've recently performed the following activity: <strong>${messageBody}</strong><br><br><a href="http://quicktradehub.com/activity" class="btn">View Your Activity</a>`;
   const htmlContent = createHtmlEmail(message, 'User Activity');
   sendNotification(recipient, 'User Activity', htmlContent, res);
 });

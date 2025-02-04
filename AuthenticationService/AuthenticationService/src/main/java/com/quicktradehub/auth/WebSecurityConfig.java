@@ -12,14 +12,7 @@ public class WebSecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
-		.requestMatchers("/auth/**", "/auth/user/*/address").permitAll() // Allow public paths
-																									// without
-																									// authentication
-				.anyRequest().authenticated() // Secure other paths
-				.and().formLogin().disable() // Disable the default login page
-				.httpBasic().disable().csrf().disable(); // Optionally disable HTTP basic authentication
-
+		http = http.csrf().disable();		
 		return http.build();
 	}
 }

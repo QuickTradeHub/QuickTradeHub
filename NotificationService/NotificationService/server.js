@@ -16,11 +16,11 @@ app.use('/notifications', notificationRoutes);
 const eurekaClient = new Eureka({
   instance: {
     app: 'notification-service',
-    instanceId: `notification-service:${port}`,
+    instanceId: `notification-service`,
     hostName: 'localhost',
     ipAddr: '127.0.0.1',
-    statusPageUrl: `http://localhost:${port}`,
-    healthCheckUrl: `http://localhost:${port}/health`,
+    statusPageUrl: `http://localhost`,
+    healthCheckUrl: `http://localhost/health`,
     port: {
       $: port,
       '@enabled': true

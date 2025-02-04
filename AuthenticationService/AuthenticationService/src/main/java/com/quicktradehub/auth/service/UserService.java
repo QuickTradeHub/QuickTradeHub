@@ -15,14 +15,9 @@ public interface UserService {
     // Register a new user
     UserDto registerUser(UserDto userDto);
 
-    // Authenticate user and generate JWT token
-    JwtResponse login(LoginRequest loginRequest);
-
     // Validate the JWT token
     boolean validateToken(String token,String userName);
 
-    // Send a password reset link via email
-    void forgotPassword(String email);
 
     // Reset the user's password
     boolean resetPassword(PasswordResetRequest request);
