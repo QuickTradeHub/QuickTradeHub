@@ -20,7 +20,7 @@ public interface UserService {
 
 
     // Reset the user's password
-    boolean resetPassword(PasswordResetRequest request);
+    boolean resetPassword(PasswordResetRequest request,String token);
 
     // Get a list of all registered users (admin access)
     List<UserDto> getAllUsers();

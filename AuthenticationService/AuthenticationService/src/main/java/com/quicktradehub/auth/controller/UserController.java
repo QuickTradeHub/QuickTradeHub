@@ -7,6 +7,8 @@ import com.quicktradehub.auth.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.Map;
+import java.util.HashMap;
 
 import java.util.List;
 
@@ -25,17 +27,21 @@ public class UserController {
 
     // Register a new user
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserDto userDto) {
+    public ResponseEntity<Map> register(@RequestBody UserDto userDto) {
         User user = userService.registerUser(userDto).toEntity();
-        return ResponseEntity.ok("User registered successfully with ID: " + user.getUserId());
+        Map<String,String> response = new HashMap<>();
+        response.put("message","User registered successfully with ID: " + user.getUserId());
+        return ResponseEntity.ok(response);
     }
 
     // Login and generate JWT token
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequestDto) {
+    public ResponseEntity<Map> login(@RequestBody LoginRequest loginRequestDto) {
         User user = userService.authenticateUser(loginRequestDto);
         String token = jwtUtil.generateToken(user);
-        return ResponseEntity.ok("Bearer " + token); // Return token in response
+        Map<String,String> response = new HashMap<>();
+        response.put("token", token);
+        return ResponseEntity.ok(response); // Return token in response
     }
 
     // Validate JWT token
@@ -50,16 +56,20 @@ public class UserController {
 
     // Forgot password (send password reset link via email)
     @PostMapping("/forgot-password")
-    public ResponseEntity<String> forgotPassword(@RequestBody ForgotPasswordDto requestDto) {
+    public ResponseEntity<Map> forgotPassword(@RequestBody ForgotPasswordDto requestDto) {
         userService.sendPasswordResetLink(requestDto);
-        return ResponseEntity.ok("Password reset link sent.");
+        Map<String,String> response = new HashMap<>();
+        response.put("message", "Password reset link sent.");
+        return ResponseEntity.ok(response);
     }
 
     // Reset password
     @PostMapping("/reset-password")
-    public ResponseEntity<String> resetPassword(@RequestBody PasswordResetRequest requestDto) {
-        userService.resetPassword(requestDto);
-        return ResponseEntity.ok("Password reset successfully.");
+    public ResponseEntity<Map> resetPassword(@RequestBody PasswordResetRequest requestDto) {
+        userService.resetPassword(requestDto,requestDto.getToken());
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Password reset successfully.");
+        return ResponseEntity.ok(response);
     }
 
     // Get all registered users (admin access)

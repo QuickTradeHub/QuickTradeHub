@@ -47,6 +47,9 @@ public class UserServiceImpl implements UserService {
 		if (userRepository.existsByEmail(userDto.getEmail())) {
 			throw new RuntimeException("User already exists with email: " + userDto.getEmail());
 		}
+		if(userRepository.existsByUserName(userDto.getUserName())) {
+			throw new RuntimeException("Username "+userDto.getUserName() +" has been already taken try different" );
+		}
 		// Encode the password before saving
 		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
@@ -76,15 +79,17 @@ public class UserServiceImpl implements UserService {
 
 
 	@Override
-	public boolean resetPassword(PasswordResetRequest request) {
-		Optional<User> userOptional = userRepository.findByEmail(request.getEmail());
-		if (!userOptional.isPresent()) {
-			throw new RuntimeException("User not found with email: " + request.getEmail());
-		}
+	public boolean resetPassword(PasswordResetRequest request,String token) {
+		   if (jwtUtil.isTokenBlacklisted(token)) {
+		        throw new RuntimeException("Token has been invalidated.");
+		    }
+		Optional<User> userOptional = userRepository.findByUserName(jwtUtil.extractUsername(token));
 
 		User user = userOptional.get();
 		user.setPassword(passwordEncoder.encode(request.getNewPassword()));
 		userRepository.save(user);
+		sendEmail(user.getEmail(), "password reset successfully.", "user-activity");
+		jwtUtil.blacklistToken(token);
 		return true;
 	}
 
@@ -131,7 +136,7 @@ public class UserServiceImpl implements UserService {
 		return false;
 	}
 
-	// New authenticateUser method
+	
 	@Override
 	public User authenticateUser(LoginRequest loginRequest) {
 		Optional<User> userOptional = userRepository.findByEmail(loginRequest.getEmail());
@@ -141,11 +146,13 @@ public class UserServiceImpl implements UserService {
 
 		User user = userOptional.get();
 		System.out.println(user);
+		
 
 		// Validate password
-//		if (!passwordEncoder.encode(loginRequest.getPassword()).equals(user.getPassword())) {
-//			throw new RuntimeException("Invalid credentials. Password does not match.");
-//		}
+		if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+		    throw new RuntimeException("Invalid credentials. Password does not match.");
+		}
+
 		sendEmail(loginRequest.getEmail(), "New login detected to your account", "user-activity");
 
 		return user;
@@ -164,15 +171,14 @@ public class UserServiceImpl implements UserService {
 		// Generate a password reset token (using JWT)
 		String token = jwtUtil.generateToken(user);
 
-		// Construct password reset link (you might want to change the endpoint to your
-		// own reset password page)
-		String resetLink = "http://yourdomain.com/auth/reset-password?token=" + token;
 
-		// Send email with the reset link (using JavaMailSender)
+		String resetLink = "http://localhost:3001/reset-password?token=" + token;
+
+		// Send email with the reset link (using NotificationService)
 		sendEmail(user.getEmail(), resetLink,"password-reset");
 	}
 
-	// Helper method to send the reset password email
+	// Helper method to send the email
 	public void sendEmail(String recipient, String messageBody,String endPoint) {
         String notificationServiceUrl = "http://notification-service/notifications/"+endPoint;
 
@@ -180,19 +186,12 @@ public class UserServiceImpl implements UserService {
         Map<String, String> requestBody = new HashMap<>();
         requestBody.put("recipient", recipient);
         requestBody.put("messageBody", messageBody);
-
         
         HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(requestBody);
 
         // Making REST API call
         ResponseEntity<String> response = restTemplate.postForEntity(notificationServiceUrl, requestEntity, String.class);
 
-        // Handling response
-        if (response.getStatusCode().is2xxSuccessful()) {
-            System.out.println("Reset email request sent successfully.");
-        } else {
-            System.out.println("Failed to send reset email.");
-        }
     }
 
 	 public void addAddressToUser(int userId, AddressDto addressDto) {

@@ -10,8 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PasswordResetRequest {
-
-    private String email; // The user's email address
+	String token;
     private String newPassword; // The new password to reset to
 
 }
