@@ -172,7 +172,7 @@ public class UserServiceImpl implements UserService {
 		String token = jwtUtil.generateToken(user);
 
 
-		String resetLink = "http://localhost:3001/reset-password?token=" + token;
+		String resetLink = "http://13.49.119.218/reset-password?token=" + token;
 
 		// Send email with the reset link (using NotificationService)
 		sendEmail(user.getEmail(), resetLink,"password-reset");

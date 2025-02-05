@@ -2,9 +2,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const notificationRoutes = require('./routes/notificationRoutes');
 const { Eureka } = require('eureka-js-client');
+require('dotenv').config(); // Load environment variables from a .env file
 
 const app = express();
 const port = process.env.PORT || 3000;
+const SERVICE_IP = process.env.SERVICE_IP || 'localhost'; // Fallback to localhost if not set
+const EUREKA_SERVER_IP = process.env.EUREKA_SERVER_IP || 'localhost';
 
 // Middleware
 app.use(bodyParser.json());
@@ -16,12 +19,12 @@ const eurekaClient = new Eureka({
   instance: {
     app: 'notification-service',
     instanceId: `notification-service`,
-    hostName: '13.60.97.119',  // Use your IP for the service's hostname
-    ipAddr: '13.60.97.119',   // Use your IP for the service's IP address
-    statusPageUrl: `http://13.60.97.119:3000`,  // Update with your service's port
-    healthCheckUrl: `http://13.60.97.119:3000/health`,  // Update with your health check URL
+    hostName: SERVICE_IP,
+    ipAddr: SERVICE_IP,
+    statusPageUrl: `http://${SERVICE_IP}:${port}`,
+    healthCheckUrl: `http://${SERVICE_IP}:${port}/health`,
     port: {
-      $: 3000,  // Update with your actual port
+      $: port,
       '@enabled': true
     },
     vipAddress: 'notification-service',
@@ -31,13 +34,11 @@ const eurekaClient = new Eureka({
     }
   },
   eureka: {
-    host: '13.60.97.119',  // Eureka server's IP
-    port: 8761,  // Eureka server's port
+    host: EUREKA_SERVER_IP,
+    port: 8761,
     servicePath: '/eureka/apps/'
   }
 });
-
-
 
 // Start the Eureka client
 eurekaClient.start((error) => {
