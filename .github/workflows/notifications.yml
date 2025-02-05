@@ -24,7 +24,7 @@ jobs:
       # Step 3: Build Docker Image (without pushing to DockerHub)
       - name: Build Docker Image
         run: |
-          docker build -t notification-service:latest ./QuickTradeHub/NotificationService
+          docker build -t notification-service:latest ./NotificationService
 
   deploy:
     runs-on: ubuntu-latest
@@ -46,7 +46,10 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY $SSH_USER@$SERVER_IP << EOF
             # Navigate to the directory containing your Docker setup (if needed)
             # Pull and build the Docker image directly on the server
-            docker build -t notification-service:latest /path/to/NotificationService/
+            cd /path/to/NotificationService/
+
+            # Build Docker image on the server
+            docker build -t notification-service:latest .
 
             # Stop and remove the old container (if it exists)
             docker ps -a --filter "name=notification-service" --format "{{.ID}}" | xargs -r docker stop | xargs -r docker rm
