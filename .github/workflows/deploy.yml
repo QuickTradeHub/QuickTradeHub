@@ -23,17 +23,27 @@ jobs:
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@13.60.97.119 << 'EOF'
-            cd ~/frontend || { git clone https://github.com/QuickTradeHub/QuickTradeHub.git frontend && cd frontend; }
-            
+            # Ensure frontend folder exists
+            if [ ! -d "~/frontend" ]; then
+              git clone git@github.com:QuickTradeHub/QuickTradeHub.git frontend
+            fi
+
+            cd frontend
             git fetch --all
             git reset --hard origin/main
             git pull origin main
-            
+
             npm install
             npm run build
-            
+
+            # Stop and remove any existing container
             docker stop react-container || true
             docker rm react-container || true
-            docker build -t react-app frontend
+
+            # Remove old image to free space
+            docker rmi react-app || true
+
+            # Build and run the new container
+            docker build -t react-app .
             docker run -d -p 80:80 --name react-container react-app
           EOF
