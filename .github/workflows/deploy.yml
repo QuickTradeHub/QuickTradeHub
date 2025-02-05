@@ -3,7 +3,7 @@ name: Deploy React App to EC2
 on:
   push:
     branches:
-      - main  # Change if needed
+      - main
 
 jobs:
   deploy:
@@ -13,7 +13,18 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Setup SSH Key
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install Dependencies & Build React App
+        run: |
+          cd Frontend
+          npm install
+          npm run build
+
+      - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
@@ -22,14 +33,12 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@13.60.97.119 << 'EOF'
-          cd ~/frontend || git clone https://github.com/QuickTradeHub/QuickTradeHub.git frontend && cd frontend
-          git reset --hard origin/main
-          git pull origin main
-          npm install
-          npm run build
-          docker build -t react-app .
-          docker stop react-container || true
-          docker rm react-container || true
-          docker run -d -p 80:80 --name react-container react-app
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no" Frontend/build/ ubuntu@13.60.97.119:/home/ubuntu/react-app
+
+      - name: Restart React App on EC2
+        run: |
+          ssh ubuntu@13.60.97.119 << 'EOF'
+            cd /home/ubuntu/react-app
+            pm2 delete react-app || true
+            pm2 serve /home/ubuntu/react-app/build 3000 --name react-app --spa
           EOF
