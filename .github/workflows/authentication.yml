@@ -38,8 +38,8 @@ jobs:
       # Step 5: Build Docker Image Locally
       - name: Build Docker Image
         run: |
-          cd AuthenticationService
-          docker build -t auth-service .
+          cd AuthenticationService/AuthenticationService  # Correct directory for Dockerfile
+          docker build -t auth-service .  # The Dockerfile should be in this directory
 
   deploy:
     runs-on: ubuntu-latest
