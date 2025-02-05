@@ -39,8 +39,8 @@ jobs:
       - name: Deploy to Server using SSH
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SERVER_IP: ${{ secrets.SERVER_IP }}
-          SSH_USER: ${{ secrets.SSH_USER }}
+          SERVER_IP: 13.60.97.119
+          SSH_USER: ubuntu
         run: |
           # SSH into the server and stop the running container (if any)
           ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY $SSH_USER@$SERVER_IP << EOF
