@@ -1,26 +1,30 @@
-name: Deploy React App to EC2 with Docker
+name: Deploy Notification Service to EC2 with Docker
 
 on:
   push:
     branches:
-      - main
+      - main  # Trigger on push to the main branch
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout the code from the repository
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      # Step 2: Setup Docker Buildx for multi-platform support
       - name: Setup Docker
         uses: docker/setup-buildx-action@v2
 
+      # Step 3: Build Docker Image for Notification Service
       - name: Build Docker Image
         run: |
-          cd Frontend
-          docker build -t react-app .
+          cd NotificationService
+          docker build -t notification-service .
 
+      # Step 4: Setup SSH for EC2 connection
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
@@ -28,14 +32,16 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H 13.60.97.119 >> ~/.ssh/known_hosts
 
+      # Step 5: Save Docker Image and send to EC2
       - name: Push Docker Image to EC2
         run: |
-          docker save react-app | bzip2 | ssh ubuntu@13.60.97.119 'bunzip2 | docker load'
+          docker save notification-service | bzip2 | ssh ubuntu@13.60.97.119 'bunzip2 | docker load'
 
+      # Step 6: Run Docker Container on EC2
       - name: Run Docker Container on EC2
         run: |
           ssh ubuntu@13.60.97.119 << 'EOF'
-            docker stop react-container || true
-            docker rm react-container || true
-            docker run -d -p 80:80 --name react-container react-app
+            docker stop notification-service || true
+            docker rm notification-service || true
+            docker run -d -p 3000:3000 --name notification-service notification-service
           EOF
