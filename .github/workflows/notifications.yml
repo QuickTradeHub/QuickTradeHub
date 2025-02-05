@@ -63,7 +63,7 @@ jobs:
           # SSH into the EC2 instance and stop the running container (if any)
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa $SSH_USER@$SERVER_IP << EOF
             # Navigate to the NotificationService directory
-            cd /home/ubuntu/NotificationService  # Update the path based on your EC2 setup
+            cd NotificationService  # Update the path based on your EC2 setup
 
             # Check if Dockerfile exists
             ls -l Dockerfile
