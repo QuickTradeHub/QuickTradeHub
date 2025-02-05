@@ -1,42 +1,32 @@
-name: CI/CD for AuthenticationService
+name: Deploy Authentication Service to EC2 with Docker
 
 on:
   push:
     branches:
-      - main  # Trigger on push to the main branch
-  pull_request:
-    branches:
-      - main  # Trigger on PR to the main branch
+      - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout Code
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Docker Buildx for multi-platform support
-      - name: Set up Docker Buildx
+      - name: Setup Docker
         uses: docker/setup-buildx-action@v2
 
-      # Step 3: Build Docker Image (without pushing to DockerHub)
+      - name: Build JAR File
+        run: |
+          cd AuthenticationService/AuthenticationService
+          chmod +x ./mvnw
+          ./mvnw clean package -DskipTests
+
       - name: Build Docker Image
         run: |
           cd AuthenticationService/AuthenticationService
-          docker build -t auth-service:latest .
+          docker build -t authentication-service .
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build  # Make sure deploy runs after the build job
-
-    steps:
-      # Step 1: Checkout Code again to ensure latest code is available for deployment
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      # Step 2: Set up SSH for EC2 connection
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
@@ -44,36 +34,14 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.EC21_PUBLIC_IP }} >> ~/.ssh/known_hosts
 
-      # Step 3: Deploy the Docker Container to the Remote Server via SSH
-      - name: Deploy to EC2 using SSH
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.EC21_SSH_PRIVATE_KEY }}
-          SERVER_IP: ${{ secrets.EC21_PUBLIC_IP }}
-          SSH_USER: ubuntu
+      - name: Push Docker Image to EC2
         run: |
-          # Write the SSH private key to the file correctly
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          
-          # Debugging: Check current directory and files on EC2
-          echo "Checking current directory..."
-          pwd
-          ls -l
+          docker save authentication-service | bzip2 | ssh ubuntu@${{ secrets.EC21_PUBLIC_IP }} 'bunzip2 | docker load'
 
-          # SSH into the EC2 instance and stop the running container (if any)
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa $SSH_USER@$SERVER_IP << EOF
-            # Navigate to the AuthenticationService directory
-            cd /AuthenticationService/AuthenticationService
-
-            # Check if Dockerfile exists
-            ls -l Dockerfile
-
-            # Build Docker image on the server
-            docker build -t auth-service:latest .
-
-            # Stop and remove the old container (if it exists)
-            docker ps -a --filter "name=auth-service" --format "{{.ID}}" | xargs -r docker stop | xargs -r docker rm
-
-            # Run the new Docker container
-            docker run -d --name auth-service -p 8080:8080 auth-service:latest
+      - name: Run Docker Container on EC2
+        run: |
+          ssh ubuntu@${{ secrets.EC21_PUBLIC_IP }} << 'EOF'
+            docker stop authentication-service || true
+            docker rm authentication-service || true
+            docker run -d -p 3000:3000 --name authentication-service authentication-service
           EOF
