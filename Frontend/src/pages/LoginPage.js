@@ -19,7 +19,7 @@ const LoginPage = () => {
 
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:8080/auth/login", {
+      const response = await fetch("http://13.49.132.61:8080/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
