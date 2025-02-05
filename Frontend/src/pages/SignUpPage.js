@@ -13,6 +13,7 @@ const SignUpPage = () => {
   const [roles, setRoles] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false); // For success popup visibility
 
   const navigate = useNavigate();
 
@@ -61,7 +62,6 @@ const SignUpPage = () => {
             profileImg: profileImg,
             status: "ACTIVE",
           };
-          
 
           const response = await fetch("http://13.49.132.61:8080/auth/register", {
             method: "POST",
@@ -74,7 +74,7 @@ const SignUpPage = () => {
       const data = await response.json();
 
       if (response.ok) {
-        navigate("/login");
+        setShowSuccessPopup(true); // Show success popup
       } else {
         setError(data.message || "Registration failed. Please try again.");
       }
@@ -85,8 +85,13 @@ const SignUpPage = () => {
     }
   };
 
+  const handleClosePopup = () => {
+    setShowSuccessPopup(false);
+    navigate("/login"); // Redirect to login after closing the popup
+  };
+
   return (
-    <div className="flex items-center justify-center bg-gray-100 min-h-screen">
+    <div className="flex items-center justify-center bg-gray-100 min-h-screen pt-20"> {/* Added padding-top */}
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Sign Up</h2>
 
@@ -102,7 +107,7 @@ const SignUpPage = () => {
             { id: "password", placeholder: "Enter your password", value: password, setter: setPassword, type: "password" },
             { id: "confirmPassword", placeholder: "Confirm your password", value: confirmPassword, setter: setConfirmPassword, type: "password" },
           ].map(({ id, placeholder, value, setter, type = "text" }) => (
-            <div key={id} className="relative">
+            <div key={id} >
               <input
                 id={id}
                 type={type}
@@ -165,6 +170,22 @@ const SignUpPage = () => {
           </div>
         </form>
       </div>
+
+      {/* Success Popup Modal */}
+      {showSuccessPopup && (
+        <div className="fixed inset-0 flex justify-center items-center bg-gray-600 bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md">
+            <h3 className="text-xl font-semibold text-center text-green-600 mb-4">Account Created Successfully!</h3>
+            <p className="text-center mb-4">Your account has been created successfully. Click below to log in.</p>
+            <button
+              onClick={handleClosePopup}
+              className="w-full p-3 bg-blue-600 text-white rounded-md"
+            >
+              Go to Login
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
