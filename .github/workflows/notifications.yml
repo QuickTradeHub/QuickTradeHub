@@ -30,12 +30,12 @@ jobs:
 
       - name: Push Docker Image to EC2
         run: |
-          docker save react-app | bzip2 | ssh ubuntu@${{ secrets.EC2_PUBLIC_IP }} 'bunzip2 | docker load'
+          docker save notification-service | bzip2 | ssh ubuntu@${{ secrets.EC2_PUBLIC_IP }} 'bunzip2 | docker load'
 
       - name: Run Docker Container on EC2
         run: |
           ssh ubuntu@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
-            docker stop react-container || true
-            docker rm react-container || true
-            docker run -d -p 80:80 --name notification-service-container notification-service
+            docker stop notification-service || true
+            docker rm notification-service || true
+            docker run -d -p 80:80 --name notification-service notification-service
           EOF
