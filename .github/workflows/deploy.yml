@@ -1,4 +1,4 @@
-name: Deploy React App to EC2
+name: Deploy React App to EC2 instance
 
 on:
   push:
