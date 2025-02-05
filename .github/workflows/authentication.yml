@@ -3,7 +3,7 @@ name: CI/CD for AuthenticationService
 on:
   push:
     branches:
-      - main  # Run workflow on push to main
+      - main  # Run workflow on main branch push
   pull_request:
     branches:
       - main  # Run workflow on PR merge to main
@@ -24,18 +24,18 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      # Step 3: Build & Package the Spring Boot Application
-      - name: Build and Package
+      # Step 3: Grant Execute Permissions & Build
+      - name: Build and Package Application
         run: |
           cd AuthenticationService/AuthenticationService
-          chmod +x ./mvnw  # Fix permission issue
+          chmod +x mvnw  # Fix permission issue
           ./mvnw clean package -DskipTests  # Skip tests for faster build
 
       # Step 4: Set up Docker
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
 
-      # Step 5: Build Docker Image
+      # Step 5: Build Docker Image Locally
       - name: Build Docker Image
         run: |
           cd AuthenticationService
@@ -59,7 +59,7 @@ jobs:
           ssh-keyscan -H ${{ secrets.EC21_PUBLIC_IP }} >> ~/.ssh/known_hosts
 
       # Step 3: Transfer Docker Image to EC2
-      - name: Push Docker Image to EC2
+      - name: Transfer Docker Image to EC2
         run: |
           docker save auth-service | bzip2 | ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC21_PUBLIC_IP }} 'bunzip2 | docker load'
 
@@ -72,5 +72,7 @@ jobs:
             docker rm auth-container || true
 
             # Run new Docker container
-            docker run -d -p 8080:8080 --name auth-container auth-service
+            docker run -d -p 8080:8080 --name auth-container \
+              --restart unless-stopped \
+              auth-service
           EOF
