@@ -36,7 +36,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Step 2: Set up SSH to deploy to the EC2 instance
+      # Step 2: Set up SSH for EC2 connection
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
@@ -51,13 +51,17 @@ jobs:
           SERVER_IP: 13.60.97.119
           SSH_USER: ubuntu
         run: |
-          # SSH into the EC2 instance and stop the running container (if any)
-          ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY $SSH_USER@$SERVER_IP << EOF
-            # Debugging: Check current directory and files on EC2
-            echo "Checking current directory..."
-            pwd
-            ls -l
+          # Write the SSH private key to the file correctly
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          
+          # Debugging: Check current directory and files on EC2
+          echo "Checking current directory..."
+          pwd
+          ls -l
 
+          # SSH into the EC2 instance and stop the running container (if any)
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa $SSH_USER@$SERVER_IP << EOF
             # Navigate to the NotificationService directory
             cd /path/to/NotificationService
 
