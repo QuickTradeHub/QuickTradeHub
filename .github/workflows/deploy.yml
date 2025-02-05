@@ -1,4 +1,4 @@
-name: Deploy React App to EC2
+name: Deploy React App to EC2 using Docker
 
 on:
   push:
@@ -18,11 +18,20 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install Dependencies & Build React App
+      - name: Build React App
         run: |
           cd Frontend
           npm install
           npm run build
+
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+
+      - name: Build & Push Docker Image
+        run: |
+          cd Frontend
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/react-app:latest .
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/react-app:latest
 
       - name: Setup SSH
         run: |
@@ -33,12 +42,14 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          rsync -avz -e "ssh -o StrictHostKeyChecking=no" Frontend/build/ ubuntu@13.60.97.119:/home/ubuntu/react-app
-
-      - name: Restart React App on EC2
-        run: |
           ssh ubuntu@13.60.97.119 << 'EOF'
-            cd /home/ubuntu/react-app
-            pm2 delete react-app || true
-            pm2 serve /home/ubuntu/react-app/build 3000 --name react-app --spa
+            # Pull latest Docker image
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/react-app:latest
+
+            # Stop and remove existing container
+            docker stop react-container || true
+            docker rm react-container || true
+
+            # Run new container
+            docker run -d -p 80:3000 --name react-container ${{ secrets.DOCKER_HUB_USERNAME }}/react-app:latest
           EOF
