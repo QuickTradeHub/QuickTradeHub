@@ -12,17 +12,16 @@ app.use(bodyParser.json());
 // Routes
 app.use('/notifications', notificationRoutes);
 
-// Eureka client configuration
 const eurekaClient = new Eureka({
   instance: {
     app: 'notification-service',
     instanceId: `notification-service`,
-    hostName: 'localhost',
-    ipAddr: '127.0.0.1',
-    statusPageUrl: `http://localhost`,
-    healthCheckUrl: `http://localhost/health`,
+    hostName: '13.60.97.119',  // Use your IP for the service's hostname
+    ipAddr: '13.60.97.119',   // Use your IP for the service's IP address
+    statusPageUrl: `http://13.60.97.119:3000`,  // Update with your service's port
+    healthCheckUrl: `http://13.60.97.119:3000/health`,  // Update with your health check URL
     port: {
-      $: port,
+      $: 3000,  // Update with your actual port
       '@enabled': true
     },
     vipAddress: 'notification-service',
@@ -32,11 +31,13 @@ const eurekaClient = new Eureka({
     }
   },
   eureka: {
-    host: '13.60.97.119',
-    port: 8761,
+    host: '13.60.97.119',  // Eureka server's IP
+    port: 8761,  // Eureka server's port
     servicePath: '/eureka/apps/'
   }
 });
+
+
 
 // Start the Eureka client
 eurekaClient.start((error) => {
