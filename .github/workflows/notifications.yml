@@ -21,7 +21,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Step 3: Build Docker Image (without pushing to DockerHub)
+      # Step 3: Build Docker Image for NotificationService (without pushing to DockerHub)
       - name: Build Docker Image
         run: |
           cd NotificationService
@@ -63,7 +63,7 @@ jobs:
           # SSH into the EC2 instance and stop the running container (if any)
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa $SSH_USER@$SERVER_IP << EOF
             # Navigate to the NotificationService directory
-            cd NotificationService
+            cd /home/ubuntu/NotificationService  # Update the path based on your EC2 setup
 
             # Check if Dockerfile exists
             ls -l Dockerfile
