@@ -80,16 +80,16 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public boolean resetPassword(PasswordResetRequest request,String token) {
-		   if (jwtUtil.isTokenBlacklisted(token)) {
-		        throw new RuntimeException("Token has been invalidated.");
-		    }
+//		   if (jwtUtil.isTokenBlacklisted(token)) {
+//		        throw new RuntimeException("Token has been invalidated.");
+//		    }
 		Optional<User> userOptional = userRepository.findByUserName(jwtUtil.extractUsername(token));
 
 		User user = userOptional.get();
 		user.setPassword(passwordEncoder.encode(request.getNewPassword()));
 		userRepository.save(user);
 		sendEmail(user.getEmail(), "password reset successfully.", "user-activity");
-		jwtUtil.blacklistToken(token);
+//		jwtUtil.blacklistToken(token);
 		return true;
 	}
 
@@ -172,7 +172,7 @@ public class UserServiceImpl implements UserService {
 		String token = jwtUtil.generateToken(user);
 
 
-		String resetLink = "http://13.49.119.218/reset-password?token=" + token;
+		String resetLink = "http://13.49.119.218/reset-password?=" + token;
 
 		// Send email with the reset link (using NotificationService)
 		sendEmail(user.getEmail(), resetLink,"password-reset");
