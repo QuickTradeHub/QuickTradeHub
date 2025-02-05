@@ -37,5 +37,5 @@ jobs:
           ssh ubuntu@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
             docker stop notification-service || true
             docker rm notification-service || true
-            docker run -d -p 80:80 --name notification-service notification-service
+            docker run -d -p 3000:3000 --name notification-service notification-service
           EOF
