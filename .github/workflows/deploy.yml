@@ -23,13 +23,17 @@ jobs:
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@13.60.97.119 << 'EOF'
-          cd ~/frontend || git clone https://github.com/QuickTradeHub/QuickTradeHub.git frontend && cd frontend
-          git reset --hard origin/main
-          git pull origin main
-          npm install
-          npm run build
-          docker build -t react-app .
-          docker stop react-container || true
-          docker rm react-container || true
-          docker run -d -p 80:80 --name react-container react-app
+            cd ~/frontend || { git clone https://github.com/QuickTradeHub/QuickTradeHub.git frontend && cd frontend; }
+            
+            git fetch --all
+            git reset --hard origin/main
+            git pull origin main
+            
+            npm install
+            npm run build
+            
+            docker stop react-container || true
+            docker rm react-container || true
+            docker build -t react-app frontend
+            docker run -d -p 80:80 --name react-container react-app
           EOF
