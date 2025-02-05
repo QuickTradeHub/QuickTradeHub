@@ -1,0 +1,35 @@
+name: Deploy React App to EC2
+
+on:
+  push:
+    branches:
+      - main  # Change if needed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H 13.60.97.119 >> ~/.ssh/known_hosts
+
+      - name: Deploy to EC2
+        run: |
+          ssh ubuntu@13.60.97.119 "
+            cd ~/frontend || git clone https://QuickTradeHub/QuickTradeHub.git frontend && cd frontend; 
+            git reset --hard origin/main;
+            git pull origin main;
+            npm install;
+            npm run build;
+            docker build -t react-app .;
+            docker stop react-container || true;
+            docker rm react-container || true;
+            docker run -d -p 80:80 --name react-container react-app
+          "
