@@ -1,4 +1,4 @@
-name: Deploy React App to EC2 using Docker (No Docker Hub)
+name: Deploy React App to EC2 with Docker
 
 on:
   push:
@@ -13,25 +13,13 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      - name: Build React App
-        run: |
-          cd Frontend
-          npm install
-          npm run build
+      - name: Setup Docker
+        uses: docker/setup-buildx-action@v2
 
       - name: Build Docker Image
         run: |
           cd Frontend
-          docker build -t react-app:latest .
-
-      - name: Save Docker Image as Tar File
-        run: |
-          docker save -o react-app.tar react-app:latest
+          docker build -t react-app .
 
       - name: Setup SSH
         run: |
@@ -40,20 +28,14 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H 13.60.97.119 >> ~/.ssh/known_hosts
 
-      - name: Copy Docker Image to EC2
+      - name: Push Docker Image to EC2
         run: |
-          scp -o StrictHostKeyChecking=no react-app.tar ubuntu@13.60.97.119:/home/ubuntu/
+          docker save react-app | bzip2 | ssh ubuntu@13.60.97.119 'bunzip2 | docker load'
 
-      - name: Deploy to EC2
+      - name: Run Docker Container on EC2
         run: |
           ssh ubuntu@13.60.97.119 << 'EOF'
-            # Load Docker Image
-            docker load -i /home/ubuntu/react-app.tar
-
-            # Stop and remove existing container
             docker stop react-container || true
             docker rm react-container || true
-
-            # Run new container
-            docker run -d -p 80:80 --name react-container react-app:latest
+            docker run -d -p 80:80 --name react-container react-app
           EOF
