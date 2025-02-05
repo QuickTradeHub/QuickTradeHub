@@ -58,12 +58,20 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.EC21_PUBLIC_IP }} >> ~/.ssh/known_hosts
 
-      # Step 3: Transfer Docker Image to EC2
+      # Step 3: Install bzip2 on EC2
+      - name: Install bzip2 on EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC21_PUBLIC_IP }} << 'EOF'
+            sudo apt-get update
+            sudo apt-get install -y bzip2
+          EOF
+
+      # Step 4: Transfer Docker Image to EC2
       - name: Transfer Docker Image to EC2
         run: |
           docker save auth-service | bzip2 | ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC21_PUBLIC_IP }} 'bunzip2 | docker load'
 
-      # Step 4: Deploy and Restart Docker Container on EC2
+      # Step 5: Deploy and Restart Docker Container on EC2
       - name: Deploy and Restart Docker Container
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC21_PUBLIC_IP }} << 'EOF'
