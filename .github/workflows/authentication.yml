@@ -3,7 +3,7 @@ name: CI/CD for AuthenticationService
 on:
   push:
     branches:
-      - main  # Run workflow on main branch push
+      - main  # Run workflow on push to main
   pull_request:
     branches:
       - main  # Run workflow on PR merge to main
@@ -24,10 +24,11 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      # Step 3: Build & Test the Spring Boot Application
-      - name: Build and Test
+      # Step 3: Build & Package the Spring Boot Application
+      - name: Build and Package
         run: |
           cd AuthenticationService/AuthenticationService
+          chmod +x ./mvnw  # Fix permission issue
           ./mvnw clean package -DskipTests  # Skip tests for faster build
 
       # Step 4: Set up Docker
@@ -65,7 +66,7 @@ jobs:
       # Step 4: Deploy and Restart Docker Container on EC2
       - name: Deploy and Restart Docker Container
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC21_PUBLIC_IP }} << 'EOF'
             # Stop and remove existing container
             docker stop auth-container || true
             docker rm auth-container || true
