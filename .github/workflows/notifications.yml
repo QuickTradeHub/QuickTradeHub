@@ -17,14 +17,15 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Docker
+      # Step 2: Set up Docker Buildx for multi-platform support
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
       # Step 3: Build Docker Image (without pushing to DockerHub)
       - name: Build Docker Image
         run: |
-          docker build -t notification-service:latest ./NotificationService
+          cd NotificationService
+          docker build -t notification-service:latest .
 
   deploy:
     runs-on: ubuntu-latest
@@ -35,18 +36,33 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Step 2: Deploy the Docker Container to the Remote Server via SSH
-      - name: Deploy to Server using SSH
+      # Step 2: Set up SSH to deploy to the EC2 instance
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H 13.60.97.119 >> ~/.ssh/known_hosts
+
+      # Step 3: Deploy the Docker Container to the Remote Server via SSH
+      - name: Deploy to EC2 using SSH
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           SERVER_IP: 13.60.97.119
           SSH_USER: ubuntu
         run: |
-          # SSH into the server and stop the running container (if any)
+          # SSH into the EC2 instance and stop the running container (if any)
           ssh -o StrictHostKeyChecking=no -i $SSH_PRIVATE_KEY $SSH_USER@$SERVER_IP << EOF
-            # Navigate to the directory containing your Docker setup (if needed)
-            # Pull and build the Docker image directly on the server
-            cd /path/to/NotificationService/
+            # Debugging: Check current directory and files on EC2
+            echo "Checking current directory..."
+            pwd
+            ls -l
+
+            # Navigate to the NotificationService directory
+            cd /path/to/NotificationService
+
+            # Check if Dockerfile exists
+            ls -l Dockerfile
 
             # Build Docker image on the server
             docker build -t notification-service:latest .
@@ -54,6 +70,6 @@ jobs:
             # Stop and remove the old container (if it exists)
             docker ps -a --filter "name=notification-service" --format "{{.ID}}" | xargs -r docker stop | xargs -r docker rm
 
-            # Run the new container
+            # Run the new Docker container
             docker run -d --name notification-service -p 3000:3000 notification-service:latest
           EOF
