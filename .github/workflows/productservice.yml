@@ -1,4 +1,4 @@
-name: Deploy Notification Service to EC2 with Docker
+name: Deploy Product Service to EC2 with Docker
 
 on:
   push:
