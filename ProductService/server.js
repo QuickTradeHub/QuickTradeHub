@@ -3,8 +3,10 @@ const connectDB = require('./config/db');
 const Eureka = require('eureka-js-client').Eureka;
 const categoryRoutes = require('./routes/categories');
 const productRoutes = require('./routes/products');
+const cors = require('cors')
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 // Connect to MongoDB
@@ -13,6 +15,7 @@ connectDB();
 // Use Routes
 app.use('/categories', categoryRoutes);
 app.use('/products', productRoutes);
+app.use()
 
 // Eureka Client Configuration
 const client = new Eureka({
