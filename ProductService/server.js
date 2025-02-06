@@ -3,8 +3,19 @@ const connectDB = require('./config/db');
 const Eureka = require('eureka-js-client').Eureka;
 const categoryRoutes = require('./routes/categories');
 const productRoutes = require('./routes/products');
+const cors = require('cors');
 
 const app = express();
+
+// CORS Configuration - Allow all origins
+const corsOptions = {
+  origin: '*',  // Allow all origins
+  methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true, // Allow credentials such as cookies or headers
+};
+
+app.use(cors(corsOptions));  // Use the CORS middleware with the options
 app.use(express.json());
 
 // Connect to MongoDB
