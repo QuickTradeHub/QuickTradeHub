@@ -8,6 +8,7 @@ const productSchema = new mongoose.Schema({
   discountPercentage: { type: Number, default: 0 },
   rating: { type: Number, default: 0 },
   stock: { type: Number, default: 0 },
+  condition:{type:String,default:"New"},
   tags: { type: [String], default: [] },
   brand: { type: String, required: true },
   sku: { type: String, required: true, unique: true },

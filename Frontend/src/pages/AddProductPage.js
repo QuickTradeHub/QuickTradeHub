@@ -24,39 +24,54 @@ const AddProductPage = () => {
 
   // Handle image selection
   const handleImageChange = (e) => {
-    const selectedImages = Array.from(e.target.files);
-    setImages(selectedImages);
+    setImages(Array.from(e.target.files));
   };
 
   // Handle thumbnail selection
   const handleThumbnailChange = (e) => {
-    setThumbnail(e.target.files[0]);
+    const file = e.target.files[0];
+    if (file) {
+      setThumbnail(file);
+    }
   };
 
   // Handle form submission
   const onSubmit = async (data) => {
-    // Include the category ID in the data object
-    const productData = {
-      ...data,
-      categoryId: data.category, // Assuming category contains the category ID
-      images: images, // Add the selected images
-      thumbnail: thumbnail // Add the thumbnail image
-    };
+    const formData = new FormData();
 
-    console.log("Product Data:", productData);
+    // Append product data
+    formData.append('title', data.title);
+    formData.append('description', data.description);
+    formData.append('sku', data.sku);
+    formData.append('category', data.category);
+    formData.append('price', data.price);
+    formData.append('stock', data.stock);
+    formData.append('brand', data.brand);
+    formData.append('condition', data.condition);
+    formData.append('shipping', data.shipping);
 
-    // Send the product data to your API
+    // Append images
+    images.forEach((image, index) => {
+      formData.append('images', image);
+    });
+    
+
+    // Append thumbnail
+    if (thumbnail) {
+      formData.append('thumbnail', thumbnail);
+    }
+    console.log(formData);
+    // Send the form data to the API
     try {
-      const response = await fetch('/add-product', {
+      const response = await fetch('http://localhost:3000/products', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(productData),
+        body: formData,
       });
+
       if (response.ok) {
         alert('Product added successfully');
       } else {
+        console.log(response)
         alert('Failed to add product');
       }
     } catch (error) {
@@ -69,8 +84,7 @@ const AddProductPage = () => {
     <div className="max-w-4xl mx-auto p-6 bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 rounded-lg shadow-xl mt-10">
       <h2 className="text-3xl font-extrabold text-white text-center mb-6">List Your Product</h2>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-
+      <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
         {/* Product Title */}
         <div className="mb-6">
           <label htmlFor="title" className="block text-lg font-medium text-white">Product Title</label>
@@ -99,6 +113,20 @@ const AddProductPage = () => {
           {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description.message}</p>}
         </div>
 
+        {/* SKU */}
+        <div className="mb-6">
+          <label htmlFor="sku" className="block text-lg font-medium text-white">Product SKU</label>
+          <input
+            id="sku"
+            name="sku"
+            type="text"
+            className="mt-2 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter product SKU"
+            {...register("sku", { required: "Product SKU is required" })}
+          />
+          {errors.sku && <p className="text-red-500 text-xs mt-1">{errors.sku.message}</p>}
+        </div>
+
         {/* Category Selection */}
         <div className="mb-6">
           <label htmlFor="category" className="block text-lg font-medium text-white">Category</label>
@@ -110,7 +138,7 @@ const AddProductPage = () => {
           >
             <option value="">Select Category</option>
             {categories.map((category) => (
-              <option key={category.id} value={category.id}>
+              <option key={category._id} value={category._id}>
                 {category.name}
               </option>
             ))}
@@ -184,83 +212,43 @@ const AddProductPage = () => {
             id="shipping"
             name="shipping"
             className="mt-2 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            {...register("shipping", { required: "Shipping options are required" })}
+            {...register("shipping", { required: "Shipping is required" })}
           >
-            <option value="">Select Shipping Method</option>
+            <option value="">Select Shipping Option</option>
             <option value="free">Free Shipping</option>
             <option value="paid">Paid Shipping</option>
-            <option value="local">Local Pickup</option>
           </select>
           {errors.shipping && <p className="text-red-500 text-xs mt-1">{errors.shipping.message}</p>}
         </div>
 
-        {/* Tags */}
-        <div className="mb-6">
-          <label htmlFor="tags" className="block text-lg font-medium text-white">Tags (Optional)</label>
-          <input
-            id="tags"
-            name="tags"
-            type="text"
-            className="mt-2 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Enter product tags, separated by commas"
-            {...register("tags")}
-          />
-        </div>
-
-        {/* Image Selection */}
+        {/* Image Upload */}
         <div className="mb-6">
           <label htmlFor="images" className="block text-lg font-medium text-white">Product Images</label>
           <input
             id="images"
             name="images"
             type="file"
-            className="mt-2 w-full p-3 border border-gray-300 rounded-lg"
             multiple
-            accept="image/*"
+            className="mt-2 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             onChange={handleImageChange}
           />
-          {images.length > 0 && (
-            <div className="mt-2 grid grid-cols-3 gap-2">
-              {images.map((img, index) => (
-                <img
-                  key={index}
-                  src={URL.createObjectURL(img)}
-                  alt={`Image ${index + 1}`}
-                  className="w-24 h-24 object-cover rounded-lg shadow-md"
-                />
-              ))}
-            </div>
-          )}
         </div>
 
-        {/* Thumbnail Selection */}
+        {/* Thumbnail */}
         <div className="mb-6">
-          <label htmlFor="thumbnail" className="block text-lg font-medium text-white">Thumbnail Image</label>
+          <label htmlFor="thumbnail" className="block text-lg font-medium text-white">Product Thumbnail</label>
           <input
             id="thumbnail"
             name="thumbnail"
             type="file"
-            className="mt-2 w-full p-3 border border-gray-300 rounded-lg"
-            accept="image/*"
+            className="mt-2 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             onChange={handleThumbnailChange}
           />
-          {thumbnail && (
-            <div className="mt-2">
-              <img
-                src={URL.createObjectURL(thumbnail)}
-                alt="Thumbnail"
-                className="w-32 h-32 object-cover rounded-lg shadow-md"
-              />
-            </div>
-          )}
         </div>
 
         {/* Submit Button */}
-        <button
-          type="submit"
-          className="mt-6 w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 shadow-lg transition-all"
-        >
-          Add Product
+        <button type="submit" className="w-full py-3 px-6 bg-blue-500 text-white font-bold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          Submit Product
         </button>
       </form>
     </div>
