@@ -17,7 +17,7 @@ app.use('/products', productRoutes);
 // Eureka Client Configuration
 const client = new Eureka({
   eureka: {
-    host: '13.60.97.119', // Eureka server host
+    host: '13.49.119.218/', // Eureka server host
     port: 8761,        // Eureka server port
     servicePath: '/eureka/apps', // Eureka service API path
   },
@@ -25,7 +25,7 @@ const client = new Eureka({
     app: 'product-service', // The name of your application
     instanceId: 'product-service-instance-1', // Unique instance ID for your service
     hostName: 'localhost', // Hostname where your service is running
-    ipAddr: '127.0.0.1', // IP address of the service
+    ipAddr: '13.49.132.61', // IP address of the service
     port: {
       '$': 3000, // Port where your Express app is running
       '@enabled': 'true', // Enable this port
