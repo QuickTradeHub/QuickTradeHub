@@ -80,16 +80,16 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public boolean resetPassword(PasswordResetRequest request,String token) {
-		   if (jwtUtil.isTokenBlacklisted(token)) {
-		        throw new RuntimeException("Token has been invalidated.");
-		    }
+//		   if (jwtUtil.isTokenBlacklisted(token)) {
+//		        throw new RuntimeException("Token has been invalidated.");
+//		    }
 		Optional<User> userOptional = userRepository.findByUserName(jwtUtil.extractUsername(token));
 
 		User user = userOptional.get();
 		user.setPassword(passwordEncoder.encode(request.getNewPassword()));
 		userRepository.save(user);
 		sendEmail(user.getEmail(), "password reset successfully.", "user-activity");
-		jwtUtil.blacklistToken(token);
+//		jwtUtil.blacklistToken(token);
 		return true;
 	}
 
