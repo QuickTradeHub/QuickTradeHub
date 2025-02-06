@@ -15,10 +15,15 @@ import Footer from "./components/Footer"; // Added Footer
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import SignUpPage from "./pages/SignUpPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ProductsPage from "./pages/ProductsPage";
+import OrdersPage from "./pages/OrdersPage";
+import UsersPage from "./pages/UserPage";
+import DashboardPage from "./pages/DashBoardPage";
+import { Settings } from "lucide-react";
 
 const App = () => {
   const location = useLocation();
-  const excludeHeaderFooterRoutes = []//'/login', '/register','/reset-password'];
+  const excludeHeaderFooterRoutes = ['/admin']//'/admin', '/register','/reset-password'];
   return (
     <Provider store={store}>
       
@@ -37,6 +42,11 @@ const App = () => {
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
               <Route path="/register" element={<SignUpPage />} />
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/admin" element={<DashboardPage />} />
+            <Route path="/admin/products" element={<ProductsPage />} />
+            <Route path="/admin/orders" element={<OrdersPage />} />
+            <Route path="/admin/users" element={<UsersPage />} />
+            <Route path="/admin/settings" element={<Settings />} />
 
             </Routes>
           </div>
