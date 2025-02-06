@@ -7,8 +7,8 @@ require('dotenv').config();
 
 
 AWS.config.update({
-  accessKeyId: process.env.AWS_ACCESS_KEY,
-  secretAccessKey: process.env.AWS_SECRET_KEY,
+  accessKeyId: "AKIAX3DNHWB7SQHC4ZEE",
+  secretAccessKey: "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",
   region: "eu-north-1",
 });
 
