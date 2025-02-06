@@ -35,7 +35,7 @@ jobs:
       - name: Run Docker Container on EC2
         run: |
           ssh ubuntu@${{ secrets.EC21_PUBLIC_IP }} << 'EOF'
-            docker stop notification-service || true
+            docker stop product-service || true
             docker rm product-service || true
             docker run -d -p 3000:3000 --name product-service product-service
           EOF
