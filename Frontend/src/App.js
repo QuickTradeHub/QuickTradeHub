@@ -20,6 +20,7 @@ import OrdersPage from "./pages/OrdersPage";
 import UsersPage from "./pages/UserPage";
 import DashboardPage from "./pages/DashBoardPage";
 import { Settings } from "lucide-react";
+import AddProductPage from "./pages/AddProductPage";
 
 const App = () => {
   const location = useLocation();
@@ -47,6 +48,7 @@ const App = () => {
             <Route path="/admin/orders" element={<OrdersPage />} />
             <Route path="/admin/users" element={<UsersPage />} />
             <Route path="/admin/settings" element={<Settings />} />
+            <Route path="/products/add" element={<AddProductPage />} />
 
             </Routes>
           </div>
