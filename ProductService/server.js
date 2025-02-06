@@ -17,7 +17,7 @@ app.use('/products', productRoutes);
 // Eureka Client Configuration
 const client = new Eureka({
   eureka: {
-    host: '13.49.119.218/', // Eureka server host
+    host: '13.49.119.218', // Eureka server host
     port: 8761,        // Eureka server port
     servicePath: '/eureka/apps', // Eureka service API path
   },
