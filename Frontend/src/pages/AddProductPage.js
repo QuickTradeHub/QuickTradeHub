@@ -42,7 +42,6 @@ const AddProductPage = () => {
     // Append product data
     formData.append('title', data.title);
     formData.append('description', data.description);
-    formData.append('sku', data.sku);
     formData.append('category', data.category);
     formData.append('price', data.price);
     formData.append('stock', data.stock);
@@ -111,20 +110,6 @@ const AddProductPage = () => {
             {...register("description", { required: "Description is required" })}
           />
           {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description.message}</p>}
-        </div>
-
-        {/* SKU */}
-        <div className="mb-6">
-          <label htmlFor="sku" className="block text-lg font-medium text-white">Product SKU</label>
-          <input
-            id="sku"
-            name="sku"
-            type="text"
-            className="mt-2 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Enter product SKU"
-            {...register("sku", { required: "Product SKU is required" })}
-          />
-          {errors.sku && <p className="text-red-500 text-xs mt-1">{errors.sku.message}</p>}
         </div>
 
         {/* Category Selection */}

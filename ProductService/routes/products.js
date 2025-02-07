@@ -38,6 +38,17 @@ const uploadToS3 = async (fileBuffer, fileName) => {
     
   }
 };
+const generateSKU = (productData) => {
+  const categoryPrefix = productData.category.substring(0, 3).toUpperCase(); // First 3 characters of category name
+  const productNamePrefix = productData.name.substring(0, 3).toUpperCase(); // First 3 characters of product name
+  const timestamp = Date.now(); // Current timestamp for uniqueness
+  const randomNum = Math.floor(Math.random() * 10000); // Random number to ensure uniqueness
+
+  // Construct the SKU (category, product name, timestamp, random number)
+  const sku = `${categoryPrefix}-${productNamePrefix}-${timestamp}-${randomNum}`;
+
+  return sku;
+};
 
 // ✅ Add a new product with multiple images and a thumbnail
 router.post("/", upload.fields([
@@ -67,7 +78,7 @@ router.post("/", upload.fields([
 
     // Create product with the image URLs and other data
     const product = new Product({
-      ...req.body,
+      ...req.body,sku:req.body.generateSKU(),
       images: imageUrls, // Array of image URLs
       thumbnail: thumbnailUrl, // Thumbnail URL
     });
