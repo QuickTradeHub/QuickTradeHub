@@ -34,11 +34,12 @@ jobs:
 
       - name: Run Docker Container on EC2
         run: |
-          ssh ubuntu@${{ secrets.EC21_PUBLIC_IP }} << 'EOF'
+          ssh ubuntu@${{ secrets.EC21_PUBLIC_IP }} << EOF
             docker stop product-service || true
             docker rm product-service || true
             docker run -d -p 3000:3000 --name product-service \
-              -e AWS_ACCESS_KEY="${{ secrets.AWS_ACCESS_KEY }}" \ 
-              -e AWS_SECRET_KEY="${{ secrets.AWS_SECRET_KEY }}" \ 
+              -e AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY }}" \
+              -e AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_KEY }}" \
               product-service
           EOF
+
