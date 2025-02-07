@@ -30,19 +30,19 @@ import CategoryManagementPage from "./pages/CategoryManagementPage"
 
 const App = () => {
   const location = useLocation();
-  const excludeHeaderFooterRoutes = ["/admin"]; //'/admin', '/register','/reset-password'];
+  const excludeHeaderFooterRoutes = ["/products/:productId"]; //'/admin', '/register','/reset-password'];
   return (
     <Provider store={store}>
       <div className="App">
-        {!excludeHeaderFooterRoutes.includes(location.pathname) && <Navbar />}{" "}
+        {!excludeHeaderFooterRoutes.includes(location.pathname) && <Navbar />}
         {/* Navbar available for all pages */}
         <div>
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            {/* <Route path="/" element={<HomePage />} /> */}
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route
-              path="/product/:productId"
+              path="/products/:productId"
               element={<ProductDetailsPage />}
             />
             <Route path="/buy-now" element={<BuyNowPage />} />
@@ -53,7 +53,7 @@ const App = () => {
             <Route path="/register" element={<SignUpPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/admin" element={<DashboardPage />} />
-            <Route path="/admin/products" element={<ProductsPage />} />
+            <Route path="/" element={<ProductsPage />} />
             <Route path="/admin/orders" element={<OrdersPage />} />
             <Route path="/admin/users" element={<UsersPage />} />
             <Route path="/admin/settings" element={<Settings />} />

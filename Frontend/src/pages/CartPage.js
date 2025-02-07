@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { removeFromCart, clearCart } from '../redux/cartSlice';
 import { FaTrashAlt } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
-import { Link } from 'lucide-react';
 
 const CartPage = () => {
   const dispatch = useDispatch();
@@ -39,24 +38,24 @@ const CartPage = () => {
             {/* Cart Items */}
             {cart.map((item) => (
               <div
-                key={item.id}
+                key={item.id} // Ensure unique key for each item
                 className="border-b pb-4 mb-6 flex justify-between items-center hover:bg-gray-50 transition duration-200"
               >
                 <div className="flex items-center">
                   <img
-                    src={item.image}
+                    src={item.image ? item.image : ''} // Ensure image is a valid string
                     alt={item.name}
                     className="w-24 h-24 object-cover rounded-lg shadow-lg"
                   />
                   <div className="ml-6">
                     <h2 className="text-2xl font-semibold text-gray-800">{item.name}</h2>
                     <p className="text-gray-600 text-sm">Category: {item.category}</p>
-                    <p className="text-gray-500 text-sm mt-2">{item.description}</p>
+                    <p className="text-gray-500 text-sm mt-2">{item.description ? item.description.toString() : ''}</p>
                   </div>
                 </div>
                 <div className="flex flex-col items-end">
                   <p className="text-lg font-semibold text-gray-800">
-                  ₹{item.price* 80 * item.quantity}
+                    ₹{(item.price * 80 * item.quantity).toFixed(2)}
                   </p>
                   <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
                   <button
@@ -72,7 +71,7 @@ const CartPage = () => {
             {/* Cart Total and Actions */}
             <div className="flex justify-between items-center mt-8">
               <div className="text-2xl font-semibold text-gray-900">
-                <p>Total: ₹{total*80}</p>
+                <p>Total: ₹{(total * 80).toFixed(2)}</p>
                 <p className="text-lg text-gray-600">({cart.length} items)</p>
               </div>
               <div>
@@ -87,11 +86,13 @@ const CartPage = () => {
 
             {/* Action Buttons */}
             <div className="mt-8 flex justify-between">
-              
-              <button onClick={()=>history("/")} className="bg-yellow-500 text-white py-2 px-6 rounded-lg hover:bg-yellow-600 transition duration-300 transform hover:scale-105">
+              <button
+                onClick={() => history('/')}
+                className="bg-yellow-500 text-white py-2 px-6 rounded-lg hover:bg-yellow-600 transition duration-300 transform hover:scale-105"
+              >
                 Continue Shopping
               </button>
-             
+
               <button
                 onClick={handleProceedToCheckout}
                 className="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition duration-300 transform hover:scale-105"

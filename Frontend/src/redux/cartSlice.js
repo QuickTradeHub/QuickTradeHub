@@ -51,8 +51,11 @@ const cartSlice = createSlice({
       state.items.push(...(action.payload || [])); // Push new items safely
       saveCartToLocalStorage(state.items);
     },
+    setProductAddedStatus: (state, action) => {
+      state.productAddedStatus = action.payload; // new state to track button text
+    }
   },
 });
 
-export const { addToCart, removeFromCart, clearCart, setCartItems } = cartSlice.actions;
+export const { addToCart, removeFromCart, clearCart, setCartItems,setProductAddedStatus } = cartSlice.actions;
 export default cartSlice.reducer;
