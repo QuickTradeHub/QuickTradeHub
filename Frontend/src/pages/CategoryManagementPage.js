@@ -65,7 +65,7 @@ const CategoryManagementPage = () => {
     }
     try {
       const response = await axios.put(
-        `http://13.49.119.218:3000/categories/${editingCategory._id}`,
+        `http://13.49.132.61:3000/categories/${editingCategory._id}`,
         {
           name: editedCategoryName,
           description: editedDescription,

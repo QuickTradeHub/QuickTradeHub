@@ -52,7 +52,7 @@ const Navbar = () => {
     }
 
     axios
-      .get("http://localhost:3000/products", {
+      .get("http://13.49.132.61:3000/products", {
         params: {
           title_like: query, // filters products based on the title
         },
@@ -67,7 +67,7 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    axios.get("http://localhost:3000/products").then((res) => {
+    axios.get("http://13.49.132.61:3000/products").then((res) => {
       setFilteredProducts(res.data);
     });
   }, []);
