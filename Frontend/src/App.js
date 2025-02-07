@@ -27,6 +27,8 @@ import DashboardPage from "./pages/DashBoardPage";
 import { Settings } from "lucide-react";
 import AddProductPage from "./pages/AddProductPage";
 import CategoryManagementPage from "./pages/CategoryManagementPage"
+import AboutPage from "./pages/AboutPage"
+import ContactPage from "./pages/ContactPage"
 
 const App = () => {
   const location = useLocation();
@@ -54,11 +56,14 @@ const App = () => {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/admin" element={<DashboardPage />} />
             <Route path="/" element={<ProductsPage />} />
+            <Route path="/products" element={<ProductsPage />} />
             <Route path="/admin/orders" element={<OrdersPage />} />
             <Route path="/admin/users" element={<UsersPage />} />
             <Route path="/admin/settings" element={<Settings />} />
             <Route path="/admin/products/add" element={<AddProductPage />} />
             <Route path="/admin/categories" element={<CategoryManagementPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/contact" element={<ContactPage />} />
           </Routes>
         </div>
         {!excludeHeaderFooterRoutes.includes(location.pathname) && <Footer />}{" "}

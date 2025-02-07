@@ -1,6 +1,18 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';  // Include useSelector for state access
+import { addToCart } from '../redux/cartSlice';
 
 const ProductInfo = ({ product }) => {
+  const dispatch = useDispatch();  // Get the dispatch function to dispatch actions
+  const cartItems = useSelector((state) => state.cart.items);  // Access the cart state
+
+  // Function to handle adding product to cart
+  const handleAddToCart = () => {
+    dispatch(addToCart(product));  // Dispatch the addToCart action with the product
+  };
+
+  const isProductInCart = cartItems.some((item) => item._id === product._id);  // Check if the product is in the cart
+
   return (
     <div className="p-6 max-w-3xl mx-auto bg-white rounded-lg shadow-lg">
       <h1 className="text-4xl font-semibold text-gray-800 mb-4">{product.title}</h1>
@@ -24,9 +36,10 @@ const ProductInfo = ({ product }) => {
       <div className="flex gap-4">
         <button 
           className={`px-6 py-3 w-full text-white rounded-lg transition ${product.stock > 0 ? 'bg-green-500 hover:bg-green-600' : 'bg-gray-400 cursor-not-allowed'}`}
-          disabled={product.stock === 0}
+          disabled={product.stock === 0 || isProductInCart}  // Disable if the product is already in the cart
+          onClick={handleAddToCart}  // Add click handler for Add to Cart button
         >
-          {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
+          {isProductInCart ? 'Added to Cart' : product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
         </button>
 
         <button 

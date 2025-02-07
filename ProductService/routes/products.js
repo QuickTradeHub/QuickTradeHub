@@ -1,5 +1,6 @@
 const express = require("express");
 const Product = require("../models/product");
+const Category = require("../models/category")
 const multer = require("multer");
 const AWS = require("aws-sdk");
 const router = express.Router();
@@ -17,15 +18,15 @@ const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 } // Limit size to 10MB
 });
 
-// AWS S3 setup (ensure you configure your AWS credentials)
-const s3 = new AWS.S3();
+const s3 = new AWS.S3()
 
+// Upload to S3
 const uploadToS3 = async (fileBuffer, fileName) => {
   const params = {
     Bucket: "quicktradehub", // Your S3 bucket name
     Key: fileName, // File name in S3
     Body: fileBuffer, // File content
-    ContentType: 'image/jpeg', // or your image type
+    ContentType: 'image/jpeg', // Correct content type for images
     ACL: 'public-read', // Set permissions to allow public access
   };
   
@@ -33,21 +34,21 @@ const uploadToS3 = async (fileBuffer, fileName) => {
     const result = await s3.upload(params).promise();
     return result.Location; // Return the URL of the uploaded file
   } catch (err) {
-    console.log(err.message)
+    console.log(err.message);
     throw new Error("S3 upload failed: " + err.message);
-    
   }
 };
-const generateSKU = (productData) => {
-  const categoryPrefix = productData.category.substring(0, 3).toUpperCase(); // First 3 characters of category name
-  const productNamePrefix = productData.name.substring(0, 3).toUpperCase(); // First 3 characters of product name
+
+// Generate SKU asynchronously and concurrently with image upload
+const generateSKU = async (productData) => {
+  const cat = await Category.findById(productData.category);
+  const categoryPrefix = cat.name.substring(0, 3).toUpperCase(); // First 3 characters of category name
+  const productNamePrefix = productData.title.substring(0, 3).toUpperCase(); // First 3 characters of product name
   const timestamp = Date.now(); // Current timestamp for uniqueness
   const randomNum = Math.floor(Math.random() * 10000); // Random number to ensure uniqueness
 
-  // Construct the SKU (category, product name, timestamp, random number)
-  const sku = `${categoryPrefix}-${productNamePrefix}-${timestamp}-${randomNum}`;
-
-  return sku;
+  // Construct the SKU
+  return `${categoryPrefix}-${productNamePrefix}-${timestamp}-${randomNum}`;
 };
 
 // ✅ Add a new product with multiple images and a thumbnail
@@ -59,26 +60,25 @@ router.post("/", upload.fields([
     let imageUrls = [];
     let thumbnailUrl = null;
 
+    // Upload images to S3 concurrently
+    const uploadImagePromises = req.files['images'] ? req.files['images'].map(image => {
+      return uploadToS3(image.buffer, `${Date.now()}_${image.originalname}`);
+    }) : [];
+    imageUrls = await Promise.all(uploadImagePromises); // Wait for all images to be uploaded concurrently
 
-
-    // Upload images to S3
-    if (req.files['images']) {
-      for (const image of req.files['images']) {
-        const imageUrl = await uploadToS3(image.buffer, `${Date.now()}_${image.originalname}`);
-        imageUrls.push(imageUrl);
-      }
-    }
-
-    // Upload thumbnail to S3
-    
+    // Upload thumbnail to S3 concurrently
     if (req.files['thumbnail']) {
       const thumbnail = req.files['thumbnail'][0];
       thumbnailUrl = await uploadToS3(thumbnail.buffer, `${Date.now()}_${thumbnail.originalname}`);
     }
 
+    // Generate SKU concurrently
+    const sku = await generateSKU(req.body);
+
     // Create product with the image URLs and other data
     const product = new Product({
-      ...req.body,sku:req.body.generateSKU(),
+      ...req.body,
+      sku: sku,
       images: imageUrls, // Array of image URLs
       thumbnail: thumbnailUrl, // Thumbnail URL
     });
@@ -89,8 +89,6 @@ router.post("/", upload.fields([
     res.status(400).json({ error: "Error creating product", message: err.message });
   }
 });
-
-// Your existing code continues here...
 
 // ✅ Get all products (with pagination, category population, and reviews)
 router.get("/", async (req, res) => {

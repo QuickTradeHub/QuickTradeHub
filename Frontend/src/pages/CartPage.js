@@ -1,108 +1,86 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { removeFromCart, clearCart } from '../redux/cartSlice';
-import { FaTrashAlt } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { incrementQuantity, decrementQuantity, removeItem } from '../redux/cartSlice';
+import { Plus, Minus, X, ShoppingCart } from 'lucide-react';
 
 const CartPage = () => {
+  const cartItems = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
-  const history = useNavigate();
-  const cart = useSelector((state) => state.cart.items); // Accessing cart items from Redux
 
-  const handleRemoveFromCart = (product) => {
-    dispatch(removeFromCart(product));
+  const handleIncrement = (itemId) => {
+    dispatch(incrementQuantity(itemId));
   };
 
-  const handleClearCart = () => {
-    dispatch(clearCart());
+  const handleDecrement = (itemId) => {
+    dispatch(decrementQuantity(itemId));
   };
 
-  const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-
-  const handleProceedToCheckout = () => {
-    history('/checkout'); // Redirecting to checkout page
+  const handleRemove = (itemId) => {
+    dispatch(removeItem(itemId));
   };
+
+  const totalAmount = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   return (
-    <div className="min-h-screen bg-gray-100 py-12">
-      <h1 className="text-center text-5xl font-bold text-gray-900 mb-10">Your Shopping Cart</h1>
-
-      <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-xl">
-        {cart.length === 0 ? (
-          <div className="text-center text-xl text-gray-600">
-            <p>Your cart is currently empty.</p>
-            <p className="mt-4 text-lg">Browse products and add some to your cart!</p>
-          </div>
-        ) : (
-          <div>
-            {/* Cart Items */}
-            {cart.map((item) => (
-              <div
-                key={item.id} // Ensure unique key for each item
-                className="border-b pb-4 mb-6 flex justify-between items-center hover:bg-gray-50 transition duration-200"
-              >
-                <div className="flex items-center">
-                  <img
-                    src={item.image ? item.image : ''} // Ensure image is a valid string
-                    alt={item.name}
-                    className="w-24 h-24 object-cover rounded-lg shadow-lg"
-                  />
-                  <div className="ml-6">
-                    <h2 className="text-2xl font-semibold text-gray-800">{item.name}</h2>
-                    <p className="text-gray-600 text-sm">Category: {item.category}</p>
-                    <p className="text-gray-500 text-sm mt-2">{item.description ? item.description.toString() : ''}</p>
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 bg-gray-100 min-h-screen">
+      <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-center mb-8 sm:mb-10 text-gray-800 flex items-center justify-center gap-3">
+        <ShoppingCart className="w-8 h-8 sm:w-10 sm:h-10 text-indigo-600" /> Your Cart
+      </h1>
+      {cartItems.length === 0 ? (
+        <div className="text-center text-xl sm:text-2xl text-gray-500">Your cart is empty.</div>
+      ) : (
+        <div className="space-y-6">
+          {cartItems.map((item) => (
+            <div key={item._id} className="flex flex-col sm:flex-row items-center bg-white shadow-lg rounded-2xl overflow-hidden p-4 sm:p-6">
+              <img src={item.thumbnail} alt={item.title} className="w-28 h-28 sm:w-32 sm:h-32 object-cover rounded-xl" />
+              <div className="flex-1 mt-4 sm:mt-0 sm:ml-6 text-center sm:text-left">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-1">{item.title}</h2>
+                <p className="text-gray-600 mb-3 line-clamp-2">{item.description}</p>
+                <div className="flex justify-center sm:justify-between items-center">
+                  <span className="text-lg sm:text-xl font-bold text-indigo-600">${item.price}</span>
+                  <div className="flex items-center space-x-3 mt-2 sm:mt-0">
+                    <button 
+                      onClick={() => handleDecrement(item._id)} 
+                      className="p-2 bg-gray-200 rounded-full hover:bg-gray-300 transition duration-200">
+                      <Minus className="w-4 h-4" />
+                    </button>
+                    <span className="text-lg font-medium">{item.quantity}</span>
+                    <button 
+                      onClick={() => handleIncrement(item._id)} 
+                      className="p-2 bg-gray-200 rounded-full hover:bg-gray-300 transition duration-200">
+                      <Plus className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
-                <div className="flex flex-col items-end">
-                  <p className="text-lg font-semibold text-gray-800">
-                    ₹{(item.price * 80 * item.quantity).toFixed(2)}
-                  </p>
-                  <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
-                  <button
-                    onClick={() => handleRemoveFromCart(item)}
-                    className="mt-3 text-red-500 hover:text-red-700 flex items-center transition duration-200"
-                  >
-                    <FaTrashAlt className="mr-1" /> Remove
-                  </button>
-                </div>
               </div>
-            ))}
-
-            {/* Cart Total and Actions */}
-            <div className="flex justify-between items-center mt-8">
-              <div className="text-2xl font-semibold text-gray-900">
-                <p>Total: ₹{(total * 80).toFixed(2)}</p>
-                <p className="text-lg text-gray-600">({cart.length} items)</p>
-              </div>
-              <div>
-                <button
-                  onClick={handleClearCart}
-                  className="bg-red-500 text-white py-2 px-6 rounded-lg hover:bg-red-600 transition duration-300 transform hover:scale-105"
-                >
-                  Clear Cart
-                </button>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="mt-8 flex justify-between">
-              <button
-                onClick={() => history('/')}
-                className="bg-yellow-500 text-white py-2 px-6 rounded-lg hover:bg-yellow-600 transition duration-300 transform hover:scale-105"
-              >
-                Continue Shopping
-              </button>
-
-              <button
-                onClick={handleProceedToCheckout}
-                className="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition duration-300 transform hover:scale-105"
-              >
-                Proceed to Checkout
+              <button 
+                onClick={() => handleRemove(item._id)} 
+                className="mt-4 sm:mt-0 sm:ml-4 p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition duration-200">
+                <X className="w-5 h-5" />
               </button>
             </div>
+          ))}
+          <div className="p-4 sm:p-6 bg-white shadow-lg rounded-2xl">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-6 text-center">Order Summary</h2>
+            <div className="flex justify-between text-base sm:text-lg mb-3 sm:mb-4">
+              <span>Subtotal</span>
+              <span>${totalAmount.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between text-base sm:text-lg mb-3 sm:mb-4">
+              <span>Shipping</span>
+              <span>$5.00</span>
+            </div>
+            <div className="flex justify-between text-lg sm:text-xl font-bold border-t pt-3 sm:pt-4">
+              <span>Total</span>
+              <span>${(totalAmount + 5).toFixed(2)}</span>
+            </div>
+            <button 
+              className="mt-5 sm:mt-6 w-full bg-indigo-600 text-white text-base sm:text-lg py-3 rounded-xl shadow-md hover:bg-indigo-700 transition duration-200">
+              Proceed to Checkout
+            </button>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

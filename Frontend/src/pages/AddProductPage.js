@@ -11,7 +11,7 @@ const AddProductPage = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('http://13.49.132.61:3000/categories');
+        const response = await fetch('http://13.49.119.218:3000/categories');
         const data = await response.json();
         setCategories(data);
       } catch (error) {
@@ -62,7 +62,7 @@ const AddProductPage = () => {
     console.log(formData);
     // Send the form data to the API
     try {
-      const response = await fetch('http://13.49.132.61:3000/products', {
+      const response = await fetch('http://13.49.119.218:3000/products', {
         method: 'POST',
         body: formData,
       });
