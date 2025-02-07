@@ -4,10 +4,11 @@ const Category = require("../models/category")
 const multer = require("multer");
 const AWS = require("aws-sdk");
 const router = express.Router();
+require('dotenv').config()
 
 AWS.config.update({
-  accessKeyId: "AKIAX3DNHWB7SQHC4ZEE",
-  secretAccessKey: "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",
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_SECRET_KEY,
   region: "eu-north-1",
 });
 
