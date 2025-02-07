@@ -37,5 +37,8 @@ jobs:
           ssh ubuntu@${{ secrets.EC21_PUBLIC_IP }} << 'EOF'
             docker stop product-service || true
             docker rm product-service || true
-            docker run -d -p 3000:3000 --name product-service product-service
+            docker run -d -p 3000:3000 --name product-service \
+              -e AWS_ACCESS_KEY="${{ secrets.AWS_ACCESS_KEY }}" \ 
+              -e AWS_SECRET_KEY="${{ secrets.AWS_SECRET_KEY }}" \ 
+              product-service
           EOF
