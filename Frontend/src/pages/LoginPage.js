@@ -24,12 +24,13 @@ const LoginPage = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email:username, password }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
+        localStorage.setItem('token',data.token);
         navigate("/dashboard");
       } else {
         setError(data.message || "Login failed. Please try again.");

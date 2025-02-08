@@ -123,7 +123,7 @@ const Navbar = () => {
       {/* Navigation Links (Desktop) */}
       <div className="hidden sm:flex items-center gap-4">
         <Link
-          to="/"
+          to="/home"
           className="text-gray-600 hover:text-blue-500 transition-colors duration-200 text-sm"
         >
           Home

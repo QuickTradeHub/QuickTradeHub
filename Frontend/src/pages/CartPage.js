@@ -37,7 +37,7 @@ const CartPage = () => {
                 <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-1">{item.title}</h2>
                 <p className="text-gray-600 mb-3 line-clamp-2">{item.description}</p>
                 <div className="flex justify-center sm:justify-between items-center">
-                  <span className="text-lg sm:text-xl font-bold text-indigo-600">${item.price}</span>
+                  <span className="text-lg sm:text-xl font-bold text-indigo-600">₹{item.price}</span>
                   <div className="flex items-center space-x-3 mt-2 sm:mt-0">
                     <button 
                       onClick={() => handleDecrement(item._id)} 
@@ -64,15 +64,15 @@ const CartPage = () => {
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-6 text-center">Order Summary</h2>
             <div className="flex justify-between text-base sm:text-lg mb-3 sm:mb-4">
               <span>Subtotal</span>
-              <span>${totalAmount.toFixed(2)}</span>
+              <span>₹{totalAmount.toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-base sm:text-lg mb-3 sm:mb-4">
               <span>Shipping</span>
-              <span>$5.00</span>
+              <span>₹40.00</span>
             </div>
             <div className="flex justify-between text-lg sm:text-xl font-bold border-t pt-3 sm:pt-4">
               <span>Total</span>
-              <span>${(totalAmount + 5).toFixed(2)}</span>
+              <span>₹{(totalAmount + 40).toFixed(2)}</span>
             </div>
             <button 
               className="mt-5 sm:mt-6 w-full bg-indigo-600 text-white text-base sm:text-lg py-3 rounded-xl shadow-md hover:bg-indigo-700 transition duration-200">

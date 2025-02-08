@@ -29,10 +29,11 @@ import AddProductPage from "./pages/AddProductPage";
 import CategoryManagementPage from "./pages/CategoryManagementPage"
 import AboutPage from "./pages/AboutPage"
 import ContactPage from "./pages/ContactPage"
+import CategoriesPage from "./pages/CategoriesPage";
 
 const App = () => {
   const location = useLocation();
-  const excludeHeaderFooterRoutes = ["/products/:productId"]; //'/admin', '/register','/reset-password'];
+  const excludeHeaderFooterRoutes = ['/home','/']; //'/admin', '/register','/reset-password'];
   return (
     <Provider store={store}>
       <div className="App">
@@ -40,7 +41,7 @@ const App = () => {
         {/* Navbar available for all pages */}
         <div>
           <Routes>
-            {/* <Route path="/" element={<HomePage />} /> */}
+            <Route path="/home" element={<HomePage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route
@@ -55,7 +56,7 @@ const App = () => {
             <Route path="/register" element={<SignUpPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/admin" element={<DashboardPage />} />
-            <Route path="/" element={<ProductsPage />} />
+            <Route path="/" element={<HomePage />} />
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/admin/orders" element={<OrdersPage />} />
             <Route path="/admin/users" element={<UsersPage />} />
@@ -64,6 +65,7 @@ const App = () => {
             <Route path="/admin/categories" element={<CategoryManagementPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/categories" element={<CategoriesPage/>}/>
           </Routes>
         </div>
         {!excludeHeaderFooterRoutes.includes(location.pathname) && <Footer />}{" "}

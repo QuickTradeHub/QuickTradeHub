@@ -17,7 +17,7 @@ const ProductInfo = ({ product }) => {
     <div className="p-6 max-w-3xl mx-auto bg-white rounded-lg shadow-lg">
       <h1 className="text-4xl font-semibold text-gray-800 mb-4">{product.title}</h1>
       <p className="text-lg text-gray-600 mb-4">{product.description}</p>
-      <p className="text-3xl font-semibold text-green-600 mb-4">${product.price.toFixed(2)}</p>
+      <p className="text-3xl font-semibold text-green-600 mb-4">₹{product.price.toFixed(2)}</p>
 
       <div className="flex items-center mb-4 space-x-2">
         <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
