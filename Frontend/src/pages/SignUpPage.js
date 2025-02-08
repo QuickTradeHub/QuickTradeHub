@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { FaUser, FaLock, FaPhoneAlt, FaEnvelope, FaImage, FaCheckCircle } from "react-icons/fa";
 
 const SignUpPage = () => {
   const [firstName, setFirstName] = useState("");
@@ -13,7 +14,7 @@ const SignUpPage = () => {
   const [roles, setRoles] = useState([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false); // For success popup visibility
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const navigate = useNavigate();
 
@@ -51,30 +52,30 @@ const SignUpPage = () => {
 
     setLoading(true);
     try {
-        const formData = {
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            phone: phone,
-            password: password,
-            userName: username,
-            roles: roles, // No need to stringify, unless required by API
-            profileImg: profileImg,
-            status: "ACTIVE",
-          };
+      const formData = {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        phone: phone,
+        password: password,
+        userName: username,
+        roles: roles,
+        profileImg: profileImg,
+        status: "ACTIVE",
+      };
 
-          const response = await fetch("http://13.49.132.61:8080/auth/register", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json", // Ensure JSON is sent
-            },
-            body: JSON.stringify(formData),
-          });
+      const response = await fetch("http://13.49.132.61:8080/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
       const data = await response.json();
 
       if (response.ok) {
-        setShowSuccessPopup(true); // Show success popup
+        setShowSuccessPopup(true);
       } else {
         setError(data.message || "Registration failed. Please try again.");
       }
@@ -87,52 +88,56 @@ const SignUpPage = () => {
 
   const handleClosePopup = () => {
     setShowSuccessPopup(false);
-    navigate("/login"); // Redirect to login after closing the popup
+    navigate("/login");
   };
 
   return (
-    <div className="flex items-center justify-center bg-gray-100 min-h-screen pt-20"> {/* Added padding-top */}
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Sign Up</h2>
+    <div className="flex items-center justify-center bg-gradient-to-br from-blue-300 via-purple-500 to-pink-500 min-h-screen pt-16 px-4">
+      <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg sm:w-11/12 md:w-8/12 lg:w-6/12">
+        <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">Create Your Account</h2>
 
         {error && <p className="text-red-600 text-center mb-4">{error}</p>}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {[ 
-            { id: "firstName", placeholder: "Enter your first name", value: firstName, setter: setFirstName },
-            { id: "lastName", placeholder: "Enter your last name", value: lastName, setter: setLastName },
-            { id: "username", placeholder: "Choose a username", value: username, setter: setUsername },
-            { id: "email", placeholder: "Enter your email", value: email, setter: setEmail },
-            { id: "phone", placeholder: "Enter your phone number", value: phone, setter: setPhone },
-            { id: "password", placeholder: "Enter your password", value: password, setter: setPassword, type: "password" },
-            { id: "confirmPassword", placeholder: "Confirm your password", value: confirmPassword, setter: setConfirmPassword, type: "password" },
-          ].map(({ id, placeholder, value, setter, type = "text" }) => (
-            <div key={id} >
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {[
+            { id: "firstName", placeholder: "First Name", value: firstName, setter: setFirstName, icon: <FaUser className="text-gray-500" /> },
+            { id: "lastName", placeholder: "Last Name", value: lastName, setter: setLastName, icon: <FaUser className="text-gray-500" /> },
+            { id: "username", placeholder: "Username", value: username, setter: setUsername, icon: <FaUser className="text-gray-500" /> },
+            { id: "email", placeholder: "Email Address", value: email, setter: setEmail, icon: <FaEnvelope className="text-gray-500" /> },
+            { id: "phone", placeholder: "Phone Number", value: phone, setter: setPhone, icon: <FaPhoneAlt className="text-gray-500" /> },
+            { id: "password", placeholder: "Password", value: password, setter: setPassword, type: "password", icon: <FaLock className="text-gray-500" /> },
+            { id: "confirmPassword", placeholder: "Confirm Password", value: confirmPassword, setter: setConfirmPassword, type: "password", icon: <FaLock className="text-gray-500" /> },
+          ].map(({ id, placeholder, value, setter, type = "text", icon }) => (
+            <div key={id} className="w-full flex items-center border-b-2 border-gray-300 focus-within:border-blue-500">
+              <div className="p-3">{icon}</div>
               <input
                 id={id}
                 type={type}
                 value={value}
                 onChange={(e) => setter(e.target.value)}
                 placeholder={placeholder}
-                className="p-3 border border-gray-300 rounded-md mt-1 w-full focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="w-full p-4 text-lg text-gray-700 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
               />
             </div>
           ))}
 
           <div className="flex flex-col">
             <label htmlFor="profileImg" className="text-sm text-gray-600">Profile Image</label>
-            <input
-              id="profileImg"
-              type="file"
-              accept="image/*"
-              onChange={handleProfileImageChange}
-              className="p-3 border border-gray-300 rounded-md mt-1"
-            />
+            <div className="flex items-center border-b-2 border-gray-300 focus-within:border-blue-500 mt-2">
+              <FaImage className="text-gray-500 p-2" />
+              <input
+                id="profileImg"
+                type="file"
+                accept="image/*"
+                onChange={handleProfileImageChange}
+                className="mt-2 p-3 border-none focus:outline-none"
+              />
+            </div>
           </div>
 
           <div className="flex flex-col">
             <label className="text-sm text-gray-600">Select Role</label>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4 mt-2">
               <div className="flex items-center">
                 <input
                   type="checkbox"
@@ -156,7 +161,7 @@ const SignUpPage = () => {
 
           <button
             type="submit"
-            className="w-full p-3 bg-blue-600 text-white rounded-md mt-4"
+            className="w-full p-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all duration-300"
             disabled={loading}
           >
             {loading ? "Registering..." : "Sign Up"}
@@ -165,7 +170,7 @@ const SignUpPage = () => {
           <div className="text-center mt-4">
             <p>
               Already have an account?{" "}
-              <Link to="/login" className="text-blue-600">Login here</Link>
+              <Link to="/login" className="text-blue-600 hover:text-blue-700 transition-all duration-200">Login here</Link>
             </p>
           </div>
         </form>
@@ -173,13 +178,13 @@ const SignUpPage = () => {
 
       {/* Success Popup Modal */}
       {showSuccessPopup && (
-        <div className="fixed inset-0 flex justify-center items-center bg-gray-600 bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md">
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 backdrop-blur-md">
+          <div className="bg-white p-8 rounded-xl shadow-lg max-w-md">
             <h3 className="text-xl font-semibold text-center text-green-600 mb-4">Account Created Successfully!</h3>
-            <p className="text-center mb-4">Your account has been created successfully. Click below to log in.</p>
+            <p className="text-center mb-6">Your account has been created successfully. Click below to log in.</p>
             <button
               onClick={handleClosePopup}
-              className="w-full p-3 bg-blue-600 text-white rounded-md"
+              className="w-full p-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all duration-300"
             >
               Go to Login
             </button>

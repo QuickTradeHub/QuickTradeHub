@@ -46,23 +46,22 @@ const ForgotPasswordPage = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50">
-      <div className="w-full max-w-sm p-6 bg-white rounded-lg shadow-lg">
-        <h3 className="text-2xl font-semibold text-center mb-4">Password Reset</h3>
-        <hr className="mb-4" />
-        <p className="text-gray-600 text-center mb-6">
-          Forgotten your password? Enter your email address below, and we'll send you an email allowing you to reset it.
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-300 via-purple-500 to-pink-500 p-4">
+      <div className="w-full max-w-md p-6 md:p-8 bg-white rounded-2xl shadow-2xl">
+        <h3 className="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-4">Reset Your Password</h3>
+        <p className="text-gray-600 text-center mb-6 text-sm md:text-base">
+          Enter your email address below, and we'll send you instructions to reset your password.
         </p>
         
         {message && (
-          <div className={`mb-4 p-4 ${error ? 'bg-red-200 text-red-600' : 'bg-green-200 text-green-600'} rounded`}>
+          <div className={`mb-4 p-3 md:p-4 rounded-lg text-center ${error ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}`}>
             {message}
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">E-mail address</label>
+        <form onSubmit={handleSubmit} className="space-y-5 md:space-y-6">
+          <div className="relative">
+            <label htmlFor="email" className="block text-sm md:text-base font-medium text-gray-700 mb-1">Email Address</label>
             <input
               type="email"
               id="email"
@@ -70,20 +69,26 @@ const ForgotPasswordPage = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
-              className="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 md:p-4 border border-gray-300 rounded-lg focus:ring-4 focus:ring-blue-300 focus:outline-none transition duration-300"
               disabled={loading}
             />
-            {error && <div className="text-sm text-red-600 mt-1">Required</div>}
+            {error && <span className="text-sm text-red-500 absolute bottom-[-18px] left-0">Required</span>}
           </div>
 
           <button
             type="submit"
-            className="w-full py-3 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none disabled:bg-green-300"
+            className="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 transition duration-300 disabled:bg-blue-300"
             disabled={loading}
           >
-            {loading ? 'Sending...' : 'Reset My Password'}
+            {loading ? 'Sending...' : 'Send Reset Link'}
           </button>
         </form>
+
+        <div className="mt-4 md:mt-6 text-center">
+          <a href="/login" className="text-blue-600 hover:underline hover:text-blue-800 transition duration-200 text-sm md:text-base">
+            Back to Login
+          </a>
+        </div>
       </div>
     </div>
   );
