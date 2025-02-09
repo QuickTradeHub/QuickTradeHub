@@ -35,7 +35,7 @@ const OrderSummaryPage = () => {
 
   // Navigate to add address page (or open modal)
   const handleAddAddress = () => {
-    navigate('/add-address',{state:{userId:user.userId}});
+    navigate('/add-address', { state: { userId: user.userId } });
   };
 
   return (
@@ -44,30 +44,31 @@ const OrderSummaryPage = () => {
 
       {/* User Info */}
       {user && (
-        <div className="max-w-md mx-auto mb-6 p-6 bg-white rounded-lg shadow-md">
-          <h2 className="text-2xl font-bold mb-4">Customer Details</h2>
-          <p className="mb-2"><strong>Name:</strong> {user.name}</p>
-          <p><strong>Email:</strong> {user.email}</p>
+        <div className="max-w-lg mx-auto mb-6 p-6 bg-white rounded-lg shadow-xl">
+          <h2 className="text-2xl font-bold mb-4 text-gray-900">Customer Details</h2>
+          <p className="mb-2 text-gray-700"><strong>Name:</strong> {`${user.firstName} ${user.lastName}`}</p>
+          <p className="text-gray-700"><strong>Email:</strong> {user.email}</p>
         </div>
       )}
 
       {/* Shipping Address */}
-      <div className="max-w-md mx-auto mb-6 p-6 bg-white rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold mb-4">Shipping Address</h2>
-
+      <div className="max-w-lg mx-auto mb-6 p-6 bg-white rounded-lg shadow-xl">
+        <h2 className="text-2xl font-bold mb-4 text-gray-900">Shipping Address</h2>
         {user && user.addresses && user.addresses.length > 0 ? (
           <div>
             {user.addresses.map((address) => (
               <div
                 key={address.addressId}
-                className={`p-4 mb-3 border rounded-lg cursor-pointer ${
-                  selectedAddress?.addressId === address.addressId ? 'border-indigo-500 bg-indigo-50' : 'border-gray-300'
+                className={`p-4 mb-3 border rounded-lg cursor-pointer transition duration-300 ease-in-out ${
+                  selectedAddress?.addressId === address.addressId
+                    ? 'border-indigo-500 bg-indigo-50'
+                    : 'border-gray-300'
                 }`}
                 onClick={() => setSelectedAddress(address)}
               >
-                <p>{address.street}</p>
-                <p>{address.city}, {address.state} - {address.zipCode}</p>
-                <p>{address.country}</p>
+                <p className="text-gray-800">{address.street}</p>
+                <p className="text-gray-600">{address.city}, {address.state} - {address.zipCode}</p>
+                <p className="text-gray-600">{address.country}</p>
                 {address.isPrimary && <span className="text-sm text-green-500 font-semibold">Primary Address</span>}
               </div>
             ))}
@@ -77,7 +78,7 @@ const OrderSummaryPage = () => {
         )}
 
         <button 
-          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg"
+          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg shadow-lg transition"
           onClick={handleAddAddress}
         >
           Add Address
@@ -85,10 +86,10 @@ const OrderSummaryPage = () => {
       </div>
 
       {/* Products Display */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="lg:col-span-1">
           {products.map((item) => (
-            <div key={item._id} className="flex items-center p-4 bg-white rounded-lg shadow-md mb-4">
+            <div key={item._id} className="flex items-center p-4 bg-white rounded-lg shadow-lg mb-4 transition duration-300 ease-in-out">
               <img src={item.thumbnail} alt={item.title} className="w-24 h-24 object-cover rounded-lg" />
               <div className="ml-4">
                 <h2 className="text-xl font-semibold text-gray-800">{item.title}</h2>
@@ -100,7 +101,7 @@ const OrderSummaryPage = () => {
         </div>
 
         {/* Order Summary */}
-        <div>
+        <div className="lg:col-span-1">
           <div className="p-6 bg-white rounded-lg shadow-lg">
             <h2 className="text-2xl font-bold text-gray-800 mb-4">Order Details</h2>
             <div className="flex justify-between text-lg mb-2">
