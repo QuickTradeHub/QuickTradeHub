@@ -15,7 +15,7 @@ const EditProduct = () => {
     brand: "",
     condition: "",
     shipping: "",
-    thumbnail: null,
+    thumbnail: "",
     images: [],
   });
   const [categories, setCategories] = useState([]);
@@ -28,8 +28,8 @@ const EditProduct = () => {
       .get(`http://13.49.132.61:3000/products/${productId}`)
       .then((res) => {
         setProduct(res.data);
-        setSelectedImages(res.data.images); // Setting existing images
-        setSelectedThumbnail(res.data.thumbnail); // Setting existing thumbnail
+        setSelectedImages(res.data.images); // Setting existing image URLs
+        setSelectedThumbnail(res.data.thumbnail); // Setting existing thumbnail URL
       })
       .catch((err) => console.error("Error fetching product details:", err));
 
@@ -227,7 +227,7 @@ const EditProduct = () => {
               selectedImages.map((image, index) => (
                 <div key={index} className="relative">
                   <img
-                    src={URL.createObjectURL(image)}
+                    src={image}
                     alt={`product image ${index + 1}`}
                     className="w-24 h-24 object-cover rounded-lg"
                   />
@@ -255,7 +255,7 @@ const EditProduct = () => {
           {selectedThumbnail && (
             <div className="relative">
               <img
-                src={URL.createObjectURL(selectedThumbnail)}
+                src={selectedThumbnail}
                 alt="product thumbnail"
                 className="w-24 h-24 object-cover rounded-lg"
               />
