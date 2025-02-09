@@ -132,7 +132,7 @@ export default function SellerDashboard() {
       </div>
 
       <div className="mt-10 flex justify-center">
-        <Link to="/seller/products/add">
+        <Link to="/seller/add-product">
         <button className="bg-indigo-600 text-white rounded-2xl px-8 py-3 text-lg shadow-lg hover:bg-indigo-500 transition duration-300">
           Add New Product
         </button>

@@ -18,14 +18,28 @@ const EditProduct = () => {
     thumbnail: null,
     images: [],
   });
+  const [categories, setCategories] = useState([]);
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedThumbnail, setSelectedThumbnail] = useState(null);
 
   useEffect(() => {
+    // Fetching product data by productId
     axios
       .get(`http://13.49.132.61:3000/products/${productId}`)
       .then((res) => {
         setProduct(res.data);
+        setSelectedImages(res.data.images); // Setting existing images
+        setSelectedThumbnail(res.data.thumbnail); // Setting existing thumbnail
       })
       .catch((err) => console.error("Error fetching product details:", err));
+
+    // Fetching categories for selection dropdown
+    axios
+      .get("http://13.49.132.61:3000/categories")
+      .then((res) => {
+        setCategories(res.data); // Assuming categories API returns an array of categories
+      })
+      .catch((err) => console.error("Error fetching categories:", err));
   }, [productId]);
 
   const handleChange = (e) => {
@@ -43,10 +57,15 @@ const EditProduct = () => {
 
   const handleThumbnailChange = (e) => {
     const file = e.target.files[0];
-    setProduct((prev) => ({
-      ...prev,
-      thumbnail: file,
-    }));
+    setSelectedThumbnail(file);
+  };
+
+  const handleImageRemove = (index) => {
+    setSelectedImages((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleThumbnailRemove = () => {
+    setSelectedThumbnail(null);
   };
 
   const handleSubmit = (e) => {
@@ -61,6 +80,12 @@ const EditProduct = () => {
         formData.append(key, product[key]);
       }
     });
+
+    // Append images and thumbnail to form data
+    selectedImages.forEach((image) => formData.append("images", image));
+    if (selectedThumbnail) {
+      formData.append("thumbnail", selectedThumbnail);
+    }
 
     axios
       .put(`http://13.49.132.61:3000/products/${productId}`, formData)
@@ -113,17 +138,28 @@ const EditProduct = () => {
         {/* Category */}
         <div>
           <label className="block text-gray-700 font-medium mb-2">Category</label>
-          <select
-            name="category"
-            value={product.category}
-            onChange={handleChange}
-            required
-            className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="">Select Category</option>
-            {/* Add categories from the API */}
-            <option value="categoryId">Category Name</option>
-          </select>
+          <div className="relative">
+            <select
+              name="category"
+              value={product.category}
+              onChange={handleChange}
+              required
+              className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">Select Category</option>
+              {categories.map((category) => (
+                <option key={category._id} value={category._id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+            <div
+              className="absolute top-0 right-0 cursor-pointer text-red-500"
+              onClick={() => setProduct((prev) => ({ ...prev, category: "" }))}
+            >
+              &#x2715;
+            </div>
+          </div>
         </div>
 
         {/* Stock */}
@@ -183,21 +219,54 @@ const EditProduct = () => {
           </select>
         </div>
 
-        {/* Image Upload */}
+        {/* Displaying and Removing Images */}
         <div>
           <label className="block text-gray-700 font-medium mb-2">Product Images</label>
-          <input
-            type="file"
-            name="images"
-            multiple
-            onChange={handleFileChange}
-            className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+          <div className="flex flex-wrap gap-4">
+            {selectedImages.length > 0 &&
+              selectedImages.map((image, index) => (
+                <div key={index} className="relative">
+                  <img
+                    src={URL.createObjectURL(image)}
+                    alt={`product image ${index + 1}`}
+                    className="w-24 h-24 object-cover rounded-lg"
+                  />
+                  <span
+                    className="absolute top-0 right-0 text-red-500 cursor-pointer"
+                    onClick={() => handleImageRemove(index)}
+                  >
+                    &#10005;
+                  </span>
+                </div>
+              ))}
+            <input
+              type="file"
+              name="images"
+              multiple
+              onChange={handleFileChange}
+              className="w-full border border-gray-300 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
         </div>
 
-        {/* Thumbnail Upload */}
+        {/* Displaying and Removing Thumbnail */}
         <div>
           <label className="block text-gray-700 font-medium mb-2">Product Thumbnail</label>
+          {selectedThumbnail && (
+            <div className="relative">
+              <img
+                src={URL.createObjectURL(selectedThumbnail)}
+                alt="product thumbnail"
+                className="w-24 h-24 object-cover rounded-lg"
+              />
+              <span
+                className="absolute top-0 right-0 text-red-500 cursor-pointer"
+                onClick={handleThumbnailRemove}
+              >
+                &#10005;
+              </span>
+            </div>
+          )}
           <input
             type="file"
             name="thumbnail"
