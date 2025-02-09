@@ -36,6 +36,7 @@ import SellerProductsPage from "./seller/SellerProductPage";
 import EditProduct from "./seller/EditProduct";
 import AdminNavbar from "./admin/AdminNavbar";
 import UserProfilePage from "./admin/UserProfilePage";
+import OrderSummary from "./pages/OrderSummary";
 
 const App = () => {
   const location = useLocation();
@@ -88,6 +89,7 @@ const App = () => {
             <Route path="/seller/products" element={<SellerProductsPage />} />
             <Route path="/seller/edit-product/:productId" element={<EditProduct />} />
             <Route path="/admin/users/profile/:userId" element={<UserProfilePage />} />
+            <Route path="/order-summary" element={<OrderSummary />} />
           </Routes>
         </div>
 

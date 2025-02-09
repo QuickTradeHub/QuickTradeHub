@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';  // Include useSelector for state access
 import { addToCart } from '../redux/cartSlice';
+import { useNavigate } from 'react-router-dom';
 
 const ProductInfo = ({ product }) => {
   const dispatch = useDispatch();  // Get the dispatch function to dispatch actions
@@ -10,8 +11,12 @@ const ProductInfo = ({ product }) => {
   const handleAddToCart = () => {
     dispatch(addToCart(product));  // Dispatch the addToCart action with the product
   };
+  const navigate = useNavigate()
 
   const isProductInCart = cartItems.some((item) => item._id === product._id);  // Check if the product is in the cart
+  const handleBuyNow = () => {
+    navigate('/order-summary', { state: { products: [{ ...product, quantity: 1 }] } });  // Pass product as state
+  };
 
   return (
     <div className="p-6 max-w-3xl mx-auto bg-white rounded-lg shadow-lg">
@@ -45,6 +50,7 @@ const ProductInfo = ({ product }) => {
         <button 
           className={`px-6 py-3 w-full text-white rounded-lg transition ${product.stock > 0 ? 'bg-blue-500 hover:bg-blue-600' : 'bg-gray-400 cursor-not-allowed'}`}
           disabled={product.stock === 0}
+          onClick={handleBuyNow}
         >
           {product.stock > 0 ? 'Buy Now' : 'Out of Stock'}
         </button>

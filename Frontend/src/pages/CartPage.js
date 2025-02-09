@@ -1,11 +1,17 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { incrementQuantity, decrementQuantity, removeItem } from '../redux/cartSlice';
-import { Plus, Minus, X, ShoppingCart } from 'lucide-react';
+import { Plus, Minus, X, ShoppingCart, Link } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const CartPage = () => {
   const cartItems = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
+  const navigate = useNavigate();  // For navigation
+
+  const handleCheckout = () => {
+    navigate('/order-summary', { state: { products: cartItems } });  // Pass cart items as state
+  };
 
   const handleIncrement = (itemId) => {
     dispatch(incrementQuantity(itemId));
@@ -74,10 +80,11 @@ const CartPage = () => {
               <span>Total</span>
               <span>₹{(totalAmount + 40).toFixed(2)}</span>
             </div>
-            <button 
+            <button onClick={handleCheckout}
               className="mt-5 sm:mt-6 w-full bg-indigo-600 text-white text-base sm:text-lg py-3 rounded-xl shadow-md hover:bg-indigo-700 transition duration-200">
               Proceed to Checkout
             </button>
+            
           </div>
         </div>
       )}
