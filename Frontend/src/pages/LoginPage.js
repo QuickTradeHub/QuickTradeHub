@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaUser, FaLock } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../redux/userSlice";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -8,6 +10,7 @@ const LoginPage = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();  // Get the dispatch function to dispatch actions
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,7 +34,14 @@ const LoginPage = () => {
 
       if (response.ok) {
         localStorage.setItem('token',data.token);
+        localStorage.setItem('user',JSON.stringify(data.user))
+        dispatch(setUser(data.user))
+        if(data.user.roles.includes("SELLER")){
+          navigate("/seller/dashboard")
+        }
+        else{
         navigate("/dashboard");
+        }
       } else {
         setError(data.message || "Login failed. Please try again.");
       }

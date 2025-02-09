@@ -25,11 +25,12 @@ import OrdersPage from "./pages/OrdersPage";
 import UsersPage from "./pages/UserPage";
 import DashboardPage from "./pages/DashBoardPage";
 import { Settings } from "lucide-react";
-import AddProductPage from "./pages/AddProductPage";
+import AddProductPage from "./seller/AddProductPage";
 import CategoryManagementPage from "./pages/CategoryManagementPage"
 import AboutPage from "./pages/AboutPage"
 import ContactPage from "./pages/ContactPage"
 import CategoriesPage from "./pages/CategoriesPage";
+import SellerDashboard from "./seller/SellerDashboard";
 
 const App = () => {
   const location = useLocation();
@@ -61,11 +62,12 @@ const App = () => {
             <Route path="/admin/orders" element={<OrdersPage />} />
             <Route path="/admin/users" element={<UsersPage />} />
             <Route path="/admin/settings" element={<Settings />} />
-            <Route path="/admin/products/add" element={<AddProductPage />} />
+            <Route path="/seller/products/add" element={<AddProductPage />} />
             <Route path="/admin/categories" element={<CategoryManagementPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/categories" element={<CategoriesPage/>}/>
+            <Route path="/seller/dashboard" element={<SellerDashboard/>}/>
           </Routes>
         </div>
         {!excludeHeaderFooterRoutes.includes(location.pathname) && <Footer />}{" "}

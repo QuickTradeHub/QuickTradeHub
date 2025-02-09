@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   FaSearch,
   FaShoppingCart,
@@ -10,10 +10,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import logo from "../images/logo.jpg";
-import { setUser } from "../redux/userSlice";
 
 const Navbar = () => {
-  const user = useSelector((state) => state.user);
   const cartItems = useSelector((state) => state.cart.items);
   const wishlistItems = useSelector((state) => state.wishlist.items);
   const navigate = useNavigate();
@@ -21,28 +19,32 @@ const Navbar = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [debounceTimer, setDebounceTimer] = useState(null);
+  const debounceTimer = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const user = useSelector((state) => state.user.user);
 
   const handleAuth = () => {
-    dispatch(
-      setUser(user ? null : { name: "John Doe", email: "john@example.com" })
-    );
-    navigate("/login");
+    if (user) {
+      navigate("/userprofile");
+    } else {
+      navigate("/login");
+    }
   };
+  const handleLogout = () => {
+
+  }
 
   const handleSearchChange = (e) => {
     const query = e.target.value;
     setSearchTerm(query);
 
-    if (debounceTimer) {
-      clearTimeout(debounceTimer);
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
     }
 
-    const newTimer = setTimeout(() => {
+    debounceTimer.current = setTimeout(() => {
       filterProducts(query);
     }, 500);
-    setDebounceTimer(newTimer);
   };
 
   const filterProducts = (query) => {
@@ -67,10 +69,10 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    axios.get("http://13.49.132.61:3000/products").then((res) => {
-      setFilteredProducts(res.data);
-    });
-  }, []);
+    if (!searchTerm) {
+      setFilteredProducts([]);
+    }
+  }, [searchTerm]);
 
   return (
     <nav className="bg-white sticky top-0 w-full z-50 shadow-md p-2 px-4 sm:px-6 flex items-center justify-between rounded-lg">
@@ -105,9 +107,8 @@ const Navbar = () => {
                 </li>
               ) : (
                 filteredProducts.map((product) => (
-                  <a href={`/products/${product._id}`}>
+                  <a href={`/products/${product._id}`} key={product._id}>
                     <li
-                      key={product._id} // Corrected the key here
                       className="flex items-center justify-between p-2 hover:bg-gray-200 cursor-pointer text-sm"
                     >
                       <span>{product.title}</span>
@@ -155,8 +156,14 @@ const Navbar = () => {
           onClick={handleAuth}
         >
           <FaUserCircle className="text-lg mr-1" />
-          {user ? "Logout" : "Login"}
+          {user ? user.name : "Login"}
         </button>
+        {user?
+        <button className="text-gray-600 hover:text-blue-500 transition-all duration-200 flex items-center text-xs sm:text-sm p-1 sm:p-2"
+          onClick={handleLogout}>
+            Logout
+        </button>:""
+}
         <Link to="/wishlist">
           <button className="relative">
             <FaHeart className="text-xl text-gray-600 hover:text-blue-500 transition-all duration-200" />
@@ -231,7 +238,7 @@ const Navbar = () => {
                 onClick={handleAuth}
               >
                 <FaUserCircle className="text-2xl mr-1" />
-                {user ? "Logout" : "Login"}
+                {user ? user.userNname : "Login"}
               </button>
             </li>
           </ul>

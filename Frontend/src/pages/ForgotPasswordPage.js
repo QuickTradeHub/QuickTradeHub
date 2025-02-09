@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const ForgotPasswordPage = () => {
   const [email, setEmail] = useState('');
@@ -85,9 +86,9 @@ const ForgotPasswordPage = () => {
         </form>
 
         <div className="mt-4 md:mt-6 text-center">
-          <a href="/login" className="text-blue-600 hover:underline hover:text-blue-800 transition duration-200 text-sm md:text-base">
+          <Link to="/login" className="text-blue-600 hover:underline hover:text-blue-800 transition duration-200 text-sm md:text-base">
             Back to Login
-          </a>
+          </Link>
         </div>
       </div>
     </div>
