@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import logo from "../images/logo.jpg";
+import { setUser } from "../redux/userSlice";
 
 const Navbar = () => {
   const cartItems = useSelector((state) => state.cart.items);
@@ -21,7 +22,8 @@ const Navbar = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const debounceTimer = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const user = useSelector((state) => state.user.user);
+  const user = useSelector((state) => state.user);
+  console.log(user);
 
   const handleAuth = () => {
     if (user) {
@@ -31,7 +33,10 @@ const Navbar = () => {
     }
   };
   const handleLogout = () => {
-
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    dispatch(setUser(null))
+    navigate('/login')
   }
 
   const handleSearchChange = (e) => {
