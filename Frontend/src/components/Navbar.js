@@ -15,6 +15,7 @@ import { setUser } from "../redux/userSlice";
 const Navbar = () => {
   const cartItems = useSelector((state) => state.cart.items);
   const wishlistItems = useSelector((state) => state.wishlist.items);
+  const user = useSelector((state) => state.user); // Access user from Redux
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -22,8 +23,6 @@ const Navbar = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const debounceTimer = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const[user,setUser] = useState(useSelector((state)=>state.user))
-  console.log(user);
 
   const handleAuth = () => {
     if (user) {
@@ -36,8 +35,7 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    setUser(null)
-    dispatch(setUser(null));
+    dispatch(setUser(null)); // Use Redux to manage the user state
     navigate("/login");
   };
 
@@ -74,12 +72,6 @@ const Navbar = () => {
         setFilteredProducts([]); // In case of an error, clear the results
       });
   };
-
-  useEffect(() => {
-    if (!searchTerm) {
-      setFilteredProducts([]);
-    }
-  }, [searchTerm]);
 
   return (
     <nav className="bg-white sticky top-0 w-full z-50 shadow-md p-2 px-4 sm:px-6 flex items-center justify-between rounded-lg">
