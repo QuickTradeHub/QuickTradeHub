@@ -238,7 +238,7 @@ const Navbar = () => {
                 onClick={handleAuth}
               >
                 <FaUserCircle className="text-2xl mr-1" />
-                {user ? user.userNname : "Login"}
+                {user ? user.userName : "Login"}
               </button>
             </li>
           </ul>
