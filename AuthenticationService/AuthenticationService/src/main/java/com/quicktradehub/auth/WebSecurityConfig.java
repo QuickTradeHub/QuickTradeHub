@@ -24,7 +24,7 @@ public class WebSecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/auth/**") // Apply CORS to this endpoint
-                        .allowedOrigins("*") // Allow frontend domain
+                        .allowedOrigins("http://13.49.119.218") // Allow frontend domain
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Allow necessary methods
                         .allowedHeaders("*") // Allow all headers
                         .allowCredentials(true); // Allow credentials like cookies
