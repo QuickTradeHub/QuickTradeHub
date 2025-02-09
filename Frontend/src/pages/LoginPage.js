@@ -39,6 +39,9 @@ const LoginPage = () => {
         if(data.user.roles.includes("SELLER")){
           navigate("/seller/dashboard")
         }
+        else if(data.user.roles.includes("ADMIN")){
+          navigate("/admin/dashboard")
+        }
         else{
         navigate("/dashboard");
         }
