@@ -31,6 +31,9 @@ import AboutPage from "./pages/AboutPage"
 import ContactPage from "./pages/ContactPage"
 import CategoriesPage from "./pages/CategoriesPage";
 import SellerDashboard from "./seller/SellerDashboard";
+import SellerNavbar from "./seller/SellerNavbar";
+import SellerProductsPage from "./seller/SellerProductPage";
+import EditProduct from "./seller/EditProduct";
 
 const App = () => {
   const location = useLocation();
@@ -38,7 +41,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <div className="App">
-        {!excludeHeaderFooterRoutes.includes(location.pathname) && <Navbar />}
+        {!excludeHeaderFooterRoutes.includes(location.pathname) && <SellerNavbar />}
         {/* Navbar available for all pages */}
         <div>
           <Routes>
@@ -68,6 +71,8 @@ const App = () => {
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/categories" element={<CategoriesPage/>}/>
             <Route path="/seller/dashboard" element={<SellerDashboard/>}/>
+            <Route path="/seller/products" element={<SellerProductsPage/>}/>
+            <Route path="/seller/edit-product/:productId" element={<EditProduct/>}/>
           </Routes>
         </div>
         {!excludeHeaderFooterRoutes.includes(location.pathname) && <Footer />}{" "}

@@ -203,4 +203,20 @@ router.get("/:id/reviews", async (req, res) => {
   }
 });
 
+// ✅ Get all products of a specific seller (with pagination, category population, and reviews)
+router.get("/seller/:sellerId", async (req, res) => {
+  try {
+    const { page = 1, limit = 10 } = req.query;
+    const {sellerId} = req.params;
+    const products = await Product.find({sellerId})
+      .populate("category") // Populate category details
+      .limit(parseInt(limit))
+      .skip((parseInt(page) - 1) * parseInt(limit));
+
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ error: "Error fetching products", message: err.message });
+  }
+});
+
 module.exports = router;
