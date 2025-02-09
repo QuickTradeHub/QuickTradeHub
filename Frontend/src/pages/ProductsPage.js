@@ -15,9 +15,12 @@ const ProductsPage = () => {
 
   useEffect(() => {
     fetchProducts();
+  }, [page]);  // Fetch products when `page` changes
+
+  useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [loading, hasMore]);
 
   const fetchProducts = async () => {
     if (loading || !hasMore) return;
@@ -30,8 +33,13 @@ const ProductsPage = () => {
       if (data.length === 0) {
         setHasMore(false);
       } else {
-        setProducts((prevProducts) => [...prevProducts, ...data]);
-        setPage((prevPage) => prevPage + 1);
+        // Prevent duplicates
+        setProducts((prevProducts) => {
+          const newProducts = data.filter(product => 
+            !prevProducts.some(prevProduct => prevProduct._id === product._id)
+          );
+          return [...prevProducts, ...newProducts];
+        });
       }
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -40,15 +48,27 @@ const ProductsPage = () => {
     }
   };
 
-  const handleScroll = useCallback(() => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop >=
-        document.documentElement.offsetHeight - 100 &&
-      !loading
-    ) {
-      fetchProducts();
-    }
-  }, [loading]);
+  const debounce = (func, delay) => {
+    let timer;
+    return (...args) => {
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => func.apply(this, args), delay);
+    };
+  };
+
+  const handleScroll = useCallback(
+    debounce(() => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop >=
+          document.documentElement.offsetHeight - 100 &&
+        !loading &&
+        hasMore
+      ) {
+        setPage((prevPage) => prevPage + 1);  // Increment page number
+      }
+    }, 300),
+    [loading, hasMore]
+  );
 
   const handleAddToWishlist = (product) => {
     const isProductInWishlist = wishlist.items.some((item) => item._id === product._id);
@@ -59,9 +79,7 @@ const ProductsPage = () => {
     }
   };
 
-  const isInWishlist = (product) => {
-    return wishlist.items.some((item) => item._id === product._id);
-  };
+  const isInWishlist = (product) => wishlist.items.some((item) => item._id === product._id);
 
   const handleDelete = async (productId) => {
     try {
