@@ -3,7 +3,7 @@ name: Deploy React App to EC2 with Docker
 on:
   push:
     branches:
-      - main
+      - authenticaion-branch
 
 jobs:
   deploy:

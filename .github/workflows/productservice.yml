@@ -3,7 +3,7 @@ name: Deploy Product Service to EC2 with Docker
 on:
   push:
     branches:
-      - main
+      - product-service-branch
 jobs:
   deploy:
     runs-on: ubuntu-latest

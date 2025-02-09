@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.client.RestClientException;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -153,11 +154,16 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("Invalid credentials. Password does not match.");
         }
 
+        // Set the last login timestamp
+        user.setLastLogin(LocalDateTime.now());
+        userRepository.save(user); // Save the updated user information
+
         // Attempt to send login activity email
         sendEmail(loginRequest.getEmail(), "New login detected to your account", "user-activity");
 
         return user;
     }
+
 
     @Override
     public void sendPasswordResetLink(ForgotPasswordDto forgotPasswordDto) {
