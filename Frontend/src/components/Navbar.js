@@ -22,7 +22,7 @@ const Navbar = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const debounceTimer = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const user = useSelector((state) => state.user);
+  const[user,setUser] = useState(useSelector((state)=>state.user))
   console.log(user);
 
   const handleAuth = () => {
@@ -32,12 +32,14 @@ const Navbar = () => {
       navigate("/login");
     }
   };
+
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    dispatch(setUser(null))
-    navigate('/login')
-  }
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setUser(null)
+    dispatch(setUser(null));
+    navigate("/login");
+  };
 
   const handleSearchChange = (e) => {
     const query = e.target.value;
@@ -156,19 +158,26 @@ const Navbar = () => {
 
       {/* User & Cart Section */}
       <div className="flex items-center gap-4">
+        {/* Conditional Render for Login/Logout */}
         <button
           className="text-gray-600 hover:text-blue-500 transition-all duration-200 flex items-center text-xs sm:text-sm p-1 sm:p-2"
           onClick={handleAuth}
         >
           <FaUserCircle className="text-lg mr-1" />
-          {user ? user.name : "Login"}
+          {user ? user.name : "Login"} {/* Ensure user has a name property */}
         </button>
-        {user?
-        <button className="text-gray-600 hover:text-blue-500 transition-all duration-200 flex items-center text-xs sm:text-sm p-1 sm:p-2"
-          onClick={handleLogout}>
+
+        {/* Logout Button */}
+        {user && (
+          <button
+            className="text-gray-600 hover:text-blue-500 transition-all duration-200 flex items-center text-xs sm:text-sm p-1 sm:p-2"
+            onClick={handleLogout}
+          >
             Logout
-        </button>:""
-}
+          </button>
+        )}
+
+        {/* Wishlist Button */}
         <Link to="/wishlist">
           <button className="relative">
             <FaHeart className="text-xl text-gray-600 hover:text-blue-500 transition-all duration-200" />
@@ -177,6 +186,8 @@ const Navbar = () => {
             </span>
           </button>
         </Link>
+
+        {/* Cart Button */}
         <Link to="/cart">
           <button className="relative">
             <FaShoppingCart className="text-xl text-gray-600 hover:text-blue-500 transition-all duration-200" />
@@ -243,7 +254,7 @@ const Navbar = () => {
                 onClick={handleAuth}
               >
                 <FaUserCircle className="text-2xl mr-1" />
-                {user ? user.userName : "Login"}
+                {user ? user.name : "Login"} {/* Ensure user has a name property */}
               </button>
             </li>
           </ul>
