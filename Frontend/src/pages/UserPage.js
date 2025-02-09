@@ -84,7 +84,8 @@ const UsersPage = () => {
                       <div className="flex items-center justify-center">
                         <FaRegClock className="text-indigo-500 mr-2" />
                         <span>
-                          Last login: {user.lastLogin ? user.lastLogin : "N/A"}
+                        Last login: {user.lastLogin ? new Date(user.lastLogin).toLocaleString() : "N/A"}
+
                         </span>
                       </div>
                     </div>
