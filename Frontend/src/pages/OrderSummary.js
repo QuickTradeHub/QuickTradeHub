@@ -35,7 +35,7 @@ const OrderSummaryPage = () => {
 
   // Navigate to add address page (or open modal)
   const handleAddAddress = () => {
-    navigate('/add-address');
+    navigate('/add-address',{state:{userId:user.userId}});
   };
 
   return (
