@@ -17,7 +17,6 @@ const HomePage = () => {
 
   return (
     <>
-      <Navbar />
       <div className="min-h-screen bg-gradient-to-br from-blue-500 via-purple-600 to-pink-500 text-white">
         {/* Hero Section */}
         <main className="flex flex-col items-center justify-center text-center py-20 px-4 bg-cover bg-center relative" style={{ backgroundImage: 'url("https://via.placeholder.com/1500x800")' }}>
