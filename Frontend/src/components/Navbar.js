@@ -1,28 +1,30 @@
-import React, { useState, useEffect, useRef } from "react";
-import {
-  FaSearch,
-  FaShoppingCart,
-  FaUserCircle,
-  FaBars,
-  FaHeart,
-} from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { FaSearch, FaShoppingCart, FaUserCircle, FaBars, FaHeart } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { setUser } from "../redux/userSlice"; // Redux action to set user
 import logo from "../images/logo.jpg";
-import { setUser } from "../redux/userSlice";
 
 const Navbar = () => {
   const cartItems = useSelector((state) => state.cart.items);
   const wishlistItems = useSelector((state) => state.wishlist.items);
   const user = useSelector((state) => state.user); // Access user from Redux
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const debounceTimer = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  // Check if user is present in localStorage during the initial render
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (storedUser) {
+      dispatch(setUser(storedUser)); // Update Redux state with user from localStorage
+    }
+  }, [dispatch]);
 
   const handleAuth = () => {
     if (user) {
@@ -35,8 +37,8 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    dispatch(setUser(null)); // Use Redux to manage the user state
-    navigate("/login");
+    dispatch(setUser(null)); // Reset user in Redux state
+    navigate("/login"); // Navigate to login page after logout
   };
 
   const handleSearchChange = (e) => {
