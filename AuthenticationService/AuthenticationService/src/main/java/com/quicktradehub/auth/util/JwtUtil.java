@@ -37,7 +37,7 @@ public class JwtUtil {
 
     // Validate JWT token (Check expiration + Blacklist)
     public boolean validateToken(String token, String username) {
-        return username.equals(extractUsername(token)) && !isTokenExpired(token) && !isTokenBlacklisted(token);
+        return username.equals(extractUsername(token)) && !isTokenExpired(token);
     }
 
     // Extract username from the token

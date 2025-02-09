@@ -39,8 +39,9 @@ public class UserController {
     public ResponseEntity<Map> login(@RequestBody LoginRequest loginRequestDto) {
         User user = userService.authenticateUser(loginRequestDto);
         String token = jwtUtil.generateToken(user);
-        Map<String,String> response = new HashMap<>();
+        Map<String,Object> response = new HashMap<>();
         response.put("token", token);
+        response.put("user", user);
         return ResponseEntity.ok(response); // Return token in response
     }
 
