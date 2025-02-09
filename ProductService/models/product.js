@@ -18,6 +18,7 @@ const productSchema = new mongoose.Schema({
     height: { type: Number },
     depth: { type: Number }
   },
+  sellerId:{type:String,required:true},
   warrantyInformation: { type: String },
   shippingInformation: { type: String },
   availabilityStatus: { type: String },
