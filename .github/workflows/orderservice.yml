@@ -1,4 +1,4 @@
-name: Deploy OrderService to EC2 with Docker
+name: Deploy OrderService CiCd to EC2 with Docker
 
 on:
   push:
