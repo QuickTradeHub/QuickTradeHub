@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
-import { FaShoppingCart, FaBoxOpen, FaDollarSign, FaStar, FaTruck, FaChartLine, FaClipboardList, FaUsers, FaRupeeSign } from 'react-icons/fa';
+import { FaShoppingCart, FaBoxOpen, FaRupeeSign, FaStar } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 const salesData = [
@@ -13,6 +14,24 @@ const salesData = [
 ];
 
 export default function SellerDashboard() {
+  const [products, setProducts] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const sellerId = JSON.parse(localStorage.getItem("user")).userId;
+        const response = await axios.get(`http://13.49.132.61:3000/products/seller/${sellerId}/?page=1&limit=100000`);
+        setProducts(response.data);
+      } catch (err) {
+        setError("Failed to fetch products");
+        console.error(err);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   return (
     <div className="p-6 bg-gray-50 min-h-screen font-sans">
       <h1 className="text-4xl font-extrabold mb-8 text-center text-indigo-700">Seller Dashboard</h1>
@@ -21,7 +40,8 @@ export default function SellerDashboard() {
         <div className="bg-white shadow-xl rounded-2xl p-6 flex items-center justify-between hover:shadow-2xl transition-transform transform hover:scale-105">
           <div>
             <p className="text-gray-500 text-sm">Total Sales</p>
-            <h2 className="text-3xl font-bold text-green-600">₹12,400</h2>
+            <h2 className="text-3xl font-bold text-green-600">₹12,400
+            </h2>
           </div>
           <FaRupeeSign className="w-10 h-10 text-green-500" />
         </div>
@@ -29,7 +49,7 @@ export default function SellerDashboard() {
         <div className="bg-white shadow-xl rounded-2xl p-6 flex items-center justify-between hover:shadow-2xl transition-transform transform hover:scale-105">
           <div>
             <p className="text-gray-500 text-sm">Products Listed</p>
-            <h2 className="text-3xl font-bold text-blue-600">85</h2>
+            <h2 className="text-3xl font-bold text-blue-600">{products.length}</h2>
           </div>
           <FaBoxOpen className="w-10 h-10 text-blue-500" />
         </div>
@@ -103,20 +123,6 @@ export default function SellerDashboard() {
         </div>
 
         <div className="bg-white shadow-xl rounded-2xl p-6">
-          <h2 className="text-xl font-bold mb-4 text-indigo-700">Customer Feedback</h2>
-          <ul className="space-y-3">
-            <li className="flex flex-col">
-              <span className="font-semibold">John Doe</span>
-              <span className="text-gray-500">"Great quality and fast shipping!"</span>
-            </li>
-            <li className="flex flex-col">
-              <span className="font-semibold">Jane Smith</span>
-              <span className="text-gray-500">"Product as described. Satisfied!"</span>
-            </li>
-          </ul>
-        </div>
-
-        <div className="bg-white shadow-xl rounded-2xl p-6">
           <h2 className="text-xl font-bold mb-4 text-indigo-700">Shipping Status</h2>
           <ul className="space-y-3">
             <li className="flex justify-between">
@@ -133,14 +139,15 @@ export default function SellerDashboard() {
 
       <div className="mt-10 flex justify-center">
         <Link to="/seller/add-product">
-        <button className="bg-indigo-600 text-white rounded-2xl px-8 py-3 text-lg shadow-lg hover:bg-indigo-500 transition duration-300">
-          Add New Product
-        </button>
+          <button className="bg-indigo-600 text-white rounded-2xl px-8 py-3 text-lg shadow-lg hover:bg-indigo-500 transition duration-300">
+            Add New Product
+          </button>
         </Link>
       </div>
 
       <div className="mt-10 text-center text-gray-500">
         <p className="text-sm">All data is updated in real-time to provide the latest insights for sellers.</p>
+        {error && <p className="text-red-500 mt-2">{error}</p>}
       </div>
     </div>
   );

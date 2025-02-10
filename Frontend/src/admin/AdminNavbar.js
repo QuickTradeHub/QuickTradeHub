@@ -76,8 +76,8 @@ const AdminNavbar = () => {
         <Link to="/admin/orders" className="text-gray-600 hover:text-blue-500 transition-colors duration-200 text-sm">
           Orders
         </Link>
-        <Link to="/admin/settings" className="text-gray-600 hover:text-blue-500 transition-colors duration-200 text-sm">
-          Settings
+        <Link to="/admin/categories" className="text-gray-600 hover:text-blue-500 transition-colors duration-200 text-sm">
+          Categories
         </Link>
       </div>
 
