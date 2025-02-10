@@ -25,8 +25,8 @@ const UsersPage = () => {
   const defaultProfileImage = "https://via.placeholder.com/150";
 
   // Separate buyers and sellers
-  const buyers = users.filter(user => user.roles.includes("BUYER"));
-  const sellers = users.filter(user => user.roles.includes("SELLER"));
+  const buyers = users.filter(user => user.roles?.includes("BUYER"));
+  const sellers = users.filter(user => user.roles?.includes("SELLER"));
 
   return (
     <div className="bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-600 min-h-screen">
