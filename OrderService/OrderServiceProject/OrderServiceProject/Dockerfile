@@ -26,8 +26,8 @@ COPY --from=build /app .
 # Expose the application port
 EXPOSE 5142
 
-# Set SQL Server connection string (Ensure correct DB connection)
-ENV ConnectionStrings__DefaultConnection="Server=localhost;Database=OrderServiceDb;User Id=sa;Password=Root123;"
+#  Set SQL Server connection string (Ensure correct DB connection)
+# ENV ConnectionStrings__DefaultConnection="Server=localhost;Database=OrderServiceDb;User Id=sa;Password=Root123;"
 
 # Entry point to run the application
 ENTRYPOINT ["dotnet", "OrderServiceProject.dll"]
