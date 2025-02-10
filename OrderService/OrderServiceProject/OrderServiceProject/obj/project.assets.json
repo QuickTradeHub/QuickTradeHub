@@ -6422,23 +6422,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ak490\\.nuget\\packages\\": {},
+    "C:\\Users\\pravi\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ak490\\Desktop\\QuickTradeHub\\QuickTradeHub\\OrderService\\OrderServiceProject\\OrderServiceProject\\OrderServiceProject.csproj",
+      "projectUniqueName": "C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\OrderServiceProject.csproj",
       "projectName": "OrderServiceProject",
-      "projectPath": "C:\\Users\\ak490\\Desktop\\QuickTradeHub\\QuickTradeHub\\OrderService\\OrderServiceProject\\OrderServiceProject\\OrderServiceProject.csproj",
-      "packagesPath": "C:\\Users\\ak490\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ak490\\Desktop\\QuickTradeHub\\QuickTradeHub\\OrderService\\OrderServiceProject\\OrderServiceProject\\obj\\",
+      "projectPath": "C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\OrderServiceProject.csproj",
+      "packagesPath": "C:\\Users\\pravi\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\ak490\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\pravi\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -6447,6 +6447,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
