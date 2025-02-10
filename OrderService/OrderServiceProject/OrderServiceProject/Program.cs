@@ -19,7 +19,7 @@ namespace OrderServiceProject
                 var context = services.GetRequiredService<OrderDbContext>();
 
                 // Apply migrations
-                context.Database.Migrate();
+            //    context.Database.Migrate();
             }
 
             host.Run();
