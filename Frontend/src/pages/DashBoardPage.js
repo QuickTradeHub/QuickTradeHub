@@ -27,7 +27,7 @@ const DashboardPage = () => {
       .catch(error => console.error('Error fetching users:', error));
 
     // Fetch products
-    fetch('http://13.49.132.61/products?page=1&limit=10000')
+    fetch('http://13.49.132.61:3000/products?page=1&limit=10000')
       .then(response => response.json())
       .then(data => setProducts(data))
       .catch(error => console.error('Error fetching products:', error));
