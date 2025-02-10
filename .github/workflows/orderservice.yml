@@ -55,7 +55,7 @@ jobs:
       - name: Run EF Core Migrations on EC2
         run: |
           ssh ubuntu@${{ secrets.EC21_PUBLIC_IP }} << 'EOF'
-            docker run --rm --env ConnectionStrings__DefaultConnection="Server=sql-server;Database=OrderServiceDb;User Id=sa;Password=Abhishek@6901;" orderservice dotnet ef database update
+            docker run --rm --env ConnectionStrings__DefaultConnection="Server=localhost;Database=OrderServiceDb;User Id=sa;Password=Abhishek@6901;" orderservice dotnet ef database update
           EOF
 
 
@@ -65,6 +65,6 @@ jobs:
             docker stop orderservice || true
             docker rm orderservice || true
             docker run -d -p 5142:5142 --name orderservice \
-              -e ConnectionStrings__DefaultConnection="Server=sql-server;Database=OrderServiceDb;User Id=sa;Password=Abhishek@6901;" \
+              -e ConnectionStrings__DefaultConnection="Server=localhost;Database=OrderServiceDb;User Id=sa;Password=Abhishek@6901;" \
               orderservice
           EOF
