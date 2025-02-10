@@ -37,6 +37,9 @@ import EditProduct from "./seller/EditProduct";
 import AdminNavbar from "./admin/AdminNavbar";
 import UserProfilePage from "./admin/UserProfilePage";
 import OrderSummary from "./pages/OrderSummary";
+import UserDashboard from "./pages/UserDashborad";
+import AdminProductPage from "./admin/AdminProductsPage";
+import SellerInfoPage from "./admin/SellerInfoPage";
 
 const App = () => {
   const location = useLocation();
@@ -90,6 +93,10 @@ const App = () => {
             <Route path="/seller/edit-product/:productId" element={<EditProduct />} />
             <Route path="/admin/users/profile/:userId" element={<UserProfilePage />} />
             <Route path="/order-summary" element={<OrderSummary />} />
+            <Route path="/dashboard" element={<UserDashboard />} />
+            <Route path="/admin/products" element={<AdminProductPage />} />
+            <Route path="/admin/dashboard" element={<DashboardPage />} />
+            <Route path="/admin/products/seller/:sellerId" element={<SellerInfoPage />} />
           </Routes>
         </div>
 
