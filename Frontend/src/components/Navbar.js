@@ -9,7 +9,7 @@ import logo from "../images/logo.jpg";
 const Navbar = () => {
   const cartItems = useSelector((state) => state.cart.items);
   const wishlistItems = useSelector((state) => state.wishlist.items);
-  const user = useSelector((state) => state.user); // Access user from Redux
+  const user = JSON.parse(localStorage.getItem("user"));
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -175,7 +175,7 @@ const Navbar = () => {
         {user && user.roles.includes("SELLER") && (
           <Link to="/seller/dashboard">
             <button className="text-gray-600 hover:text-blue-500 transition-all duration-200 flex items-center text-xs sm:text-sm p-1 sm:p-2">
-              Seller Dashboard
+              Seller Dashboard 
             </button>
           </Link>
         )}
