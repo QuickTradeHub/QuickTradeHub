@@ -1,33 +1,33 @@
-# Step 1: Use the official .NET SDK image to build the application
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+# Step 1: Use .NET 8.0 SDK to build the application
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
-# Set the working directory for the application
+# Set the working directory inside the container
 WORKDIR /src
 
 # Copy the project file and restore dependencies
-COPY ["OrderServiceProject.csproj", "OrderServiceProject/"]
+COPY OrderServiceProject/OrderServiceProject.csproj ./  # Adjusted path
 RUN dotnet restore "OrderServiceProject.csproj"
 
-# Copy the rest of the application code to the container
+# Copy the rest of the application code
 COPY . .
 
-# Build the application and publish it to the /app directory
+# Build and publish the application
 RUN dotnet publish "OrderServiceProject.csproj" -c Release -o /app
 
-# Step 2: Use the official .NET runtime image for the final container (smaller size)
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS runtime
+# Step 2: Use .NET 8.0 runtime for the final container (smaller size)
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 
-# Set the working directory for the application in the container
+# Set working directory
 WORKDIR /app
 
-# Copy the published app from the build image to the final image
+# Copy published files from the build stage
 COPY --from=build /app .
 
-# Step 3: Set environment variables for SQL Server connection
-ENV ConnectionStrings__DefaultConnection="Server=sql-server;Database=OrderServiceDb;User Id=sa;Password=Root123!"
-
-# Step 4: Expose the port the application runs on (if needed)
+# Expose the application port
 EXPOSE 5142
 
-# Step 5: Define the entry point to run the app
+# Set SQL Server connection string (Ensure correct DB connection)
+ENV ConnectionStrings__DefaultConnection="Server=localhost;Database=OrderServiceDb;User Id=sa;Password=Root123;"
+
+# Entry point to run the application
 ENTRYPOINT ["dotnet", "OrderServiceProject.dll"]
