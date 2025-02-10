@@ -16,7 +16,7 @@ jobs:
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '8.0.x'  # Ensure this matches the Dockerfile
 
       - name: Restore Dependencies
         run: |
@@ -64,6 +64,6 @@ jobs:
             docker stop orderservice || true
             docker rm orderservice || true
             docker run -d -p 5142:5142 --name orderservice \
-              -e ConnectionStrings__DefaultConnection="Server=localhost;Database=OrderServiceDb;User Id=sa;Password=YourPassword123;" \
+              -e ConnectionStrings__DefaultConnection="Server=localhost;Database=OrderServiceDb;User Id=sa;Password=Root123;" \
               orderservice
           EOF
