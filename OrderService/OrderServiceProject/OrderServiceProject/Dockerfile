@@ -5,14 +5,14 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 
 # Copy the project file and restore dependencies
-COPY ["OrderServiceProject/OrderServiceProject.csproj", "OrderServiceProject/"]
-RUN dotnet restore "OrderServiceProject/OrderServiceProject.csproj"
+COPY ["OrderServiceProject.csproj", "OrderServiceProject/"]
+RUN dotnet restore "OrderServiceProject.csproj"
 
 # Copy the rest of the application code to the container
 COPY . .
 
 # Build the application and publish it to the /app directory
-RUN dotnet publish "OrderServiceProject/OrderServiceProject.csproj" -c Release -o /app
+RUN dotnet publish "OrderServiceProject.csproj" -c Release -o /app
 
 # Step 2: Use the official .NET runtime image for the final container (smaller size)
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS runtime
