@@ -25,7 +25,8 @@ Request Body:
   "lastName": "Doe",
   "email": "john@example.com",
   "password": "SecurePassword123",
-  "phone": "9876543210"
+  "phone": "9876543210",
+  "status":"ACTIVE" 
 }
 
 Response:

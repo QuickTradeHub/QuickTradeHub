@@ -70,9 +70,9 @@
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\ak490\\Desktop\\QuickTradeHub\\QuickTradeHub\\OrderService\\OrderServiceProject\\OrderServiceProject\\appsettings.json",
               "RelativeDocumentMoniker": "OrderServiceProject\\appsettings.json",
-              "ToolTip": "C:\\Users\\ak490\\Desktop\\QuickTradeHub\\QuickTradeHub\\OrderService\\OrderServiceProject\\OrderServiceProject\\appsettings.json*",
-              "RelativeToolTip": "OrderServiceProject\\appsettings.json*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAA9AAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\ak490\\Desktop\\QuickTradeHub\\QuickTradeHub\\OrderService\\OrderServiceProject\\OrderServiceProject\\appsettings.json",
+              "RelativeToolTip": "OrderServiceProject\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2025-02-03T08:23:00.458Z",
               "EditorCaption": ""
@@ -135,8 +135,7 @@
               "RelativeToolTip": "OrderServiceProject\\appsettings.Development.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-01-27T08:45:41.58Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-27T08:45:41.58Z"
             },
             {
               "$type": "Document",
