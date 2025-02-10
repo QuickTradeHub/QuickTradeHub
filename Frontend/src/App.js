@@ -1,11 +1,6 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  useLocation,
-} from "react-router-dom";
-import { Provider } from "react-redux";
+import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from "react-router-dom";
+import { Provider, useSelector } from "react-redux";  // Assuming you're using Redux for state management
 import { store } from "./redux/store";
 import HomePage from "./pages/HomePage";
 import CartPage from "./pages/CartPage";
@@ -15,8 +10,9 @@ import ProductDetailsPage from "./pages/ProductDetailsPage";
 import BuyNowPage from "./pages/BuyNowPage";
 import AddAddressPage from "./pages/AddAddressPage";
 import EditAddressPage from "./pages/EditAddressPage";
-import Navbar from "./components/Navbar"; // Default Navbar
-import Footer from "./components/Footer"; // Footer
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import UnauthorizedPage from "./admin/UnauthorizedPage";  // Import the Unauthorized page
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import SignUpPage from "./pages/SignUpPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
@@ -40,6 +36,18 @@ import OrderSummary from "./pages/OrderSummary";
 import UserDashboard from "./pages/UserDashborad";
 import AdminProductPage from "./admin/AdminProductsPage";
 import SellerInfoPage from "./admin/SellerInfoPage";
+
+// Assuming you're using Redux or Context API to get user data (for simplicity, here we'll use a mock)
+const ProtectedRoute = ({ children, requiredRole }) => {
+  const user = useSelector((state) => state.user);  // Example: Get user info from Redux state
+
+  // Check if the user is logged in and has the correct role
+  if (!user || (requiredRole && user.role !== requiredRole)) {
+    return <Navigate to="/unauthorized" />;  // Redirect to Unauthorized page if no access
+  }
+
+  return children;
+};
 
 const App = () => {
   const location = useLocation();
@@ -77,26 +85,26 @@ const App = () => {
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/register" element={<SignUpPage />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/admin" element={<DashboardPage />} />
             <Route path="/" element={<HomePage />} />
             <Route path="/products" element={<ProductsPage />} />
-            <Route path="/admin/orders" element={<OrdersPage />} />
-            <Route path="/admin/users" element={<UsersPage />} />
-            <Route path="/admin/settings" element={<Settings />} />
-            <Route path="/seller/add-product" element={<AddProductPage />} />
-            <Route path="/admin/categories" element={<CategoryManagementPage />} />
+            <Route path="/admin" element={<ProtectedRoute requiredRole="ADMIN"><DashboardPage /></ProtectedRoute>} />
+            <Route path="/admin/orders" element={<ProtectedRoute requiredRole="ADMIN"><OrdersPage /></ProtectedRoute>} />
+            <Route path="/admin/users" element={<ProtectedRoute requiredRole="ADMIN"><UsersPage /></ProtectedRoute>} />
+            <Route path="/seller/add-product" element={<ProtectedRoute requiredRole="SELLER"><AddProductPage /></ProtectedRoute>} />
+            <Route path="/seller/dashboard" element={<ProtectedRoute requiredRole="SELLER"><SellerDashboard /></ProtectedRoute>} />
+            <Route path="/admin/categories" element={<ProtectedRoute requiredRole="ADMIN"><CategoryManagementPage /></ProtectedRoute>} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/categories" element={<CategoriesPage />} />
-            <Route path="/seller/dashboard" element={<SellerDashboard />} />
-            <Route path="/seller/products" element={<SellerProductsPage />} />
-            <Route path="/seller/edit-product/:productId" element={<EditProduct />} />
-            <Route path="/admin/users/profile/:userId" element={<UserProfilePage />} />
+            <Route path="/seller/products" element={<ProtectedRoute requiredRole="SELLER"><SellerProductsPage /></ProtectedRoute>} />
+            <Route path="/seller/edit-product/:productId" element={<ProtectedRoute requiredRole="SELLER"><EditProduct /></ProtectedRoute>} />
+            <Route path="/admin/users/profile/:userId" element={<ProtectedRoute requiredRole="ADMIN"><UserProfilePage /></ProtectedRoute>} />
             <Route path="/order-summary" element={<OrderSummary />} />
             <Route path="/dashboard" element={<UserDashboard />} />
-            <Route path="/admin/products" element={<AdminProductPage />} />
-            <Route path="/admin/dashboard" element={<DashboardPage />} />
-            <Route path="/admin/products/seller/:sellerId" element={<SellerInfoPage />} />
+            <Route path="/admin/products" element={<ProtectedRoute requiredRole="ADMIN"><AdminProductPage /></ProtectedRoute>} />
+            <Route path="/admin/dashboard" element={<ProtectedRoute requiredRole="ADMIN"><DashboardPage /></ProtectedRoute>} />
+            <Route path="/admin/products/seller/:sellerId" element={<ProtectedRoute requiredRole="ADMIN"><SellerInfoPage /></ProtectedRoute>} />
+            <Route path="/unauthorized" element={<UnauthorizedPage />} /> {/* Unauthorized page route */}
           </Routes>
         </div>
 
