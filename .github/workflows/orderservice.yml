@@ -58,6 +58,7 @@ jobs:
             docker run --rm --env ConnectionStrings__DefaultConnection="Server=sql-server;Database=OrderServiceDb;User Id=sa;Password=Root123;" orderservice dotnet ef database update
           EOF
 
+
       - name: Run Docker Container on EC2
         run: |
           ssh ubuntu@${{ secrets.EC21_PUBLIC_IP }} << 'EOF'
