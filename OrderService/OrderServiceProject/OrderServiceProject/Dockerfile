@@ -5,7 +5,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 # Copy the project file and restore dependencies
-COPY OrderServiceProject/OrderServiceProject.csproj ./  # Adjusted path
+COPY OrderServiceProject.csproj ./  # Adjusted path
 RUN dotnet restore "OrderServiceProject.csproj"
 
 # Copy the rest of the application code
