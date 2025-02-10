@@ -172,7 +172,7 @@ const Navbar = () => {
         )}
 
         {/* Seller Dashboard Button */}
-        {user && user.role.includes("SELLER") && (
+        {user && user.roles.includes("SELLER") && (
           <Link to="/seller/dashboard">
             <button className="text-gray-600 hover:text-blue-500 transition-all duration-200 flex items-center text-xs sm:text-sm p-1 sm:p-2">
               Seller Dashboard
