@@ -72,7 +72,7 @@ const SellerNavbar = () => {
 
   return (
     <nav className="bg-white sticky top-0 w-full z-50 shadow-md p-2 px-4 sm:px-6 flex items-center justify-between rounded-lg">
-      <Link to="/seller" className="flex items-center gap-2">
+      <Link to="/seller/dashboard" className="flex items-center gap-2">
         <img
           src={logo}
           alt="Logo"
