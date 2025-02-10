@@ -37,12 +37,12 @@ import UserDashboard from "./pages/UserDashborad";
 import AdminProductPage from "./admin/AdminProductsPage";
 import SellerInfoPage from "./admin/SellerInfoPage";
 
-// Assuming you're using Redux or Context API to get user data (for simplicity, here we'll use a mock)
+// Assuming you're using Redux or Context API to get user data (for simplicity, here we'll use a mock)git
 const ProtectedRoute = ({ children, requiredRole }) => {
-  const user = useSelector((state) => state.user);  // Example: Get user info from Redux state
+  const user = JSON.parse(localStorage.getItem("user"));
 
   // Check if the user is logged in and has the correct role
-  if (!user || (requiredRole && user.role !== requiredRole)) {
+  if (!user || (requiredRole && !user.roles.includes(requiredRole))) {
     return <Navigate to="/unauthorized" />;  // Redirect to Unauthorized page if no access
   }
 
