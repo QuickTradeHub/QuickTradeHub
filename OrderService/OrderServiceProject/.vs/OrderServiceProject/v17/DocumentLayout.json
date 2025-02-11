@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{5860F6A2-EAE1-405A-BE7E-D13D525B3068}|OrderServiceProject\\OrderServiceProject.csproj|c:\\users\\pravi\\onedrive\\desktop\\quicktradehub\\quicktradehub\\orderservice\\orderserviceproject\\orderserviceproject\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5860F6A2-EAE1-405A-BE7E-D13D525B3068}|OrderServiceProject\\OrderServiceProject.csproj|solutionrelative:orderserviceproject\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{5860F6A2-EAE1-405A-BE7E-D13D525B3068}|OrderServiceProject\\OrderServiceProject.csproj|c:\\users\\pravi\\onedrive\\desktop\\quicktradehub\\quicktradehub\\orderservice\\orderserviceproject\\orderserviceproject\\dtos\\orderitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5860F6A2-EAE1-405A-BE7E-D13D525B3068}|OrderServiceProject\\OrderServiceProject.csproj|solutionrelative:orderserviceproject\\dtos\\orderitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -39,18 +43,6 @@
       "RelativeMoniker": "D:0:0:{5860F6A2-EAE1-405A-BE7E-D13D525B3068}|OrderServiceProject\\OrderServiceProject.csproj|solutionrelative:orderserviceproject\\dtos\\orderstatusupdatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\Migrations\\20250211050924_init.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:OrderServiceProject\\Migrations\\20250211050924_init.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5860F6A2-EAE1-405A-BE7E-D13D525B3068}|OrderServiceProject\\OrderServiceProject.csproj|c:\\users\\pravi\\onedrive\\desktop\\quicktradehub\\quicktradehub\\orderservice\\orderserviceproject\\orderserviceproject\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5860F6A2-EAE1-405A-BE7E-D13D525B3068}|OrderServiceProject\\OrderServiceProject.csproj|solutionrelative:orderserviceproject\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\Migrations\\20250211045820_new.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:OrderServiceProject\\Migrations\\20250211045820_new.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{5860F6A2-EAE1-405A-BE7E-D13D525B3068}|OrderServiceProject\\OrderServiceProject.csproj|c:\\users\\pravi\\onedrive\\desktop\\quicktradehub\\quicktradehub\\orderservice\\orderserviceproject\\orderserviceproject\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5860F6A2-EAE1-405A-BE7E-D13D525B3068}|OrderServiceProject\\OrderServiceProject.csproj|solutionrelative:orderserviceproject\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -73,6 +65,14 @@
     {
       "AbsoluteMoniker": "D:0:0:{5860F6A2-EAE1-405A-BE7E-D13D525B3068}|OrderServiceProject\\OrderServiceProject.csproj|c:\\users\\pravi\\onedrive\\desktop\\quicktradehub\\quicktradehub\\orderservice\\orderserviceproject\\orderserviceproject\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{5860F6A2-EAE1-405A-BE7E-D13D525B3068}|OrderServiceProject\\OrderServiceProject.csproj|solutionrelative:orderserviceproject\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5860F6A2-EAE1-405A-BE7E-D13D525B3068}|OrderServiceProject\\OrderServiceProject.csproj|c:\\users\\pravi\\onedrive\\desktop\\quicktradehub\\quicktradehub\\orderservice\\orderserviceproject\\orderserviceproject\\migrations\\20250211050924_init.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5860F6A2-EAE1-405A-BE7E-D13D525B3068}|OrderServiceProject\\OrderServiceProject.csproj|solutionrelative:orderserviceproject\\migrations\\20250211050924_init.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5860F6A2-EAE1-405A-BE7E-D13D525B3068}|OrderServiceProject\\OrderServiceProject.csproj|c:\\users\\pravi\\onedrive\\desktop\\quicktradehub\\quicktradehub\\orderservice\\orderserviceproject\\orderserviceproject\\migrations\\20250211045820_new.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5860F6A2-EAE1-405A-BE7E-D13D525B3068}|OrderServiceProject\\OrderServiceProject.csproj|solutionrelative:orderserviceproject\\migrations\\20250211045820_new.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -87,19 +87,6 @@
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "Address.cs",
-              "DocumentMoniker": "C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\Models\\Address.cs",
-              "RelativeDocumentMoniker": "OrderServiceProject\\Models\\Address.cs",
-              "ToolTip": "C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\Models\\Address.cs",
-              "RelativeToolTip": "OrderServiceProject\\Models\\Address.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAgAAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-29T06:12:12.802Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
               "Title": "CartItem.cs",
               "DocumentMoniker": "C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\Models\\CartItem.cs",
               "RelativeDocumentMoniker": "OrderServiceProject\\Models\\CartItem.cs",
@@ -107,12 +94,11 @@
               "RelativeToolTip": "OrderServiceProject\\Models\\CartItem.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAADwvxUAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-27T08:41:40.928Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-27T08:41:40.928Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "Order.cs",
               "DocumentMoniker": "C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\Models\\Order.cs",
               "RelativeDocumentMoniker": "OrderServiceProject\\Models\\Order.cs",
@@ -120,12 +106,11 @@
               "RelativeToolTip": "OrderServiceProject\\Models\\Order.cs",
               "ViewState": "AgIAAAkAAAAAAAAAAAAYwAwAAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-27T08:42:29.733Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-27T08:42:29.733Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "OrderDbContext.cs",
               "DocumentMoniker": "C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\Models\\OrderDbContext.cs",
               "RelativeDocumentMoniker": "OrderServiceProject\\Models\\OrderDbContext.cs",
@@ -133,12 +118,11 @@
               "RelativeToolTip": "OrderServiceProject\\Models\\OrderDbContext.cs",
               "ViewState": "AgIAAAcAAAAAAAAAAAAAwAoAAAA4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-27T08:40:06.964Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-27T08:40:06.964Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "OrderItem.cs",
               "DocumentMoniker": "C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\Models\\OrderItem.cs",
               "RelativeDocumentMoniker": "OrderServiceProject\\Models\\OrderItem.cs",
@@ -146,25 +130,49 @@
               "RelativeToolTip": "OrderServiceProject\\Models\\OrderItem.cs",
               "ViewState": "AgIAAAkAAAAAAAAAAADgvxEAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-29T06:13:45.384Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-29T06:13:45.384Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "OrderItemDto.cs",
               "DocumentMoniker": "C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\DTOs\\OrderItemDto.cs",
               "RelativeDocumentMoniker": "OrderServiceProject\\DTOs\\OrderItemDto.cs",
               "ToolTip": "C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\DTOs\\OrderItemDto.cs",
               "RelativeToolTip": "OrderServiceProject\\DTOs\\OrderItemDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAvAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-10T13:42:58.08Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "OrderController.cs",
+              "DocumentMoniker": "C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\Controllers\\OrderController.cs",
+              "RelativeDocumentMoniker": "OrderServiceProject\\Controllers\\OrderController.cs",
+              "ToolTip": "C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\Controllers\\OrderController.cs",
+              "RelativeToolTip": "OrderServiceProject\\Controllers\\OrderController.cs",
+              "ViewState": "AgIAAEIAAAAAAAAAAAAUwE0AAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-27T08:34:47.906Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 6,
+              "Title": "Address.cs",
+              "DocumentMoniker": "C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\Models\\Address.cs",
+              "RelativeDocumentMoniker": "OrderServiceProject\\Models\\Address.cs",
+              "ToolTip": "C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\Models\\Address.cs",
+              "RelativeToolTip": "OrderServiceProject\\Models\\Address.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAgAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-29T06:12:12.802Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "OrderCreateDto.cs",
               "DocumentMoniker": "C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\DTOs\\OrderCreateDto.cs",
               "RelativeDocumentMoniker": "OrderServiceProject\\DTOs\\OrderCreateDto.cs",
@@ -172,12 +180,11 @@
               "RelativeToolTip": "OrderServiceProject\\DTOs\\OrderCreateDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-10T13:41:03.727Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-10T13:41:03.727Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "PageResult.cs",
               "DocumentMoniker": "C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\DTOs\\PageResult.cs",
               "RelativeDocumentMoniker": "OrderServiceProject\\DTOs\\PageResult.cs",
@@ -185,12 +192,11 @@
               "RelativeToolTip": "OrderServiceProject\\DTOs\\PageResult.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-10T13:44:55.128Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-10T13:44:55.128Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "OrderStatusUpdateDto.cs",
               "DocumentMoniker": "C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\DTOs\\OrderStatusUpdateDto.cs",
               "RelativeDocumentMoniker": "OrderServiceProject\\DTOs\\OrderStatusUpdateDto.cs",
@@ -198,12 +204,11 @@
               "RelativeToolTip": "OrderServiceProject\\DTOs\\OrderStatusUpdateDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-10T13:43:29.658Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-10T13:43:29.658Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 16,
               "Title": "20250211050924_init.cs",
               "DocumentMoniker": "C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\Migrations\\20250211050924_init.cs",
               "RelativeDocumentMoniker": "OrderServiceProject\\Migrations\\20250211050924_init.cs",
@@ -211,25 +216,11 @@
               "RelativeToolTip": "OrderServiceProject\\Migrations\\20250211050924_init.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAAAkAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-11T05:09:24.233Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-11T05:09:24.233Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "OrderController.cs",
-              "DocumentMoniker": "C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\Controllers\\OrderController.cs",
-              "RelativeDocumentMoniker": "OrderServiceProject\\Controllers\\OrderController.cs",
-              "ToolTip": "C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\Controllers\\OrderController.cs",
-              "RelativeToolTip": "OrderServiceProject\\Controllers\\OrderController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-27T08:34:47.906Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 17,
               "Title": "20250211045820_new.cs",
               "DocumentMoniker": "C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\Migrations\\20250211045820_new.cs",
               "RelativeDocumentMoniker": "OrderServiceProject\\Migrations\\20250211045820_new.cs",
@@ -237,12 +228,11 @@
               "RelativeToolTip": "OrderServiceProject\\Migrations\\20250211045820_new.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-11T04:58:20.382Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-11T04:58:20.382Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 10,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\Program.cs",
               "RelativeDocumentMoniker": "OrderServiceProject\\Program.cs",
@@ -250,12 +240,11 @@
               "RelativeToolTip": "OrderServiceProject\\Program.cs",
               "ViewState": "AgIAADUAAAAAAAAAAAAkwDwAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-27T08:22:00.183Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-27T08:22:00.183Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 11,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\appsettings.json",
               "RelativeDocumentMoniker": "OrderServiceProject\\appsettings.json",
@@ -263,12 +252,11 @@
               "RelativeToolTip": "OrderServiceProject\\appsettings.json",
               "ViewState": "AgIAAAoAAAAAAAAAAAAiwA4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-02-03T08:23:00.458Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-03T08:23:00.458Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 12,
               "Title": "appsettings.Development.json",
               "DocumentMoniker": "C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\appsettings.Development.json",
               "RelativeDocumentMoniker": "OrderServiceProject\\appsettings.Development.json",
@@ -280,7 +268,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 13,
               "Title": "OrderServiceProject.csproj",
               "DocumentMoniker": "C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\OrderServiceProject.csproj",
               "RelativeDocumentMoniker": "OrderServiceProject\\OrderServiceProject.csproj",
@@ -292,7 +280,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 14,
               "Title": "20250210201517_dfds.cs",
               "DocumentMoniker": "C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\Migrations\\20250210201517_dfds.cs",
               "RelativeDocumentMoniker": "OrderServiceProject\\Migrations\\20250210201517_dfds.cs",
@@ -303,7 +291,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 15,
               "Title": "launchSettings.json",
               "DocumentMoniker": "C:\\Users\\pravi\\OneDrive\\Desktop\\QuickTradeHub\\quicktradehub\\OrderService\\OrderServiceProject\\OrderServiceProject\\Properties\\launchSettings.json",
               "RelativeDocumentMoniker": "OrderServiceProject\\Properties\\launchSettings.json",

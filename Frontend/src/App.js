@@ -37,11 +37,10 @@ import AdminProductPage from "./admin/AdminProductsPage";
 import SellerInfoPage from "./admin/SellerInfoPage";
 import PaymentPage from "./pages/PaymentPage";
 
-// Assuming you're using Redux or Context API to get user data (for simplicity, here we'll use a mock)git
 const ProtectedRoute = ({ children, requiredRole }) => {
   const user = JSON.parse(localStorage.getItem("user"));
 
-  // Check if the user is logged in and has the correct role
+
   if (!user || (requiredRole && !user.roles.includes(requiredRole))) {
     return <Navigate to="/unauthorized" />;  // Redirect to Unauthorized page if no access
   }
@@ -88,7 +87,7 @@ const App = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/admin" element={<ProtectedRoute requiredRole="ADMIN"><DashboardPage /></ProtectedRoute>} />
-            <Route path="/admin/orders" element={<ProtectedRoute requiredRole="ADMIN"><OrdersPage /></ProtectedRoute>} />
+            <Route path="/orders" element={<OrdersPage />} />
             <Route path="/admin/users" element={<ProtectedRoute requiredRole="ADMIN"><UsersPage /></ProtectedRoute>} />
             <Route path="/seller/add-product" element={<ProtectedRoute requiredRole="SELLER"><AddProductPage /></ProtectedRoute>} />
             <Route path="/seller/dashboard" element={<ProtectedRoute requiredRole="SELLER"><SellerDashboard /></ProtectedRoute>} />
