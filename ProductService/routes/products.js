@@ -219,4 +219,21 @@ router.get("/seller/:sellerId", async (req, res) => {
   }
 });
 
+// ✅ Get all products by category ID
+router.get("/category/:categoryId", async (req, res) => {
+  try {
+    const { categoryId } = req.params;
+    const { page = 1, limit = 10 } = req.query;
+
+    const products = await Product.find({ category: categoryId })
+      .populate("category") // Populate category details
+      .limit(parseInt(limit))
+      .skip((parseInt(page) - 1) * parseInt(limit));
+
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ error: "Error fetching products by category", message: err.message });
+  }
+});
+
 module.exports = router;

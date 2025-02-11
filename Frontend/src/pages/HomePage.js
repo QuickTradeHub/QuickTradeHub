@@ -64,7 +64,7 @@ const HomePage = () => {
               categories.map((category, index) => (
                 <div key={index} className="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 text-center">
                   <h4 className="text-xl font-semibold mb-2">{category.name}</h4>
-                  <Link to={`/category/${category.name.toLowerCase()}`} className="text-purple-600 hover:underline">Explore</Link>
+                  <Link to={`/category/${category._id}`} className="text-purple-600 hover:underline">Explore</Link>
                 </div>
               ))
             ) : (
