@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const OrderSummaryPage = () => {
@@ -133,6 +133,8 @@ const OrderSummaryPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 bg-gradient-to-r from-indigo-100 via-purple-100 to-pink-100 min-h-screen">
+      <ToastContainer position="top-center" autoClose={3000} hideProgressBar={false} />
+      
       <h1 className="text-4xl font-extrabold text-center mb-8 text-gray-900">Order Summary</h1>
 
       {user && (
