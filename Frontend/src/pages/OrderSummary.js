@@ -37,7 +37,7 @@ const OrderSummaryPage = () => {
     };
 
     try {
-      const response = await fetch('http://13.49.132.61:3000/payment/order', {
+      const response = await fetch('http://13.49.119.218:3000/payment/order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderData),
