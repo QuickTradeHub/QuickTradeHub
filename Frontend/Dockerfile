@@ -4,26 +4,30 @@ FROM node:18 AS build
 WORKDIR /app
 
 COPY package.json package-lock.json ./
+
 RUN npm install
+
 COPY . ./
+
 RUN npm run build
 
-# Stage 2: Set up Nginx with SSL
+# Stage 2: Set up Nginx with Certbot and SSL certificate generation
 FROM nginx:alpine
 
-RUN apk add --no-cache certbot bash
+# Install Certbot and necessary dependencies
+RUN apk add --no-cache certbot certbot-nginx bash
 
 # Copy the built React app to Nginx web root
 COPY --from=build /app/build /usr/share/nginx/html
 
 # Copy custom Nginx configuration
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY ./nginx.conf /etc/nginx/nginx.conf
 
-# Expose ports 80 and 443
+# Expose ports 80 (HTTP) and 443 (HTTPS)
 EXPOSE 80 443
 
-# Mount SSL certificates (they will be generated and mounted from EC2)
-VOLUME ["/etc/letsencrypt"]
+# Set environment variable for domain
+ENV DOMAIN=quicktradehub.in
 
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Run Certbot to generate SSL certificates
+ENTRYPOINT ["sh", "-c", "certbot certonly --standalone --preferred-challenges http -d $DOMAIN && nginx -g 'daemon off;'"]

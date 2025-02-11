@@ -39,13 +39,8 @@ jobs:
             docker stop react-container || true
             docker rm react-container || true
 
-            # Create a directory for SSL certificates if not present
-            mkdir -p /etc/letsencrypt/live/quicktradehub.in
-
-            # Mount SSL certificates from EC2 host if available
-            # Assuming the certificates are already generated and placed in /etc/letsencrypt on the host machine
+            # Run the container (SSL certificates will be generated)
             docker run -d \
-              -v /etc/letsencrypt/live/quicktradehub.in:/etc/letsencrypt/live/quicktradehub.in:ro \
               -p 80:80 -p 443:443 \
               --name react-container react-app
           EOF
