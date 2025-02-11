@@ -6,7 +6,7 @@ namespace OrderServiceProject.Models
     public class Order
     {
         public int Id { get; set; }
-        public string UserId { get; set; }
+        public int UserId { get; set; }
         public Address ShippingAddress { get; set; }
         public Address BillingAddress { get; set; }
         public List<OrderItem> OrderItems { get; set; }

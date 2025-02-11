@@ -80,59 +80,6 @@
   },
   {
     "ContainingType": "OrderServiceProject.Controllers.OrdersController",
-    "Method": "CreatePayment",
-    "RelativePath": "api/orders/{orderId}/payments",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "orderId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "paymentDto",
-        "Type": "OrderServiceProject.DTOs.PaymentCreateDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "OrderServiceProject.Controllers.OrdersController",
-    "Method": "GetPayment",
-    "RelativePath": "api/orders/payments/{paymentId}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "paymentId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "OrderServiceProject.Controllers.OrdersController",
-    "Method": "ConfirmPayment",
-    "RelativePath": "api/orders/payments/{paymentId}/confirm",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "paymentId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "OrderServiceProject.Controllers.OrdersController",
     "Method": "GetUserOrders",
     "RelativePath": "api/orders/user/{userId}",
     "HttpMethod": "GET",
@@ -141,7 +88,7 @@
     "Parameters": [
       {
         "Name": "userId",
-        "Type": "System.String",
+        "Type": "System.Int32",
         "IsRequired": true
       },
       {
@@ -153,70 +100,6 @@
         "Name": "pageSize",
         "Type": "System.Int32",
         "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "OrderServiceProject.Controllers.PaymentsController",
-    "Method": "PayByCard",
-    "RelativePath": "api/Payments/card",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "OrderServiceProject.Models.CardPaymentRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "OrderServiceProject.Controllers.PaymentsController",
-    "Method": "PayByCOD",
-    "RelativePath": "api/Payments/cod",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "OrderServiceProject.Models.CODPaymentRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "OrderServiceProject.Controllers.PaymentsController",
-    "Method": "PayByUPI",
-    "RelativePath": "api/Payments/upi",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "OrderServiceProject.Models.UPIPaymentRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "OrderServiceProject.Controllers.PaymentsController",
-    "Method": "PayByWallet",
-    "RelativePath": "api/Payments/wallet",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "OrderServiceProject.Models.WalletPaymentRequest",
-        "IsRequired": true
       }
     ],
     "ReturnTypes": []

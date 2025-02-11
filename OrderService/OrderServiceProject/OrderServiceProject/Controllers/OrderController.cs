@@ -73,7 +73,7 @@ namespace OrderServiceProject.Controllers
 
         // Get all orders for a specific user with pagination
         [HttpGet("user/{userId}")]
-        public async Task<IActionResult> GetUserOrders(string userId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetUserOrders(int userId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             var query = _context.Orders
                 .Where(o => o.UserId == userId)
@@ -128,61 +128,6 @@ namespace OrderServiceProject.Controllers
             return NoContent();
         }
 
-        // Payment Endpoints
-        [HttpPost("{orderId}/payments")]
-        public async Task<IActionResult> CreatePayment(int orderId, [FromBody] PaymentCreateDto paymentDto)
-        {
-            var order = await _context.Orders.FindAsync(orderId);
-            if (order == null) return NotFound("Order not found");
-
-            var payment = new Payments
-            {
-                OrderId = orderId,
-                Amount = paymentDto.Amount,
-                Currency = paymentDto.Currency,
-                PaymentMethod = paymentDto.PaymentMethod,
-                Status = PaymentStatus.Pending,
-                CreatedDate = DateTime.UtcNow
-            };
-
-            _context.Payments.Add(payment);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetPayment), new { id = payment.Id }, payment);
-        }
-
-        // Get Payment by ID
-        [HttpGet("payments/{paymentId}")]
-        public async Task<IActionResult> GetPayment(int paymentId)
-        {
-            var payment = await _context.Payments.FindAsync(paymentId);
-            return payment == null ? NotFound() : Ok(payment);
-        }
-
-        // Confirm a payment
-        [HttpPost("payments/{paymentId}/confirm")]
-        public async Task<IActionResult> ConfirmPayment(int paymentId)
-        {
-            var payment = await _context.Payments.FindAsync(paymentId);
-            if (payment == null) return NotFound();
-
-            if (payment.Status == PaymentStatus.Completed)
-            {
-                return BadRequest("Payment is already completed.");
-            }
-
-            payment.Status = PaymentStatus.Completed;
-            payment.PaymentDate = DateTime.UtcNow;
-
-            var order = await _context.Orders.FindAsync(payment.OrderId);
-            if (order != null)
-            {
-                order.PaymentStatus = PaymentStatus.Completed;
-                order.UpdatedDate = DateTime.UtcNow;
-            }
-
-            await _context.SaveChangesAsync();
-            return Ok(payment);
-        }
+       
     }
 }

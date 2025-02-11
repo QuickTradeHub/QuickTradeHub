@@ -37,7 +37,7 @@ const OrderSummaryPage = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:3000/payment/order', {
+      const response = await fetch('http://13.49.132.61:3000/payment/order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderData),
@@ -85,6 +85,7 @@ const OrderSummaryPage = () => {
       shippingAddress: selectedAddress,
       billingAddress: selectedAddress,
       orderItems: products.map(product => ({
+        sellerId:product.sellerId,
         productId: product._id,
         productName: product.title,
         quantity: product.quantity,

@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using Steeltoe.Discovery.Client;
 using Steeltoe.Discovery;
 using OrderServiceProject.Models;
-using OrderServiceProject.Services;
 
 namespace OrderServiceProject
 {
@@ -58,9 +57,6 @@ namespace OrderServiceProject
 
             // Add Eureka Client configuration from appsettings.json
             services.AddDiscoveryClient(Configuration);
-
-            // Add Razorpay Service configuration
-            services.AddScoped<RazorpayService>();
 
             // Add Swagger for API documentation
             services.AddSwaggerGen();

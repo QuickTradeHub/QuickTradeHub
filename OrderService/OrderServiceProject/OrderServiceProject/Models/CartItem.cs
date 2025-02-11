@@ -20,7 +20,7 @@ namespace OrderServiceProject.Models
         public decimal Price { get; set; }
 
         [Required]
-        public string UserId { get; set; }
+        public int UserId { get; set; }
         public DateTime AddedDate { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedDate { get; set; }
     }
