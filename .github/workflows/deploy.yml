@@ -35,7 +35,17 @@ jobs:
       - name: Run Docker Container on EC2
         run: |
           ssh ubuntu@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
+            # Stop and remove the previous container if it exists
             docker stop react-container || true
             docker rm react-container || true
-            docker run -d -p 80:80 -p 443:443 --name react-container react-app
+
+            # Create a directory for SSL certificates if not present
+            mkdir -p /etc/letsencrypt/live/quicktradehub.in
+
+            # Mount SSL certificates from EC2 host if available
+            # Assuming the certificates are already generated and placed in /etc/letsencrypt on the host machine
+            docker run -d \
+              -v /etc/letsencrypt/live/quicktradehub.in:/etc/letsencrypt/live/quicktradehub.in:ro \
+              -p 80:80 -p 443:443 \
+              --name react-container react-app
           EOF

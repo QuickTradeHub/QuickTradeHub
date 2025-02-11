@@ -14,7 +14,7 @@ RUN npm run build
 # Stage 2: Set up Nginx with SSL
 FROM nginx:alpine
 
-# Install Certbot for Let's Encrypt SSL certificate
+
 RUN apk add --no-cache certbot certbot-nginx bash
 
 # Copy the built React app to Nginx web root
@@ -26,7 +26,8 @@ COPY ./nginx.conf /etc/nginx/nginx.conf
 # Expose ports 80 (HTTP) and 443 (HTTPS)
 EXPOSE 80 443
 
-# Obtain and renew SSL certificates
-CMD ["/bin/sh", "-c", "\
-    certbot --nginx --non-interactive --agree-tos --email ak4902196@gmail.com -d quicktradehub.in && \
-    nginx -g 'daemon off;'"]
+# If you already have SSL certificates, mount the /etc/letsencrypt directory
+VOLUME ["/etc/letsencrypt"]
+
+# Start Nginx with SSL
+CMD ["nginx", "-g", "daemon off;"]
