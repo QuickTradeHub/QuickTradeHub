@@ -15,13 +15,13 @@ const razorpayInstance = new Razorpay({
 // Route for creating an order in Razorpay
 router.post('/order', async (req, res) => {
   try {
-    const { amount } = req.body; // Amount from the frontend (INR, in paise)
+    const { amount, currency, receipt } = req.body; // Receive amount and other details from the frontend
 
-    // Create order options for Razorpay
+    // Order options for Razorpay
     const options = {
-      amount: amount * 100, // Amount should be in paise (100 paise = 1 INR)
-      currency: 'INR',
-      receipt: `receipt_${Date.now()}`,
+      amount: amount, // Amount in paise
+      currency: currency || 'INR', // Default to INR if not provided
+      receipt: receipt || `receipt_${Date.now()}`,
       payment_capture: 1, // Auto-capture payment
     };
 
