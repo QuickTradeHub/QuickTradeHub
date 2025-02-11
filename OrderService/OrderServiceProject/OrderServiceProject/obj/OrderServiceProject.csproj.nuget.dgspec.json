@@ -71,6 +71,10 @@
               "target": "Package",
               "version": "[9.0.1, )"
             },
+            "RazorPay.Core": {
+              "target": "Package",
+              "version": "[1.0.2, )"
+            },
             "Steeltoe.Discovery.ClientCore": {
               "target": "Package",
               "version": "[3.2.8, )"

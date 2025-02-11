@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OrderServiceProject.Models
 {
-    public class Payment
+    public class Payments
     {
         public int Id { get; set; }
         public int OrderId { get; set; }

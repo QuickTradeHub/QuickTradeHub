@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using OrderServiceProject.Models;
 using Steeltoe.Discovery.Client;
 using Steeltoe.Discovery;
+using OrderServiceProject.Services;
 
 namespace OrderServiceProject
 {
@@ -27,6 +28,9 @@ namespace OrderServiceProject
 
             // Add Eureka Client configuration from appsettings.json
             services.AddDiscoveryClient(Configuration);
+
+            // Add Razorpay Service configuration
+            services.AddScoped<RazorpayService>();
 
             // Add Controllers (API endpoints)
             services.AddControllers();

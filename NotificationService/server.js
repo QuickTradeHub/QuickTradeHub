@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');  // Import CORS
 const notificationRoutes = require('./routes/notificationRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
 const { Eureka } = require('eureka-js-client');
 require('dotenv').config(); // Load environment variables from a .env file
 
@@ -10,10 +12,12 @@ const SERVICE_IP = process.env.SERVICE_IP || 'localhost'; // Fallback to localho
 const EUREKA_SERVER_IP = process.env.EUREKA_SERVER_IP || 'localhost';
 
 // Middleware
+app.use(cors());  // Enable CORS for all origins
 app.use(bodyParser.json());
 
 // Routes
 app.use('/notifications', notificationRoutes);
+app.use('/payment', paymentRoutes);
 
 const eurekaClient = new Eureka({
   instance: {

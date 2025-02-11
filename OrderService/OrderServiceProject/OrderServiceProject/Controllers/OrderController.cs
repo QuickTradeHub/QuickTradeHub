@@ -135,7 +135,7 @@ namespace OrderServiceProject.Controllers
             var order = await _context.Orders.FindAsync(orderId);
             if (order == null) return NotFound("Order not found");
 
-            var payment = new Payment
+            var payment = new Payments
             {
                 OrderId = orderId,
                 Amount = paymentDto.Amount,

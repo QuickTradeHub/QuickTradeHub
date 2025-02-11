@@ -25,12 +25,64 @@ const OrderSummaryPage = () => {
   }, [navigate]);
 
   // Handle placing the order
-  const handlePlaceOrder = () => {
+  const handlePlaceOrder = async () => {
     if (!selectedAddress) {
       alert('Please select or add a shipping address.');
       return;
     }
-    alert('Order placed successfully!');
+
+    // Create Razorpay order on backend
+    const orderData = {
+      amount: (totalAmount + 40) * 100,  // Razorpay accepts amount in paise (1 INR = 100 paise)
+      currency: 'INR',
+      receipt: `order_receipt_${Date.now()}`,
+      notes: {
+        shipping_address: selectedAddress,
+        user: user,
+        products: products
+      }
+    };
+
+    try {
+      const response = await fetch('http://13.49.132.61:3000/payment/order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderData)
+      });
+
+      const data = await response.json();
+
+      if (data && data.id) {
+        const options = {
+          key: process.env.REACT_APP_RAZORPAY_KEY_ID, // Your Razorpay Key ID (store it in .env file)
+          amount: orderData.amount,
+          currency: orderData.currency,
+          order_id: data.id,
+          name: 'QuickTradeHub', // Your website name
+          description: 'Order Payment',
+          image: 'https://example.com/logo.png', // Optional: Your website logo
+          handler: function (response) {
+            alert('Payment successful!');
+            // Process the payment confirmation on the backend if needed
+            // e.g., save order to database and mark as paid
+          },
+          prefill: {
+            name: user.firstName + ' ' + user.lastName,
+            email: user.email,
+            contact: user.phone
+          },
+          theme: {
+            color: '#F37254'
+          }
+        };
+
+        const rzp = new window.Razorpay(options);
+        rzp.open();
+      }
+    } catch (error) {
+      console.error('Error creating Razorpay order:', error);
+      alert('Something went wrong. Please try again later.');
+    }
   };
 
   // Navigate to add address page (or open modal)

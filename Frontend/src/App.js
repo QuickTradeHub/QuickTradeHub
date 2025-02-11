@@ -35,6 +35,7 @@ import OrderSummary from "./pages/OrderSummary";
 import UserDashboard from "./pages/UserDashborad";
 import AdminProductPage from "./admin/AdminProductsPage";
 import SellerInfoPage from "./admin/SellerInfoPage";
+import PaymentPage from "./pages/PaymentPage";
 
 // Assuming you're using Redux or Context API to get user data (for simplicity, here we'll use a mock)git
 const ProtectedRoute = ({ children, requiredRole }) => {
@@ -104,6 +105,7 @@ const App = () => {
             <Route path="/admin/dashboard" element={<ProtectedRoute requiredRole="ADMIN"><DashboardPage /></ProtectedRoute>} />
             <Route path="/admin/products/seller/:sellerId" element={<ProtectedRoute requiredRole="ADMIN"><SellerInfoPage /></ProtectedRoute>} />
             <Route path="/unauthorized" element={<UnauthorizedPage />} /> {/* Unauthorized page route */}
+            <Route path="/payment" element={<PaymentPage />} /> {/* Unauthorized page route */}
           </Routes>
         </div>
 

@@ -158,6 +158,70 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "OrderServiceProject.Controllers.PaymentsController",
+    "Method": "PayByCard",
+    "RelativePath": "api/Payments/card",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "OrderServiceProject.Models.CardPaymentRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OrderServiceProject.Controllers.PaymentsController",
+    "Method": "PayByCOD",
+    "RelativePath": "api/Payments/cod",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "OrderServiceProject.Models.CODPaymentRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OrderServiceProject.Controllers.PaymentsController",
+    "Method": "PayByUPI",
+    "RelativePath": "api/Payments/upi",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "OrderServiceProject.Models.UPIPaymentRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "OrderServiceProject.Controllers.PaymentsController",
+    "Method": "PayByWallet",
+    "RelativePath": "api/Payments/wallet",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "OrderServiceProject.Models.WalletPaymentRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "OrderServiceProject.Controllers.WeatherForecastController",
     "Method": "Get",
     "RelativePath": "WeatherForecast",

@@ -366,3 +366,5 @@ C:\Users\pravi\OneDrive\Desktop\QuickTradeHub\quicktradehub\OrderService\OrderSe
 C:\Users\pravi\OneDrive\Desktop\QuickTradeHub\quicktradehub\OrderService\OrderServiceProject\OrderServiceProject\obj\Debug\net8.0\OrderServiceProject.pdb
 C:\Users\pravi\OneDrive\Desktop\QuickTradeHub\quicktradehub\OrderService\OrderServiceProject\OrderServiceProject\obj\Debug\net8.0\OrderServiceProject.genruntimeconfig.cache
 C:\Users\pravi\OneDrive\Desktop\QuickTradeHub\quicktradehub\OrderService\OrderServiceProject\OrderServiceProject\obj\Debug\net8.0\ref\OrderServiceProject.dll
+C:\Users\pravi\OneDrive\Desktop\QuickTradeHub\quicktradehub\OrderService\OrderServiceProject\OrderServiceProject\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\pravi\OneDrive\Desktop\QuickTradeHub\quicktradehub\OrderService\OrderServiceProject\OrderServiceProject\bin\Debug\net8.0\RazorPay Core.dll
