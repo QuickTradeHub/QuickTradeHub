@@ -13,9 +13,15 @@ const OrdersPage = () => {
   useEffect(() => {
     const getOrders = async () => {
       try {
-        const { data, totalPages } = await fetchOrders(userId, currentPage, pageSize);
-        setOrders(data);
-        setTotalPages(totalPages);
+        const response = await fetchOrders(userId, currentPage, pageSize);
+        console.log("API Response:", response);
+        
+        if (response && response.data && Array.isArray(response.data)) {
+          setOrders(response.data);
+          setTotalPages(response.totalPages || 1);
+        } else {
+          console.error("Unexpected API response format", response);
+        }
       } catch (error) {
         console.error("Error fetching orders", error);
       }
@@ -29,18 +35,24 @@ const OrdersPage = () => {
       <h1 className="text-3xl font-semibold text-center my-6">Your Orders</h1>
       
       {/* Order List */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {orders.map(order => (
-          <OrderCard key={order.id} order={order} />
-        ))}
-      </div>
+      {orders.length === 0 ? (
+        <p className="text-center text-gray-500">No orders found.</p>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {orders.map(order => (
+            order && order.id ? <OrderCard key={order.id} order={order} /> : null
+          ))}
+        </div>
+      )}
 
       {/* Pagination */}
-      <Pagination 
-        currentPage={currentPage} 
-        totalPages={totalPages} 
-        onPageChange={setCurrentPage} 
-      />
+      {totalPages > 1 && (
+        <Pagination 
+          currentPage={currentPage} 
+          totalPages={totalPages} 
+          onPageChange={setCurrentPage} 
+        />
+      )}
     </div>
   );
 };
