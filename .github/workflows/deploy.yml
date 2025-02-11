@@ -47,8 +47,5 @@ jobs:
             docker run -d \
               -v /etc/letsencrypt/live/quicktradehub.in:/etc/letsencrypt/live/quicktradehub.in:ro \
               -p 80:80 -p 443:443 \
-              --name react-container \
-              -e SSL_CERTIFICATE_PATH=/etc/letsencrypt/live/quicktradehub.in/fullchain.pem \
-              -e SSL_KEY_PATH=/etc/letsencrypt/live/quicktradehub.in/privkey.pem \
-              react-app
+              --name react-container react-app
           EOF
