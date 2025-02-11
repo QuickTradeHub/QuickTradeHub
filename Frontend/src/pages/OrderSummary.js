@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const OrderSummaryPage = () => {
   const location = useLocation();
@@ -8,23 +10,36 @@ const OrderSummaryPage = () => {
   const totalAmount = products.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   const [user, setUser] = useState(null);
+  const [addresses, setAddresses] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState(null);
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem('user'));
     if (!storedUser) {
-      alert('You need to log in first.');
+      toast.error('You need to log in first.');
       navigate('/login');
     } else {
       setUser(storedUser);
-      const primaryAddress = storedUser.addresses?.find(address => address.isPrimary);
-      setSelectedAddress(primaryAddress || storedUser.addresses?.[0]);
+      fetchAddresses(storedUser.userId);
     }
   }, [navigate]);
 
+  const fetchAddresses = async (userId) => {
+    try {
+      const response = await fetch(`http://13.49.132.61:8080/auth/user/${userId}/address`);
+      const data = await response.json();
+      setAddresses(data);
+      const primaryAddress = data.find(address => address.isPrimary);
+      setSelectedAddress(primaryAddress || data[0]);
+    } catch (error) {
+      toast.error('Failed to fetch addresses.');
+      console.error('Error fetching addresses:', error);
+    }
+  };
+
   const handlePlaceOrder = async () => {
     if (!selectedAddress) {
-      alert('Please select or add a shipping address.');
+      toast.warn('Please select or add a shipping address.');
       return;
     }
 
@@ -55,7 +70,7 @@ const OrderSummaryPage = () => {
           description: 'Order Payment',
           image: 'https://example.com/logo.png',
           handler: async function (response) {
-            alert('Payment successful!');
+            toast.success('Payment successful!');
             await confirmOrder();
           },
           prefill: {
@@ -64,18 +79,18 @@ const OrderSummaryPage = () => {
             contact: user.phone,
           },
           theme: {
-            color: '#F37254',
+            color: '#4F46E5',
           },
         };
 
         const rzp = new window.Razorpay(options);
         rzp.open();
       } else {
-        alert('Error: Could not create Razorpay order.');
+        toast.error('Error: Could not create Razorpay order.');
       }
     } catch (error) {
       console.error('Error creating Razorpay order:', error);
-      alert('Something went wrong. Please try again.');
+      toast.error('Something went wrong. Please try again.');
     }
   };
 
@@ -85,12 +100,11 @@ const OrderSummaryPage = () => {
       shippingAddress: selectedAddress,
       billingAddress: selectedAddress,
       orderItems: products.map(product => ({
-        sellerId:product.sellerId,
+        sellerId: product.sellerId,
         productId: product._id,
         productName: product.title,
         quantity: product.quantity,
         unitPrice: product.price,
-        sellerId: product.sellerId,
       })),
     };
 
@@ -102,14 +116,14 @@ const OrderSummaryPage = () => {
       });
 
       if (response.ok) {
-        alert('Order placed successfully!');
+        toast.success('Order placed successfully!');
         navigate('/orders');
       } else {
-        alert('Failed to place the order.');
+        toast.error('Failed to place the order.');
       }
     } catch (error) {
       console.error('Error placing order:', error);
-      alert('Something went wrong while placing the order.');
+      toast.error('Something went wrong while placing the order.');
     }
   };
 
@@ -118,24 +132,24 @@ const OrderSummaryPage = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-gray-50 min-h-screen">
+    <div className="container mx-auto px-4 py-8 bg-gradient-to-r from-indigo-100 via-purple-100 to-pink-100 min-h-screen">
       <h1 className="text-4xl font-extrabold text-center mb-8 text-gray-900">Order Summary</h1>
 
       {user && (
-        <div className="max-w-2xl mx-auto mb-6 p-6 bg-white rounded-2xl shadow-xl">
+        <div className="max-w-2xl mx-auto mb-6 p-6 bg-white rounded-3xl shadow-2xl">
           <h2 className="text-2xl font-bold mb-4 text-gray-800">Customer Details</h2>
           <p className="mb-2 text-gray-700"><strong>Name:</strong> {`${user.firstName} ${user.lastName}`}</p>
           <p className="text-gray-700"><strong>Email:</strong> {user.email}</p>
         </div>
       )}
 
-      <div className="max-w-2xl mx-auto mb-6 p-6 bg-white rounded-2xl shadow-xl">
+      <div className="max-w-2xl mx-auto mb-6 p-6 bg-white rounded-3xl shadow-2xl">
         <h2 className="text-2xl font-bold mb-4 text-gray-800">Shipping Address</h2>
-        {user && user.addresses?.length > 0 ? (
-          user.addresses.map((address) => (
+        {addresses.length > 0 ? (
+          addresses.map((address) => (
             <div
               key={address.addressId}
-              className={`p-4 mb-3 border-2 rounded-lg cursor-pointer transition-transform transform hover:scale-105 ${selectedAddress?.addressId === address.addressId ? 'border-indigo-500 bg-indigo-50' : 'border-gray-300'}`}
+              className={`p-4 mb-3 border-2 rounded-2xl cursor-pointer transition-transform transform hover:scale-105 ${selectedAddress?.addressId === address.addressId ? 'border-indigo-500 bg-indigo-50' : 'border-gray-300'}`}
               onClick={() => setSelectedAddress(address)}
             >
               <p className="text-gray-800 font-semibold">{address.street}</p>
@@ -149,7 +163,7 @@ const OrderSummaryPage = () => {
         )}
 
         <button
-          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-lg shadow-lg mt-4"
+          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded-xl shadow-lg mt-4"
           onClick={handleAddAddress}
         >
           Add Address
@@ -159,8 +173,8 @@ const OrderSummaryPage = () => {
       <div className="lg:grid lg:grid-cols-3 gap-6">
         <div className="col-span-2">
           {products.map((item) => (
-            <div key={item._id} className="flex items-center p-4 bg-white rounded-2xl shadow-lg mb-4">
-              <img src={item.thumbnail} alt={item.title} className="w-24 h-24 object-cover rounded-lg" />
+            <div key={item._id} className="flex items-center p-4 bg-white rounded-3xl shadow-2xl mb-4">
+              <img src={item.thumbnail} alt={item.title} className="w-28 h-28 object-cover rounded-xl" />
               <div className="ml-4">
                 <h2 className="text-xl font-semibold text-gray-800">{item.title}</h2>
                 <p className="text-gray-600 text-sm">{item.description}</p>
@@ -171,7 +185,7 @@ const OrderSummaryPage = () => {
         </div>
 
         <div>
-          <div className="p-6 bg-white rounded-2xl shadow-lg">
+          <div className="p-6 bg-white rounded-3xl shadow-2xl">
             <h2 className="text-2xl font-bold text-gray-800 mb-4">Order Summary</h2>
             <div className="flex justify-between text-lg mb-2">
               <span>Subtotal</span>
@@ -187,7 +201,7 @@ const OrderSummaryPage = () => {
             </div>
             <button
               onClick={handlePlaceOrder}
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-4 rounded-lg shadow-lg mt-6 text-lg"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-4 rounded-xl shadow-lg mt-6 text-lg"
             >
               Place Order
             </button>
