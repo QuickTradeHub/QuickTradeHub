@@ -37,7 +37,7 @@ router.post('/order', async (req, res) => {
 
       // Send back the Razorpay order details to the frontend
       res.status(200).json({
-        id: order.id,
+        orderId: order.id,
         currency: order.currency,
         amount: order.amount,
       });
