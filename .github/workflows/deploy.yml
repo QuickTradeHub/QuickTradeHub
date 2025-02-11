@@ -37,5 +37,5 @@ jobs:
           ssh ubuntu@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
             docker stop react-container || true
             docker rm react-container || true
-            docker run -d -p 80:80 --name react-container react-app
+            docker run -d -p 80:80 -p 443:443 --name react-container react-app
           EOF
