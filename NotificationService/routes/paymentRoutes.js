@@ -19,7 +19,7 @@ router.post('/order', async (req, res) => {
 
     // Order options for Razorpay
     const options = {
-      amount: amount, // Amount in paise
+      amount: amount*100, // Amount in paise
       currency: currency || 'INR', // Default to INR if not provided
       receipt: receipt || `receipt_${Date.now()}`,
       payment_capture: 1, // Auto-capture payment
