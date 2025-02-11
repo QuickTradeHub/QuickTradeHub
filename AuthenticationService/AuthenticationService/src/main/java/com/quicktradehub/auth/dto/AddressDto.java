@@ -21,6 +21,7 @@ public class AddressDto {
     private int userId; // assuming you want to include userId in the DTO to track the user
     
     public AddressDto(Address address) {
+    	this.zipCode=address.getZipCode();
     	this.addressId=address.getAddressId();
     	this.street=address.getStreet();
     	this.city=address.getCity();
