@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Loader } from "lucide-react";
 
 const OrdersPage = () => {
   const [orders, setOrders] = useState([]);
@@ -61,34 +58,35 @@ const OrdersPage = () => {
 
       {loading ? (
         <div className="flex justify-center items-center h-48">
-          <Loader className="animate-spin h-10 w-10 text-blue-500" />
+          <svg className="animate-spin h-10 w-10 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+          </svg>
         </div>
       ) : orders.length === 0 ? (
         <p className="text-center text-gray-500">No orders found.</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {orders.map((order) => (
-            <Card key={order.id} className="shadow-lg rounded-2xl">
-              <CardContent className="p-6">
-                <h2 className="text-2xl font-bold mb-4 text-blue-600">Order #{order.id}</h2>
-                <p className="text-gray-700 mb-2">Status: {order.status === 0 ? "Pending" : "Completed"}</p>
-                <p className="text-gray-700 mb-2">Total: ${order.totalAmount}</p>
-                <p className="text-gray-700 mb-4">Date: {new Date(order.createdDate).toLocaleDateString()}</p>
-                <div className="space-y-4">
-                  {order.orderItems.map((item) => (
-                    <div key={item.id} className="flex items-center space-x-4">
-                      <img src={item.productDetails.thumbnail} alt={item.productDetails.title} className="w-20 h-20 rounded-xl object-cover" />
-                      <div>
-                        <h3 className="text-lg font-semibold">{item.productDetails.title}</h3>
-                        <p className="text-gray-600">{item.productDetails.description.substring(0, 50)}...</p>
-                        <p className="text-gray-600">Quantity: {item.quantity}</p>
-                        <p className="text-gray-600">Price: ${item.unitPrice}</p>
-                      </div>
+            <div key={order.id} className="bg-white shadow-lg rounded-2xl p-6">
+              <h2 className="text-2xl font-bold mb-4 text-blue-600">Order #{order.id}</h2>
+              <p className="text-gray-700 mb-2">Status: {order.status === 0 ? "Pending" : "Completed"}</p>
+              <p className="text-gray-700 mb-2">Total: ${order.totalAmount}</p>
+              <p className="text-gray-700 mb-4">Date: {new Date(order.createdDate).toLocaleDateString()}</p>
+              <div className="space-y-4">
+                {order.orderItems.map((item) => (
+                  <div key={item.id} className="flex items-center space-x-4">
+                    <img src={item.productDetails.thumbnail} alt={item.productDetails.title} className="w-20 h-20 rounded-xl object-cover" />
+                    <div>
+                      <h3 className="text-lg font-semibold">{item.productDetails.title}</h3>
+                      <p className="text-gray-600">{item.productDetails.description.substring(0, 50)}...</p>
+                      <p className="text-gray-600">Quantity: {item.quantity}</p>
+                      <p className="text-gray-600">Price: ${item.unitPrice}</p>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                  </div>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
       )}
@@ -96,15 +94,15 @@ const OrdersPage = () => {
       {totalPages > 1 && (
         <div className="flex justify-center mt-6 space-x-2">
           {Array.from({ length: totalPages }, (_, index) => (
-            <Button
+            <button
               key={index + 1}
               onClick={() => handlePageChange(index + 1)}
-              className={`px-4 py-2 rounded-lg ${
+              className={`px-4 py-2 rounded-lg focus:outline-none ${
                 currentPage === index + 1 ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-700"
               }`}
             >
               {index + 1}
-            </Button>
+            </button>
           ))}
         </div>
       )}
