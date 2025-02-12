@@ -32,6 +32,7 @@ namespace OrderServiceProject.Controllers
                 BillingAddress = orderDto.BillingAddress,
                 OrderItems = orderDto.OrderItems.Select(item => new OrderItem
                 {
+                    SellerId = item.SellerId,
                     ProductId = item.ProductId,
                     ProductName = item.ProductName,
                     Quantity = item.Quantity,
