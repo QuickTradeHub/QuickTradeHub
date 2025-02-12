@@ -13,70 +13,77 @@ const ProductsPage = () => {
   const dispatch = useDispatch();
   const wishlist = useSelector((state) => state.wishlist);
 
+  // Fetch products on page change
+  const fetchProducts = useCallback(async () => {
+    if (loading || !hasMore) {
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `https://quicktradehub.in/productservice/products?limit=6&page=${page}`
+      );
+      const data = await response.json();
+
+      if (data.length === 0) {
+        setHasMore(false);
+      } else {
+        // Prevent duplicates
+        setProducts((prevProducts) => {
+          const newProducts = data.filter(
+            (product) =>
+              !prevProducts.some(
+                (prevProduct) => prevProduct._id === product._id
+              )
+          );
+          return [...prevProducts, ...newProducts];
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [page, loading, hasMore]);
+
   useEffect(() => {
-    const fetchProducts = async () => {
-      if (loading || !hasMore) {
-        return;
-      }
-      setLoading(true);
-
-      try {
-        const response = await fetch(
-          `https://quicktradehub.in/productservice/products?limit=6&page=${page}`
-        );
-        const data = await response.json();
-
-        if (data.length === 0) {
-          setHasMore(false);
-        } else {
-          // Prevent duplicates
-          setProducts((prevProducts) => {
-            const newProducts = data.filter(
-              (product) =>
-                !prevProducts.some(
-                  (prevProduct) => prevProduct._id === product._id
-                )
-            );
-            return [...prevProducts, ...newProducts];
-          });
-        }
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchProducts();
-  }, [page, loading, hasMore]); // Dependencies are now page, loading, and hasMore
+  }, [fetchProducts]); // Re-fetch on page change
 
+  // Throttle scrolling to avoid multiple fetches on rapid scrolling
   const handleScroll = useCallback(() => {
+    if (loading || !hasMore) {
+      return;
+    }
+
     const debounce = (func, delay) => {
       let timer;
       return (...args) => {
-        if (timer) {clearTimeout(timer)};
+        if (timer) {
+          clearTimeout(timer);
+        }
         timer = setTimeout(() => func(...args), delay);
       };
     };
 
     const debouncedScroll = debounce(() => {
-      if (
+      const nearBottom =
         window.innerHeight + document.documentElement.scrollTop >=
-          document.documentElement.offsetHeight - 100 &&
-        !loading &&
-        hasMore
-      ) {
-        setPage((prevPage) => prevPage + 1); // Increment page number
+        document.documentElement.offsetHeight - 100;
+
+      if (nearBottom) {
+        setPage((prevPage) => prevPage + 1); // Increment page number when near bottom
       }
     }, 300);
 
-    debouncedScroll(); // Call the debounced scroll function
-  }, [loading, hasMore]); // Add loading and hasMore as dependencies
+    debouncedScroll(); // Execute debounced scroll
+  }, [loading, hasMore]); // Dependencies: only when loading or hasMore change
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]); // use `handleScroll` as a dependency
+  }, [handleScroll]); // Register the scroll listener
 
   const handleAddToWishlist = (product) => {
     const isProductInWishlist = wishlist.items.some(
