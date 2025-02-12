@@ -1,6 +1,6 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from "react-router-dom";
-import { Provider, useSelector } from "react-redux";  // Assuming you're using Redux for state management
+import {  Route, Routes, useLocation, Navigate } from "react-router-dom";
+import { Provider } from "react-redux";  // Assuming you're using Redux for state management
 import { store } from "./redux/store";
 import HomePage from "./pages/HomePage";
 import CartPage from "./pages/CartPage";
@@ -35,7 +35,6 @@ import OrderSummary from "./pages/OrderSummary";
 import UserDashboard from "./pages/UserDashborad";
 import AdminProductPage from "./admin/AdminProductsPage";
 import SellerInfoPage from "./admin/SellerInfoPage";
-import PaymentPage from "./pages/PaymentPage";
 import EditProfilePage from "./pages/EditProfilePage";
 import CategoryPage from "./pages/CategoryPage";
 
@@ -106,7 +105,6 @@ const App = () => {
             <Route path="/admin/dashboard" element={<ProtectedRoute requiredRole="ADMIN"><DashboardPage /></ProtectedRoute>} />
             <Route path="/admin/products/seller/:sellerId" element={<ProtectedRoute requiredRole="ADMIN"><SellerInfoPage /></ProtectedRoute>} />
             <Route path="/unauthorized" element={<UnauthorizedPage />} /> {/* Unauthorized page route */}
-            <Route path="/payment" element={<PaymentPage />} /> 
             <Route path="/edit-profile" element={<EditProfilePage />} /> 
             <Route path="/category/:categoryId" element={<CategoryPage />} />
           </Routes>

@@ -228,7 +228,7 @@ const EditProduct = () => {
                 <div key={index} className="relative">
                   <img
                     src={image}
-                    alt={`product image ${index + 1}`}
+                    alt={`product  ${index + 1}`}
                     className="w-24 h-24 object-cover rounded-lg"
                   />
                   <span

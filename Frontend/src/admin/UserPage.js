@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaPhone, FaEnvelope, FaUser, FaRegClock, FaRegEye, FaShoppingCart } from "react-icons/fa";
+import { FaPhone, FaEnvelope, FaUser, FaRegClock, FaRegEye } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const UsersPage = () => {
@@ -25,8 +25,8 @@ const UsersPage = () => {
   const defaultProfileImage = "https://via.placeholder.com/150";
 
   // Separate buyers and sellers
-  const buyers = users.filter(user => user.roles?.includes("BUYER"));
-  const sellers = users.filter(user => user.roles?.includes("SELLER"));
+  const buyers = users.filter((user) => user.roles?.includes("BUYER"));
+  const sellers = users.filter((user) => user.roles?.includes("SELLER"));
 
   return (
     <div className="bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-600 min-h-screen">
@@ -85,8 +85,7 @@ const UsersPage = () => {
                       <div className="flex items-center justify-center">
                         <FaRegClock className="text-indigo-500 mr-2" />
                         <span>
-                        Last login: {user.lastLogin ? new Date(user.lastLogin).toLocaleString() : "N/A"}
-
+                          Last login: {user.lastLogin ? new Date(user.lastLogin).toLocaleString() : "N/A"}
                         </span>
                       </div>
                     </div>
@@ -104,12 +103,12 @@ const UsersPage = () => {
                   </div>
 
                   {/* View Profile Button */}
-                  <Link to={`/admin/users/profile/${user.userId}`}></Link>
-                  <button className="mt-6 w-full py-2 px-4 bg-indigo-600 text-white rounded-xl shadow-lg hover:bg-indigo-700 transition duration-200 transform hover:scale-105 flex items-center justify-center">
-                    <FaRegEye className="mr-2" />
-                    View Profile
-                  </button>
-                  <Link/>
+                  <Link to={`/admin/users/profile/${user.userId}`}>
+                    <button className="mt-6 w-full py-2 px-4 bg-indigo-600 text-white rounded-xl shadow-lg hover:bg-indigo-700 transition duration-200 transform hover:scale-105 flex items-center justify-center">
+                      <FaRegEye className="mr-2" />
+                      View Profile
+                    </button>
+                  </Link>
                 </div>
               ))}
             </div>
@@ -166,7 +165,7 @@ const UsersPage = () => {
                       <div className="flex items-center justify-center">
                         <FaRegClock className="text-indigo-500 mr-2" />
                         <span>
-                        Last login: {user.lastLogin ? new Date(user.lastLogin).toLocaleString() : "N/A"}
+                          Last login: {user.lastLogin ? new Date(user.lastLogin).toLocaleString() : "N/A"}
                         </span>
                       </div>
                     </div>
@@ -185,10 +184,10 @@ const UsersPage = () => {
 
                   {/* View Profile Button */}
                   <Link to={`/admin/users/profile/${user.userId}`}>
-                  <button className="mt-6 w-full py-2 px-4 bg-indigo-600 text-white rounded-xl shadow-lg hover:bg-indigo-700 transition duration-200 transform hover:scale-105 flex items-center justify-center">
-                    <FaRegEye className="mr-2" />
-                    View Profile
-                  </button>
+                    <button className="mt-6 w-full py-2 px-4 bg-indigo-600 text-white rounded-xl shadow-lg hover:bg-indigo-700 transition duration-200 transform hover:scale-105 flex items-center justify-center">
+                      <FaRegEye className="mr-2" />
+                      View Profile
+                    </button>
                   </Link>
                 </div>
               ))}

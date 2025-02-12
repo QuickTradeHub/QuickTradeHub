@@ -7,10 +7,10 @@ const OrdersPage = () => {
   const [hasMore, setHasMore] = useState(true);
   const observer = useRef();
   const pageSize = 3;
-  const userId = JSON.parse(localStorage.getItem("user")).userId;
+  const {userId} = JSON.parse(localStorage.getItem("user"));
 
   const getOrders = useCallback(async () => {
-    if (loading || !hasMore) return;
+    if (loading || !hasMore) {return};
     setLoading(true);
     try {
       const response = await fetch(
@@ -60,8 +60,8 @@ const OrdersPage = () => {
   const lastOrderElementRef = useRef(null);
 
   useEffect(() => {
-    if (loading) return;
-    if (observer.current) observer.current.disconnect();
+    if (loading) {return};
+    if (observer.current) {observer.current.disconnect()};
 
     observer.current = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting && hasMore) {

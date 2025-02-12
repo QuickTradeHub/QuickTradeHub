@@ -27,8 +27,7 @@ const AdminProductPage = () => {
   useEffect(() => {
     const handleScroll = () => {
       if (
-        window.innerHeight + document.documentElement.scrollTop 
-        >= document.documentElement.offsetHeight - 50 && !loading
+        window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 50 && !loading
       ) {
         setCurrentPage((prevPage) => prevPage + 1);
       }
@@ -49,6 +48,10 @@ const AdminProductPage = () => {
     }
   };
 
+  useEffect(() => {
+    document.title = "Admin Product Dashboard - QuickTradeHub";
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 p-4 sm:p-6 lg:p-10">
       <div className="max-w-7xl mx-auto">
@@ -66,7 +69,7 @@ const AdminProductPage = () => {
                 <div key={product._id} className="bg-white shadow-xl rounded-3xl overflow-hidden transform hover:scale-105 transition duration-500">
                   <img
                     src={product.thumbnail}
-                    alt={product.title}
+                    alt={`Thumbnail for ${product.title}`}
                     className="w-full h-48 sm:h-52 object-cover"
                   />
                   <div className="p-4 sm:p-5">

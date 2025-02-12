@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaUser, FaLock, FaPhoneAlt, FaEnvelope, FaImage, FaCheckCircle } from "react-icons/fa";
+import {
+  FaUser,
+  FaLock,
+  FaPhoneAlt,
+  FaEnvelope,
+  FaImage,
+} from "react-icons/fa";
 
 const SignUpPage = () => {
   const [firstName, setFirstName] = useState("");
@@ -28,14 +34,24 @@ const SignUpPage = () => {
   const handleRoleChange = (e) => {
     const { value, checked } = e.target;
     setRoles((prevRoles) =>
-      checked ? [...prevRoles, value] : prevRoles.filter((role) => role !== value)
+      checked
+        ? [...prevRoles, value]
+        : prevRoles.filter((role) => role !== value)
     );
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!firstName || !lastName || !email || !phone || !password || !confirmPassword || !username) {
+    if (
+      !firstName ||
+      !lastName ||
+      !email ||
+      !phone ||
+      !password ||
+      !confirmPassword ||
+      !username
+    ) {
       setError("Please fill in all fields.");
       return;
     }
@@ -64,13 +80,16 @@ const SignUpPage = () => {
         status: "ACTIVE",
       };
 
-      const response = await fetch("https://quicktradehub.in/authenticationservice/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "https://quicktradehub.in/authenticationservice/auth/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const data = await response.json();
 
@@ -94,21 +113,70 @@ const SignUpPage = () => {
   return (
     <div className="flex items-center justify-center bg-gradient-to-br from-blue-300 via-purple-500 to-pink-500 min-h-screen pt-16 px-4">
       <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg sm:w-11/12 md:w-8/12 lg:w-6/12">
-        <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">Create Your Account</h2>
+        <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">
+          Create Your Account
+        </h2>
 
         {error && <p className="text-red-600 text-center mb-4">{error}</p>}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {[
-            { id: "firstName", placeholder: "First Name", value: firstName, setter: setFirstName, icon: <FaUser className="text-gray-500" /> },
-            { id: "lastName", placeholder: "Last Name", value: lastName, setter: setLastName, icon: <FaUser className="text-gray-500" /> },
-            { id: "username", placeholder: "Username", value: username, setter: setUsername, icon: <FaUser className="text-gray-500" /> },
-            { id: "email", placeholder: "Email Address", value: email, setter: setEmail, icon: <FaEnvelope className="text-gray-500" /> },
-            { id: "phone", placeholder: "Phone Number", value: phone, setter: setPhone, icon: <FaPhoneAlt className="text-gray-500" /> },
-            { id: "password", placeholder: "Password", value: password, setter: setPassword, type: "password", icon: <FaLock className="text-gray-500" /> },
-            { id: "confirmPassword", placeholder: "Confirm Password", value: confirmPassword, setter: setConfirmPassword, type: "password", icon: <FaLock className="text-gray-500" /> },
+            {
+              id: "firstName",
+              placeholder: "First Name",
+              value: firstName,
+              setter: setFirstName,
+              icon: <FaUser className="text-gray-500" />,
+            },
+            {
+              id: "lastName",
+              placeholder: "Last Name",
+              value: lastName,
+              setter: setLastName,
+              icon: <FaUser className="text-gray-500" />,
+            },
+            {
+              id: "username",
+              placeholder: "Username",
+              value: username,
+              setter: setUsername,
+              icon: <FaUser className="text-gray-500" />,
+            },
+            {
+              id: "email",
+              placeholder: "Email Address",
+              value: email,
+              setter: setEmail,
+              icon: <FaEnvelope className="text-gray-500" />,
+            },
+            {
+              id: "phone",
+              placeholder: "Phone Number",
+              value: phone,
+              setter: setPhone,
+              icon: <FaPhoneAlt className="text-gray-500" />,
+            },
+            {
+              id: "password",
+              placeholder: "Password",
+              value: password,
+              setter: setPassword,
+              type: "password",
+              icon: <FaLock className="text-gray-500" />,
+            },
+            {
+              id: "confirmPassword",
+              placeholder: "Confirm Password",
+              value: confirmPassword,
+              setter: setConfirmPassword,
+              type: "password",
+              icon: <FaLock className="text-gray-500" />,
+            },
           ].map(({ id, placeholder, value, setter, type = "text", icon }) => (
-            <div key={id} className="w-full flex items-center border-b-2 border-gray-300 focus-within:border-blue-500">
+            <div
+              key={id}
+              className="w-full flex items-center border-b-2 border-gray-300 focus-within:border-blue-500"
+            >
               <div className="p-3">{icon}</div>
               <input
                 id={id}
@@ -122,7 +190,9 @@ const SignUpPage = () => {
           ))}
 
           <div className="flex flex-col">
-            <label htmlFor="profileImg" className="text-sm text-gray-600">Profile Image</label>
+            <label htmlFor="profileImg" className="text-sm text-gray-600">
+              Profile Image
+            </label>
             <div className="flex items-center border-b-2 border-gray-300 focus-within:border-blue-500 mt-2">
               <FaImage className="text-gray-500 p-2" />
               <input
@@ -170,7 +240,12 @@ const SignUpPage = () => {
           <div className="text-center mt-4">
             <p>
               Already have an account?{" "}
-              <Link to="/login" className="text-blue-600 hover:text-blue-700 transition-all duration-200">Login here</Link>
+              <Link
+                to="/login"
+                className="text-blue-600 hover:text-blue-700 transition-all duration-200"
+              >
+                Login here
+              </Link>
             </p>
           </div>
         </form>
@@ -180,8 +255,12 @@ const SignUpPage = () => {
       {showSuccessPopup && (
         <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 backdrop-blur-md">
           <div className="bg-white p-8 rounded-xl shadow-lg max-w-md">
-            <h3 className="text-xl font-semibold text-center text-green-600 mb-4">Account Created Successfully!</h3>
-            <p className="text-center mb-6">Your account has been created successfully. Click below to log in.</p>
+            <h3 className="text-xl font-semibold text-center text-green-600 mb-4">
+              Account Created Successfully!
+            </h3>
+            <p className="text-center mb-6">
+              Your account has been created successfully. Click below to log in.
+            </p>
             <button
               onClick={handleClosePopup}
               className="w-full p-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all duration-300"

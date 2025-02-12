@@ -30,7 +30,9 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action) => {
-      const itemExists = state.items.find((item) => item._id === action.payload._id);
+      const itemExists = state.items.find(
+        (item) => item._id === action.payload._id
+      );
       if (itemExists) {
         itemExists.quantity += 1;
       } else {
@@ -39,7 +41,9 @@ const cartSlice = createSlice({
       saveCartToLocalStorage(state.items); // Save only the 'items' array
     },
     removeFromCart: (state, action) => {
-      state.items = state.items.filter((item) => item._id !== action.payload._id);
+      state.items = state.items.filter(
+        (item) => item._id !== action.payload._id
+      );
       saveCartToLocalStorage(state.items);
     },
     clearCart: (state) => {
@@ -54,26 +58,35 @@ const cartSlice = createSlice({
     setProductAddedStatus: (state, action) => {
       state.productAddedStatus = action.payload; // new state to track button text
     },
-      incrementQuantity: (state, action) => {
-        const item = state.items.find(item => item._id === action.payload);
-        if (item) {
-          item.quantity += 1;
-        }
-        saveCartToLocalStorage(state.items);
-      },
-      decrementQuantity: (state, action) => {
-        const item = state.items.find(item => item._id === action.payload);
-        if (item && item.quantity > 1) {
-          item.quantity -= 1;
-        }
-        saveCartToLocalStorage(state.items);
-      },
-      removeItem: (state, action) => {
-        state.items = state.items.filter(item => item._id !== action.payload);
-        saveCartToLocalStorage(state.items);
-      },
+    incrementQuantity: (state, action) => {
+      const item = state.items.find((item) => item._id === action.payload);
+      if (item) {
+        item.quantity += 1;
+      }
+      saveCartToLocalStorage(state.items);
+    },
+    decrementQuantity: (state, action) => {
+      const item = state.items.find((item) => item._id === action.payload);
+      if (item && item.quantity > 1) {
+        item.quantity -= 1;
+      }
+      saveCartToLocalStorage(state.items);
+    },
+    removeItem: (state, action) => {
+      state.items = state.items.filter((item) => item._id !== action.payload);
+      saveCartToLocalStorage(state.items);
+    },
   },
 });
 
-export const { addToCart, removeFromCart, clearCart, setCartItems,setProductAddedStatus ,incrementQuantity, decrementQuantity, removeItem } = cartSlice.actions;
+export const {
+  addToCart,
+  removeFromCart,
+  clearCart,
+  setCartItems,
+  setProductAddedStatus,
+  incrementQuantity,
+  decrementQuantity,
+  removeItem,
+} = cartSlice.actions;
 export default cartSlice.reducer;

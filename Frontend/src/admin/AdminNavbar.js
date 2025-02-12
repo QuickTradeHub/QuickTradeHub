@@ -1,23 +1,22 @@
-import React, { useState, useEffect, useRef } from "react";
-import { FaSearch, FaUserCircle, FaBars, FaCog, FaBoxOpen, FaUsers, FaSignOutAlt } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { FaSearch, FaUserCircle, FaBars, FaSignOutAlt } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "../redux/userSlice"; // Redux action to set user
+import { setUser } from "../redux/userSlice";
 import logo from "../images/logo.jpg";
 
 const AdminNavbar = () => {
-  const user = useSelector((state) => state.user); // Access user from Redux
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Check if user is present in localStorage during the initial render
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (storedUser) {
-      dispatch(setUser(storedUser)); // Update Redux state with user from localStorage
+      dispatch(setUser(storedUser));
     }
   }, [dispatch]);
 
@@ -32,13 +31,12 @@ const AdminNavbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    dispatch(setUser(null)); // Reset user in Redux state
-    navigate("/login"); // Navigate to login page after logout
+    dispatch(setUser(null));
+    navigate("/login");
   };
 
   return (
     <nav className="bg-white sticky top-0 w-full z-50 shadow-md p-2 px-4 sm:px-6 flex items-center justify-between rounded-lg">
-      {/* Logo and Brand Name */}
       <Link to="/admin" className="flex items-center gap-2">
         <img
           src={logo}
@@ -50,7 +48,6 @@ const AdminNavbar = () => {
         </h1>
       </Link>
 
-      {/* Search Bar (for products, users, etc.) */}
       <div className="flex items-center bg-gray-100 rounded-full px-3 py-2 w-3/5 sm:w-1/3 relative">
         <FaSearch className="text-gray-500 text-lg" />
         <input
@@ -62,7 +59,6 @@ const AdminNavbar = () => {
         />
       </div>
 
-      {/* Admin Navigation Links */}
       <div className="hidden sm:flex items-center gap-4">
         <Link to="/admin/dashboard" className="text-gray-600 hover:text-blue-500 transition-colors duration-200 text-sm">
           Dashboard
@@ -81,18 +77,15 @@ const AdminNavbar = () => {
         </Link>
       </div>
 
-      {/* User & Logout Section */}
       <div className="flex items-center gap-4">
-        {/* Conditional Render for Login/Logout */}
         <button
           className="text-gray-600 hover:text-blue-500 transition-all duration-200 flex items-center text-xs sm:text-sm p-1 sm:p-2"
           onClick={handleAuth}
         >
           <FaUserCircle className="text-lg mr-1" />
-          {user ? user.name : "Login"} {/* Ensure user has a name property */}
+          {user ? user.name : "Login"}
         </button>
 
-        {/* Logout Button */}
         {user && (
           <button
             className="text-gray-600 hover:text-blue-500 transition-all duration-200 flex items-center text-xs sm:text-sm p-1 sm:p-2"
@@ -104,7 +97,6 @@ const AdminNavbar = () => {
         )}
       </div>
 
-      {/* Mobile Menu Button */}
       <button
         className="sm:hidden text-gray-600 hover:text-blue-500 transition-all duration-200"
         onClick={() => setMenuOpen(!menuOpen)}
@@ -112,7 +104,6 @@ const AdminNavbar = () => {
         <FaBars className="text-2xl" />
       </button>
 
-      {/* Mobile Menu (Responsive) */}
       {menuOpen && (
         <div className="absolute top-0 left-0 right-0 bg-white p-6 shadow-lg sm:hidden z-50 rounded-lg">
           <button

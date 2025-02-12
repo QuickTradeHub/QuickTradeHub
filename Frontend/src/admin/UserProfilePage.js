@@ -40,13 +40,13 @@ const UserProfilePage = () => {
   const defaultProfileImage = "https://via.placeholder.com/150";
 
   return (
-    <div className="bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-600 min-h-screen p-6">
-      <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-lg p-8">
+    <main className="bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-600 min-h-screen p-6">
+      <section className="max-w-4xl mx-auto bg-white rounded-3xl shadow-lg p-8">
         <Link to="/users" className="flex items-center text-indigo-600 hover:text-indigo-800 mb-6">
           <FaArrowLeft className="mr-2" /> Back to Users
         </Link>
 
-        <div className="flex flex-col items-center">
+        <section className="flex flex-col items-center">
           <img
             src={user.profileImg || defaultProfileImage}
             alt="Profile"
@@ -58,7 +58,7 @@ const UserProfilePage = () => {
           </h2>
           <p className="text-xl text-gray-600 mb-4">@{user.userName}</p>
 
-          <div className="text-gray-500 space-y-2 text-lg">
+          <section className="text-gray-500 space-y-2 text-lg">
             <div className="flex items-center">
               <FaEnvelope className="text-indigo-500 mr-2" />
               <span>{user.email}</span>
@@ -77,7 +77,7 @@ const UserProfilePage = () => {
                 Last login: {user.lastLogin ? new Date(user.lastLogin).toLocaleString() : "N/A"}
               </span>
             </div>
-          </div>
+          </section>
 
           <div className="mt-6">
             <span
@@ -88,9 +88,9 @@ const UserProfilePage = () => {
               {user.status}
             </span>
           </div>
-        </div>
+        </section>
 
-        <div className="mt-8">
+        <section className="mt-8">
           <h3 className="text-2xl font-semibold text-gray-800 mb-4">Activity Summary</h3>
           <div className="flex justify-around">
             <div className="flex items-center text-gray-700">
@@ -102,9 +102,9 @@ const UserProfilePage = () => {
               <span>Products Listed: {user.productsCount || 0}</span>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </section>
+      </section>
+    </main>
   );
 };
 
