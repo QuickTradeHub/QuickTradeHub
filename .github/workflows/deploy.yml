@@ -35,12 +35,7 @@ jobs:
       - name: Run Docker Container on EC2
         run: |
           ssh ubuntu@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
-            # Stop and remove the previous container if it exists
             docker stop react-container || true
             docker rm react-container || true
-
-            # Run the container (SSL certificates will be generated)
-            docker run -d \
-              -p 80:80 -p 443:443 \
-              --name react-container react-app
+            docker run -d -p 80:80 --name react-container react-app
           EOF
