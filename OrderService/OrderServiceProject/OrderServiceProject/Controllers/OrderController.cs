@@ -41,7 +41,9 @@ namespace OrderServiceProject.Controllers
                 TotalAmount = orderDto.OrderItems.Sum(item => item.UnitPrice * item.Quantity),
                 Status = OrderStatus.Pending,
                 CreatedDate = DateTime.UtcNow,
-                UpdatedDate = DateTime.UtcNow
+                UpdatedDate = DateTime.UtcNow,
+                PaymentStatus = orderDto.PaymentStatus,
+                
             };
 
             _context.Orders.Add(order);

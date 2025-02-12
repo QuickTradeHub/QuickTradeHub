@@ -7,5 +7,6 @@ namespace OrderServiceProject.DTOs
         public Address ShippingAddress { get; set; }
         public Address BillingAddress { get; set; }
         public List<OrderItemDto> OrderItems { get; set; }
+        public PaymentStatus PaymentStatus { get; set; }
     }
 }
