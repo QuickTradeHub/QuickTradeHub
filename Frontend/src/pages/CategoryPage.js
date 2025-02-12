@@ -11,7 +11,7 @@ const CategoryPage = () => {
 
   useEffect(() => {
     // Fetch products based on the categoryId
-    fetch(`http://13.49.132.61:3000/products/category/${categoryId}`)
+    fetch(`https://quicktradehub.in/productservice/products/category/${categoryId}`)
       .then((response) => response.json())
       .then((data) => {
         setProducts(data);

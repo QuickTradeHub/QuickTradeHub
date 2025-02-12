@@ -24,7 +24,7 @@ const ProductDetailsPage = () => {
 
   const fetchProductDetails = async () => {
     try {
-      const response = await fetch(`http://13.49.132.61:3000/products/${productId}`);
+      const response = await fetch(`https://quicktradehub.in/productservice/products/${productId}`);
       const data = await response.json();
       setProduct(data);
     } catch (error) {

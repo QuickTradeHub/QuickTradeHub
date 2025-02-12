@@ -26,7 +26,7 @@ const OrderSummaryPage = () => {
 
   const fetchAddresses = async (userId) => {
     try {
-      const response = await fetch(`http://13.49.132.61:8080/auth/user/${userId}/address`);
+      const response = await fetch(`https://quicktradehub.in/authenticationservice/auth/user/${userId}/address`);
       const data = await response.json();
       setAddresses(data);
       const primaryAddress = data.find(address => address.isPrimary);
@@ -52,7 +52,7 @@ const OrderSummaryPage = () => {
     };
 
     try {
-      const response = await fetch('http://13.49.119.218:3000/payment/order', {
+      const response = await fetch('https://quicktradehub.in/notificationservice/payment/order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderData),
@@ -109,7 +109,7 @@ const OrderSummaryPage = () => {
     };
 
     try {
-      const response = await fetch('http://13.49.132.61:5142/api/orders', {
+      const response = await fetch('https://quicktradehub.in/orderservice/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderDetails),

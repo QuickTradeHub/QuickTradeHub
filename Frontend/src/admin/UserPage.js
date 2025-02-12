@@ -10,7 +10,7 @@ const UsersPage = () => {
   // Fetching data from the API
   useEffect(() => {
     axios
-      .get("http://13.49.132.61:8080/auth/users")
+      .get("https://quicktradehub.in/authenticationservice/auth/users")
       .then((response) => {
         setUsers(response.data);
         setLoading(false);

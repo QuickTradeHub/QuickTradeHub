@@ -14,11 +14,11 @@ const CategoriesPage = () => {
   useEffect(() => {
     const fetchCategoryData = async () => {
       try {
-        const categoryResponse = await fetch(`http://13.49.132.61:3000/categories/${categoryName}`);
+        const categoryResponse = await fetch(`https://quicktradehub.in/productservice/categories/${categoryName}`);
         const categoryData = await categoryResponse.json();
         setCategory(categoryData);
 
-        const productsResponse = await fetch(`http://13.49.132.61:3000/products?category=${categoryName}`);
+        const productsResponse = await fetch(`https://quicktradehub.in/productservice/products?category=${categoryName}`);
         const productsData = await productsResponse.json();
         setProducts(productsData);
       } catch (err) {

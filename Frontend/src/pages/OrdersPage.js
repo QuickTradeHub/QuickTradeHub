@@ -14,7 +14,7 @@ const OrdersPage = () => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://13.49.132.61:5142/api/orders/user/${userId}?page=${currentPage}&pageSize=${pageSize}`
+        `https://quicktradehub.in/orderservice/api/orders/user/${userId}?page=${currentPage}&pageSize=${pageSize}`
       );
       const result = await response.json();
 
@@ -24,7 +24,7 @@ const OrdersPage = () => {
             const detailedItems = await Promise.all(
               order.orderItems.map(async (item) => {
                 const productResponse = await fetch(
-                  `http://13.49.132.61:3000/products/${item.productId}`
+                  `https://quicktradehub.in/productservice/products/${item.productId}`
                 );
                 const productDetails = await productResponse.json();
                 return { ...item, productDetails };

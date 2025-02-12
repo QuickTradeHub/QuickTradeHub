@@ -17,7 +17,7 @@ const CategoryManagementPage = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get("http://13.49.132.61:3000/categories");
+      const response = await axios.get("https://quicktradehub.in/productservice/categories");
       setCategories(response.data);
     } catch (error) {
       console.error("Error fetching categories:", error);
@@ -30,7 +30,7 @@ const CategoryManagementPage = () => {
       return;
     }
     try {
-      const response = await axios.post("http://13.49.132.61:3000/categories", {
+      const response = await axios.post("https://quicktradehub.in/productservice/categories", {
         name: newCategory,
         description: newDescription,
       });
@@ -45,7 +45,7 @@ const CategoryManagementPage = () => {
 
   const handleDeleteCategory = async (id) => {
     try {
-      await axios.delete(`http://13.49.132.61:3000/categories/${id}`);
+      await axios.delete(`https://quicktradehub.in/productservice/categories/${id}`);
       setCategories(categories.filter((category) => category._id !== id));
     } catch (error) {
       console.error("Error deleting category:", error);
@@ -65,7 +65,7 @@ const CategoryManagementPage = () => {
     }
     try {
       const response = await axios.put(
-        `http://13.49.132.61:3000/categories/${editingCategory._id}`,
+        `https://quicktradehub.in/productservice/categories/${editingCategory._id}`,
         {
           name: editedCategoryName,
           description: editedDescription,

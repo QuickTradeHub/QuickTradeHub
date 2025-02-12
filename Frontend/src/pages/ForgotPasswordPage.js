@@ -21,7 +21,7 @@ const ForgotPasswordPage = () => {
     setMessage('');
 
     try {
-      const response = await fetch('http://13.49.132.61:8080/auth/forgot-password', {
+      const response = await fetch('https://quicktradehub.in/authenticationservice/auth/forgot-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

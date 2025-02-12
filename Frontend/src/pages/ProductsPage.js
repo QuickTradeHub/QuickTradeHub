@@ -27,7 +27,7 @@ const ProductsPage = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`http://13.49.132.61:3000/products?limit=6&page=${page}`);
+      const response = await fetch(`https://quicktradehub.in/productservice/products?limit=6&page=${page}`);
       const data = await response.json();
 
       if (data.length === 0) {
@@ -83,7 +83,7 @@ const ProductsPage = () => {
 
   const handleDelete = async (productId) => {
     try {
-      const response = await fetch(`http://13.49.132.61:3000/products/${productId}`, {
+      const response = await fetch(`https://quicktradehub.in/productservice/products/${productId}`, {
         method: 'DELETE',
       });
       if (response.ok) {

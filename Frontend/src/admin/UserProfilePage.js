@@ -10,7 +10,7 @@ const UserProfilePage = () => {
 
   useEffect(() => {
     axios
-      .get(`http://13.49.132.61:8080/auth/users/${userId}`)
+      .get(`https://quicktradehub.in/authenticationservice/auth/users/${userId}`)
       .then((response) => {
         setUser(response.data);
         setLoading(false);

@@ -9,7 +9,7 @@ const HomePage = () => {
 
   useEffect(() => {
     // Fetch categories from the API
-    fetch("http://13.49.132.61:3000/categories")
+    fetch("https://quicktradehub.in/productservice/categories")
       .then((response) => response.json())
       .then((data) => setCategories(data))
       .catch((error) => console.error("Error fetching categories:", error));

@@ -44,7 +44,7 @@ const EditProfilePage = () => {
     console.log(updatedUser);
 
     try {
-      const response = await fetch('http://13.49.132.61:8080/auth/user/update', {
+      const response = await fetch('https://quicktradehub.in/authenticationservice/auth/user/update', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

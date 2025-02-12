@@ -58,7 +58,7 @@ const SellerNavbar = () => {
     }
     const sellerId = JSON.parse(localStorage.getItem("user")).userId;
     axios
-      .get(`http://13.49.132.61:3000/products/seller/${sellerId}`, {
+      .get(`https://quicktradehub.in/productservice/products/seller/${sellerId}`, {
         params: { title_like: query },
       })
       .then((res) => {

@@ -11,7 +11,7 @@ const AddProductPage = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('http://13.49.132.61:3000/categories');
+        const response = await fetch('https://quicktradehub.in/productservice/categories');
         const data = await response.json();
         setCategories(data);
       } catch (error) {
@@ -55,7 +55,7 @@ const AddProductPage = () => {
     }
 
     try {
-      const response = await fetch('http://13.49.132.61:3000/products', {
+      const response = await fetch('https://quicktradehub.in/productservice/products', {
         method: 'POST',
         body: formData,
       });

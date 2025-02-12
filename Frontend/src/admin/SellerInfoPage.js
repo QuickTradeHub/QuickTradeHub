@@ -9,7 +9,7 @@ const SellerInfoPage = () => {
   useEffect(() => {
     const fetchSeller = async () => {
       try {
-        const response = await fetch(`http://13.49.132.61:8080/auth/user/${sellerId}`);
+        const response = await fetch(`https://quicktradehub.in/authenticationservice/auth/user/${sellerId}`);
         const data = await response.json();
         setSeller(data);
       } catch (error) {

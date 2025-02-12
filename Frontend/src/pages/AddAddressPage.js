@@ -29,7 +29,7 @@ const userId = location.state?.userId;
     if (street && city && state && zipCode && country) {
       try {
         const response = await axios.post(
-          `http://13.49.132.61:8080/auth/user/${userId}/address`,
+          `https://quicktradehub.in/authenticationservice/auth/user/${userId}/address`,
           addressDetails
         );
 

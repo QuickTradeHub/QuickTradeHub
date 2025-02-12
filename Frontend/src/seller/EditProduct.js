@@ -25,7 +25,7 @@ const EditProduct = () => {
   useEffect(() => {
     // Fetching product data by productId
     axios
-      .get(`http://13.49.132.61:3000/products/${productId}`)
+      .get(`https://quicktradehub.in/productservice/products/${productId}`)
       .then((res) => {
         setProduct(res.data);
         setSelectedImages(res.data.images); // Setting existing image URLs
@@ -35,7 +35,7 @@ const EditProduct = () => {
 
     // Fetching categories for selection dropdown
     axios
-      .get("http://13.49.132.61:3000/categories")
+      .get("https://quicktradehub.in/productservice/categories")
       .then((res) => {
         setCategories(res.data); // Assuming categories API returns an array of categories
       })
@@ -88,7 +88,7 @@ const EditProduct = () => {
     }
 
     axios
-      .put(`http://13.49.132.61:3000/products/${productId}`, formData)
+      .put(`https://quicktradehub.in/productservice/products/${productId}`, formData)
       .then(() => navigate("/seller/products"))
       .catch((err) => console.error("Error updating product:", err));
   };

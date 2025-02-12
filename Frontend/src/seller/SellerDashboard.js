@@ -21,7 +21,7 @@ export default function SellerDashboard() {
     const fetchProducts = async () => {
       try {
         const sellerId = JSON.parse(localStorage.getItem("user")).userId;
-        const response = await axios.get(`http://13.49.132.61:3000/products/seller/${sellerId}/?page=1&limit=100000`);
+        const response = await axios.get(`https://quicktradehub.in/productservice/products/seller/${sellerId}/?page=1&limit=100000`);
         setProducts(response.data);
       } catch (err) {
         setError("Failed to fetch products");

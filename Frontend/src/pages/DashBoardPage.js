@@ -21,13 +21,13 @@ const DashboardPage = () => {
 
   useEffect(() => {
     // Fetch users
-    fetch('http://13.49.132.61:8080/auth/users')
+    fetch('https://quicktradehub.in/authenticationservice/auth/users')
       .then(response => response.json())
       .then(data => setUsers(data))
       .catch(error => console.error('Error fetching users:', error));
 
     // Fetch products
-    fetch('http://13.49.132.61:3000/products?page=1&limit=10000')
+    fetch('https://quicktradehub.in/productservice/products?page=1&limit=10000')
       .then(response => response.json())
       .then(data => setProducts(data))
       .catch(error => console.error('Error fetching products:', error));

@@ -61,7 +61,7 @@ const Navbar = () => {
     }
 
     axios
-      .get("http://13.49.132.61:3000/products", {
+      .get("https://quicktradehub.in/productservice/products", {
         params: {
           title_like: query, // filters products based on the title
         },

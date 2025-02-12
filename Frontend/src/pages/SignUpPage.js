@@ -64,7 +64,7 @@ const SignUpPage = () => {
         status: "ACTIVE",
       };
 
-      const response = await fetch("http://13.49.132.61:8080/auth/register", {
+      const response = await fetch("https://quicktradehub.in/authenticationservice/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
