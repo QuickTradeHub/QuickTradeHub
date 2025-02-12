@@ -49,7 +49,7 @@ public class UserDto {
         this.roles = user.getRoles();
     }
 
-    // Additional method to convert DTO back to entity (useful for update operations)
+    
     public User toEntity() {
         return User.builder()
                 .userId(this.userId)
