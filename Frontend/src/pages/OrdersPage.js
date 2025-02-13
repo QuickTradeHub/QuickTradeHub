@@ -7,10 +7,12 @@ const OrdersPage = () => {
   const [hasMore, setHasMore] = useState(true);
   const observer = useRef();
   const pageSize = 3;
-  const {userId} = JSON.parse(localStorage.getItem("user"));
+  const { userId } = JSON.parse(localStorage.getItem("user"));
 
   const getOrders = useCallback(async () => {
-    if (loading || !hasMore) {return};
+    if (loading || !hasMore) {
+      return;
+    }
     setLoading(true);
     try {
       const response = await fetch(
@@ -60,8 +62,12 @@ const OrdersPage = () => {
   const lastOrderElementRef = useRef(null);
 
   useEffect(() => {
-    if (loading) {return};
-    if (observer.current) {observer.current.disconnect()};
+    if (loading) {
+      return;
+    }
+    if (observer.current) {
+      observer.current.disconnect();
+    }
 
     observer.current = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting && hasMore) {
@@ -76,7 +82,9 @@ const OrdersPage = () => {
 
   return (
     <div className="max-w-7xl mx-auto p-4">
-      <h1 className="text-4xl font-semibold text-center my-8 text-blue-700">Your Orders</h1>
+      <h1 className="text-4xl font-semibold text-center my-8 text-blue-700">
+        Your Orders
+      </h1>
 
       {orders.length === 0 && !loading ? (
         <p className="text-center text-gray-500">No orders found.</p>
@@ -94,14 +102,27 @@ const OrdersPage = () => {
               <div className="flex items-center space-x-2 mb-3">
                 <span
                   className={`text-sm font-medium px-3 py-1 rounded-full ${
-                    order.status === 0 ? "bg-yellow-300 text-gray-800" : "bg-green-300 text-gray-800"
+                    order.status === 0
+                      ? "bg-yellow-300 text-gray-800" // Pending
+                      : order.status === 1
+                      ? "bg-blue-300 text-gray-800" // Shipped
+                      : order.status === 2
+                      ? "bg-green-300 text-gray-800" // Delivered
+                      : "bg-red-300 text-gray-800" // Cancelled
                   }`}
                 >
-                  {order.status === 0 ? "Pending" : "Completed"}
+                  {order.status === 0
+                    ? "Pending"
+                    : order.status === 1
+                    ? "Shipped"
+                    : order.status === 2
+                    ? "Delivered"
+                    : "Cancelled"}
                 </span>
               </div>
               <p className="text-xl font-bold text-gray-800 mb-3">
-                Total: <span className="text-blue-600">₹{order.totalAmount}</span>
+                Total:{" "}
+                <span className="text-blue-600">₹{order.totalAmount}</span>
               </p>
               <p className="text-sm text-gray-600 mb-6">
                 Date: {new Date(order.createdDate).toLocaleDateString()}
@@ -121,8 +142,12 @@ const OrdersPage = () => {
                       <p className="text-sm text-gray-500">
                         {item.productDetails.description.substring(0, 50)}...
                       </p>
-                      <p className="text-sm text-gray-600">Quantity: {item.quantity}</p>
-                      <p className="text-sm text-gray-600">Price:₹{item.unitPrice}</p>
+                      <p className="text-sm text-gray-600">
+                        Quantity: {item.quantity}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        Price:₹{item.unitPrice}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -139,7 +164,9 @@ const OrdersPage = () => {
       )}
 
       {!hasMore && orders.length > 0 && (
-        <p className="text-center text-gray-500 mt-6">No more orders to load.</p>
+        <p className="text-center text-gray-500 mt-6">
+          No more orders to load.
+        </p>
       )}
     </div>
   );

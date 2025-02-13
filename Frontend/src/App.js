@@ -37,6 +37,7 @@ import AdminProductPage from "./admin/AdminProductsPage";
 import SellerInfoPage from "./admin/SellerInfoPage";
 import EditProfilePage from "./pages/EditProfilePage";
 import CategoryPage from "./pages/CategoryPage";
+import AdminOrdersPage from "./admin/AdminOrderPage";
 
 const ProtectedRoute = ({ children, requiredRole }) => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -107,6 +108,7 @@ const App = () => {
             <Route path="/unauthorized" element={<UnauthorizedPage />} /> {/* Unauthorized page route */}
             <Route path="/edit-profile" element={<EditProfilePage />} /> 
             <Route path="/category/:categoryId" element={<CategoryPage />} />
+            <Route path="/admin/orders" element={<AdminOrdersPage />} />
           </Routes>
         </div>
 

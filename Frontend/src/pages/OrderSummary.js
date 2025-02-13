@@ -71,7 +71,7 @@ const OrderSummaryPage = () => {
           image: 'https://example.com/logo.png',
           handler: async function (response) {
             toast.success('Payment successful!');
-            await confirmOrder();
+            await confirmOrder(1);  // Set paymentStatus as 1 on successful payment
           },
           prefill: {
             name: `${user.firstName} ${user.lastName}`,
@@ -94,11 +94,12 @@ const OrderSummaryPage = () => {
     }
   };
 
-  const confirmOrder = async () => {
+  const confirmOrder = async (paymentStatus) => {
     const orderDetails = {
       userId: user.userId,
       shippingAddress: selectedAddress,
       billingAddress: selectedAddress,
+      paymentStatus: paymentStatus,  // Adding paymentStatus to the order
       orderItems: products.map(product => ({
         sellerId: product.sellerId,
         productId: product._id,
