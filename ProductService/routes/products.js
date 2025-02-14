@@ -98,29 +98,58 @@ router.get("/search", async (req, res) => {
     // Use regex for case-insensitive search
     const regexQuery = new RegExp(query, 'i');
 
-    // Fetch products matching the query (case-insensitive search) on multiple fields
-    const products = await Product.find({
-      $or: [
-        { title: { $regex: regexQuery } },
-        { description: { $regex: regexQuery } },
-        { "category.name": { $regex: regexQuery } },
-        { price: { $regex: regexQuery } },
-        { discountPercentage: { $regex: regexQuery } },
-        { brand: { $regex: regexQuery } },
-        { sku: { $regex: regexQuery } },
-        { condition: { $regex: regexQuery } },
-        { tags: { $regex: regexQuery } },
-      ]
-    })
-      .populate("category") // Populate category details
-      .limit(parseInt(limit))
-      .skip((parseInt(page) - 1) * parseInt(limit));
+    // Set up the aggregation pipeline for more advanced searching
+    const products = await Product.aggregate([
+      {
+        $match: {
+          $or: [
+            { title: { $regex: regexQuery } },
+            { description: { $regex: regexQuery } },
+            { "category.name": { $regex: regexQuery } },
+            { brand: { $regex: regexQuery } },
+            { sku: { $regex: regexQuery } },
+            { condition: { $regex: regexQuery } },
+            { tags: { $regex: regexQuery } },
+          ],
+        },
+      },
+      {
+        $addFields: {
+          score: {
+            $sum: [
+              { $cond: [{ $regexMatch: { input: "$title", regex: regexQuery } }, 1, 0] },
+              { $cond: [{ $regexMatch: { input: "$description", regex: regexQuery } }, 0.5, 0] },
+              { $cond: [{ $regexMatch: { input: "$brand", regex: regexQuery } }, 0.3, 0] },
+              { $cond: [{ $regexMatch: { input: "$sku", regex: regexQuery } }, 0.2, 0] },
+            ],
+          },
+        },
+      },
+      { $sort: { score: -1 } }, // Sort by score (higher relevance first)
+      { $skip: (parseInt(page) - 1) * parseInt(limit) },
+      { $limit: parseInt(limit) },
+      {
+        $lookup: {
+          from: "categories", // Assuming category collection name is 'categories'
+          localField: "category",
+          foreignField: "_id",
+          as: "categoryDetails",
+        },
+      },
+      {
+        $unwind: {
+          path: "$categoryDetails",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+    ]);
 
     res.json(products);
   } catch (err) {
     res.status(500).json({ error: "Error fetching products", message: err.message });
   }
 });
+
 
 
 // ✅ Get all products (with pagination, category population, and reviews)
