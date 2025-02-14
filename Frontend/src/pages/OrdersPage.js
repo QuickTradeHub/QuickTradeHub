@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
+import { Link } from "react-router-dom";
 
 const OrdersPage = () => {
   const [orders, setOrders] = useState([]);
@@ -91,6 +92,7 @@ const OrdersPage = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {orders.map((order, index) => (
+            <Link to={`/orders/${order.id}`}>
             <div
               key={order.id}
               ref={orders.length === index + 1 ? lastOrderElementRef : null}
@@ -153,8 +155,10 @@ const OrdersPage = () => {
                 ))}
               </div>
             </div>
+            </Link>
           ))}
         </div>
+        
       )}
 
       {loading && (

@@ -236,4 +236,25 @@ router.get("/category/:categoryId", async (req, res) => {
   }
 });
 
+// ✅ Search products by title (filter products based on title query parameter)
+router.get("/search", async (req, res) => {
+  try {
+    const { query = "", page = 1, limit = 10 } = req.query;
+
+    // Use regex for case-insensitive search on the title field
+    const regexQuery = new RegExp(query, 'i');
+
+    // Fetch products matching the query (case-insensitive search) with pagination
+    const products = await Product.find({ title: { $regex: regexQuery } })
+      .populate("category") // Populate category details
+      .limit(parseInt(limit))
+      .skip((parseInt(page) - 1) * parseInt(limit));
+
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ error: "Error fetching products", message: err.message });
+  }
+});
+
+
 module.exports = router;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { FaSearch, FaShoppingCart, FaUserCircle, FaBars, FaHeart } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -41,38 +41,41 @@ const Navbar = () => {
     navigate("/login"); // Navigate to login page after logout
   };
 
-  const handleSearchChange = (e) => {
-    const query = e.target.value;
+  const handleSearchChange = useCallback((e) => {
+    const query = e.target.value.trim();
     setSearchTerm(query);
 
     if (debounceTimer.current) {
       clearTimeout(debounceTimer.current);
     }
 
-    debounceTimer.current = setTimeout(() => {
-      filterProducts(query);
-    }, 500);
-  };
+    if (query === "") {
+      setFilteredProducts([]); // Clear results when there's no search term
+    } else {
+      debounceTimer.current = setTimeout(() => {
+        filterProducts(query);
+      }, 300); // Delay for better performance
+    }
+  }, []);
 
-  const filterProducts = (query) => {
+  const filterProducts = async (query) => {
     if (!query.trim()) {
-      setFilteredProducts([]); // Clear results if there's no search term
+      setFilteredProducts([]); // Clear results if there's no query
       return;
     }
 
-    axios
-      .get("https://quicktradehub.in/productservice/products", {
+    try {
+      const response = await axios.get("https://quicktradehub.in/productservice/products", {
         params: {
-          title_like: query, // filters products based on the title
+          title_like: query, // This assumes the API accepts this query parameter
         },
-      })
-      .then((res) => {
-        setFilteredProducts(res.data);
-      })
-      .catch((err) => {
-        console.error("Error fetching filtered products:", err);
-        setFilteredProducts([]); // In case of an error, clear the results
       });
+
+      setFilteredProducts(response.data);
+    } catch (err) {
+      console.error("Error fetching filtered products:", err);
+      setFilteredProducts([]); // Clear results on error
+    }
   };
 
   return (
@@ -108,13 +111,11 @@ const Navbar = () => {
                 </li>
               ) : (
                 filteredProducts.map((product) => (
-                  <a href={`/products/${product._id}`} key={product._id}>
-                    <li
-                      className="flex items-center justify-between p-2 hover:bg-gray-200 cursor-pointer text-sm"
-                    >
+                  <Link to={`/products/${product._id}`} key={product._id}>
+                    <li className="flex items-center justify-between p-2 hover:bg-gray-200 cursor-pointer text-sm">
                       <span>{product.title}</span>
                     </li>
-                  </a>
+                  </Link>
                 ))
               )}
             </ul>
@@ -122,30 +123,18 @@ const Navbar = () => {
         )}
       </div>
 
-      {/* Navigation Links (Desktop) */}
+      {/* Desktop Navigation Links */}
       <div className="hidden sm:flex items-center gap-4">
-        <Link
-          to="/home"
-          className="text-gray-600 hover:text-blue-500 transition-colors duration-200 text-sm"
-        >
+        <Link to="/home" className="text-gray-600 hover:text-blue-500 transition-colors duration-200 text-sm">
           Home
         </Link>
-        <Link
-          to="/products"
-          className="text-gray-600 hover:text-blue-500 transition-colors duration-200 text-sm"
-        >
+        <Link to="/products" className="text-gray-600 hover:text-blue-500 transition-colors duration-200 text-sm">
           Products
         </Link>
-        <Link
-          to="/about"
-          className="text-gray-600 hover:text-blue-500 transition-colors duration-200 text-sm"
-        >
+        <Link to="/about" className="text-gray-600 hover:text-blue-500 transition-colors duration-200 text-sm">
           About
         </Link>
-        <Link
-          to="/contact"
-          className="text-gray-600 hover:text-blue-500 transition-colors duration-200 text-sm"
-        >
+        <Link to="/contact" className="text-gray-600 hover:text-blue-500 transition-colors duration-200 text-sm">
           Contact
         </Link>
       </div>
@@ -157,8 +146,8 @@ const Navbar = () => {
           className="text-gray-600 hover:text-blue-500 transition-all duration-200 flex items-center text-xs sm:text-sm p-1 sm:p-2"
           onClick={handleAuth}
         >
-          <FaUserCircle className="text-lg mr-1" onClick={() => { navigate("/dashboard") }} />
-          {user ? user.name : "Login"} {/* Ensure user has a name property */}
+          <FaUserCircle className="text-lg mr-1" />
+          {user ? user.name : "Login"}
         </button>
 
         {/* Logout Button */}
@@ -220,34 +209,22 @@ const Navbar = () => {
           </button>
           <ul className="flex flex-col gap-4">
             <li>
-              <Link
-                to="/"
-                className="text-gray-600 hover:text-blue-500 transition-colors duration-200 font-medium"
-              >
+              <Link to="/" className="text-gray-600 hover:text-blue-500 transition-colors duration-200 font-medium">
                 Home
               </Link>
             </li>
             <li>
-              <Link
-                to="/products"
-                className="text-gray-600 hover:text-blue-500 transition-colors duration-200 font-medium"
-              >
+              <Link to="/products" className="text-gray-600 hover:text-blue-500 transition-colors duration-200 font-medium">
                 Products
               </Link>
             </li>
             <li>
-              <Link
-                to="/about"
-                className="text-gray-600 hover:text-blue-500 transition-colors duration-200 font-medium"
-              >
+              <Link to="/about" className="text-gray-600 hover:text-blue-500 transition-colors duration-200 font-medium">
                 About
               </Link>
             </li>
             <li>
-              <Link
-                to="/contact"
-                className="text-gray-600 hover:text-blue-500 transition-colors duration-200 font-medium"
-              >
+              <Link to="/contact" className="text-gray-600 hover:text-blue-500 transition-colors duration-200 font-medium">
                 Contact
               </Link>
             </li>
@@ -257,7 +234,7 @@ const Navbar = () => {
                 onClick={handleAuth}
               >
                 <FaUserCircle className="text-2xl mr-1" />
-                {user ? user.name : "Login"} {/* Ensure user has a name property */}
+                {user ? user.name : "Login"}
               </button>
             </li>
           </ul>

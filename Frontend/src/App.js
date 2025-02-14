@@ -38,6 +38,7 @@ import SellerInfoPage from "./admin/SellerInfoPage";
 import EditProfilePage from "./pages/EditProfilePage";
 import CategoryPage from "./pages/CategoryPage";
 import AdminOrdersPage from "./admin/AdminOrderPage";
+import OrderDetailsPage from "./pages/OrderDetailsPage";
 
 const ProtectedRoute = ({ children, requiredRole }) => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -109,6 +110,7 @@ const App = () => {
             <Route path="/edit-profile" element={<EditProfilePage />} /> 
             <Route path="/category/:categoryId" element={<CategoryPage />} />
             <Route path="/admin/orders" element={<AdminOrdersPage />} />
+            <Route path="/orders/:orderId" element={<OrderDetailsPage />} />
           </Routes>
         </div>
 
