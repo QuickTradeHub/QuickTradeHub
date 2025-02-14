@@ -40,8 +40,11 @@ jobs:
 
       - name: Run Docker Container on EC2
         run: |
-          ssh ubuntu@${{ secrets.EC21_PUBLIC_IP }} << 'EOF'
+          ssh ubuntu@${{ secrets.EC21_PUBLIC_IP }} << EOF
             docker stop authentication-service || true
             docker rm authentication-service || true
-            docker run -d -p 8080:8080 --name authentication-service -e DB_PASSWORD="${{ secrets.DB_PASSWORD }} authentication-service
+            docker run -d -p 8080:8080 \
+              --name authentication-service \
+              -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
+              authentication-service
           EOF
