@@ -65,9 +65,9 @@ const Navbar = () => {
     }
 
     try {
-      const response = await axios.get("https://quicktradehub.in/productservice/products", {
+      const response = await axios.get("https://quicktradehub.in/productservice/products/search", {
         params: {
-          title_like: query, // This assumes the API accepts this query parameter
+          query, // This assumes the API accepts this query parameter
         },
       });
 
