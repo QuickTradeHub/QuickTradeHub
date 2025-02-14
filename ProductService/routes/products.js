@@ -91,16 +91,27 @@ router.post("/", upload.fields([
   }
 });
 
-// ✅ Search products by title (filter products based on title query parameter)
 router.get("/search", async (req, res) => {
   try {
     const { query = "", page = 1, limit = 10 } = req.query;
 
-    // Use regex for case-insensitive search on the title field
+    // Use regex for case-insensitive search
     const regexQuery = new RegExp(query, 'i');
 
-    // Fetch products matching the query (case-insensitive search) with pagination
-    const products = await Product.find({ title: { $regex: regexQuery } })
+    // Fetch products matching the query (case-insensitive search) on multiple fields
+    const products = await Product.find({
+      $or: [
+        { title: { $regex: regexQuery } },
+        { description: { $regex: regexQuery } },
+        { "category.name": { $regex: regexQuery } },
+        { price: { $regex: regexQuery } },
+        { discountPercentage: { $regex: regexQuery } },
+        { brand: { $regex: regexQuery } },
+        { sku: { $regex: regexQuery } },
+        { condition: { $regex: regexQuery } },
+        { tags: { $regex: regexQuery } },
+      ]
+    })
       .populate("category") // Populate category details
       .limit(parseInt(limit))
       .skip((parseInt(page) - 1) * parseInt(limit));
@@ -110,6 +121,7 @@ router.get("/search", async (req, res) => {
     res.status(500).json({ error: "Error fetching products", message: err.message });
   }
 });
+
 
 // ✅ Get all products (with pagination, category population, and reviews)
 router.get("/", async (req, res) => {

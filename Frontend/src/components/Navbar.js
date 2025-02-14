@@ -17,6 +17,7 @@ const Navbar = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const debounceTimer = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const searchRef = useRef(null);  // Reference to the search input
 
   // Check if user is present in localStorage during the initial render
   useEffect(() => {
@@ -25,6 +26,21 @@ const Navbar = () => {
       dispatch(setUser(storedUser)); // Update Redux state with user from localStorage
     }
   }, [dispatch]);
+
+  useEffect(() => {
+    // Close search results when clicking outside the search box
+    const handleClickOutside = (e) => {
+      if (searchRef.current && !searchRef.current.contains(e.target)) {
+        setFilteredProducts([]);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   const handleAuth = () => {
     if (user) {
@@ -67,7 +83,7 @@ const Navbar = () => {
     try {
       const response = await axios.get("https://quicktradehub.in/productservice/products/search", {
         params: {
-          query, // This assumes the API accepts this query parameter
+          query: query, // This ensures the query includes spaces
         },
       });
 
@@ -76,6 +92,11 @@ const Navbar = () => {
       console.error("Error fetching filtered products:", err);
       setFilteredProducts([]); // Clear results on error
     }
+  };
+
+  const handleProductClick = () => {
+    setSearchTerm("");  // Clear the search input
+    setFilteredProducts([]);  // Clear the search results
   };
 
   return (
@@ -93,7 +114,7 @@ const Navbar = () => {
       </Link>
 
       {/* Search Bar */}
-      <div className="flex items-center bg-gray-100 rounded-full px-3 py-2 w-3/5 sm:w-1/3 relative">
+      <div className="flex items-center bg-gray-100 rounded-full px-3 py-2 w-3/5 sm:w-1/3 relative" ref={searchRef}>
         <FaSearch className="text-gray-500 text-lg" />
         <input
           type="text"
@@ -111,7 +132,7 @@ const Navbar = () => {
                 </li>
               ) : (
                 filteredProducts.map((product) => (
-                  <Link to={`/products/${product._id}`} key={product._id}>
+                  <Link to={`/products/${product._id}`} key={product._id} onClick={handleProductClick}>
                     <li className="flex items-center justify-between p-2 hover:bg-gray-200 cursor-pointer text-sm">
                       <span>{product.title}</span>
                     </li>
@@ -164,7 +185,7 @@ const Navbar = () => {
         {user && user.roles.includes("SELLER") && (
           <Link to="/seller/dashboard">
             <button className="text-gray-600 hover:text-blue-500 transition-all duration-200 flex items-center text-xs sm:text-sm p-1 sm:p-2">
-              Seller Dashboard 
+              Seller Dashboard
             </button>
           </Link>
         )}
